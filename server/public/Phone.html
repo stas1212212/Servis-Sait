@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Ремонт телефона</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<header class="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
+  <div class="max-w-4xl mx-auto px-4 py-3">
+    <a href="/"
+       class="text-xl font-semibold text-blue-600 hover:opacity-80">
+      Пульт+ 
+    </a>
+  </div>
+</header>
+  <form id="orderForm"
+        class="bg-white p-8 rounded-xl shadow-lg w-[380px]">
+
+    <h1 class="text-2xl font-semibold text-center mb-6">
+      Анкета ремонта телефона
+    </h1>
+
+    <input
+      type="text"
+      name="model"
+      placeholder="Модель телефона (например iPhone 11)"
+      required
+      class="mb-4 w-full p-2 border rounded">
+
+    <textarea
+      name="problem"
+      placeholder="Опишите неисправность"
+      required
+      class="mb-4 w-full p-2 border rounded"></textarea>
+
+    <textarea
+      name="history"
+      placeholder="Как появилась поломка? (удар, вода, сама)"
+      required
+      class="mb-4 w-full p-2 border rounded"></textarea>
+
+    <select
+      name="repair_type"
+      required
+      class="mb-6 w-full p-2 border rounded bg-white">
+
+      <option value="" disabled selected>
+        Выберите вариант ремонта
+      </option>
+      <option value="cheap">
+        Сделать подешевле
+      </option>
+      <option value="original">
+        Оригинальные запчасти
+      </option>
+      <option value="best">
+        Максимальное восстановление
+      </option>
+    </select>
+
+    <button
+      type="submit"
+      class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+      Отправить заявку
+    </button>
+
+    <p class="text-sm text-gray-500 text-center mt-4">
+      Устройство отправляется клиентом по почте
+    </p>
+
+  </form>
+
+  <script src="js/phone.js"></script>
+</body>
+</html>

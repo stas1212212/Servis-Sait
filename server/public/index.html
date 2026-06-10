@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>PULT+ Service</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GOOGLE FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .card-hover {
+      transition: 0.25s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+
+<body class="bg-[#f5f7fb] text-gray-800">
+
+  <!-- HEADER -->
+  <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-200 z-50">
+
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+
+      <!-- LEFT -->
+      <div class="flex items-center gap-6">
+
+        <!-- BURGER -->
+        <button class="text-gray-700 hover:text-black text-3xl">
+          ☰
+        </button>
+
+        <!-- LOGO -->
+        <a href="/"
+           class="text-3xl font-bold tracking-tight text-gray-900 hover:opacity-80 transition">
+
+          PULT+
+
+        </a>
+
+      </div>
+
+      <!-- CENTER -->
+      <nav class="hidden md:flex items-center gap-4">
+
+        <!-- CONTACTS -->
+        <div class="relative dropdown">
+
+          <button class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition text-sm font-medium">
+
+            Контакты ▼
+
+          </button>
+
+          <div class="dropdown-menu hidden absolute top-12 left-0 bg-white shadow-xl rounded-2xl w-56 p-4 border border-gray-100">
+
+            <p class="text-sm mb-2 text-gray-500">
+              Телефон
+            </p>
+
+            <p class="font-medium mb-4">
+              +380 XX XXX XX XX
+            </p>
+
+            <p class="text-sm mb-2 text-gray-500">
+              Telegram
+            </p>
+
+            <p class="font-medium">
+              @pultservice
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- LANGUAGE -->
+        <div class="relative dropdown">
+
+          <button class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition text-sm font-medium">
+
+            Мова ▼
+
+          </button>
+
+          <div class="dropdown-menu hidden absolute top-12 left-0 bg-white shadow-xl rounded-2xl w-40 p-3 border border-gray-100">
+
+            <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+              Українська
+            </button>
+
+            <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+              Русский
+            </button>
+
+            <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+              English
+            </button>
+
+          </div>
+
+        </div>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+  <!-- MAIN -->
+  <main class="pt-32">
+
+    <!-- CATEGORY BAR -->
+    <section class="max-w-7xl mx-auto px-6 mb-8">
+
+      <div class="flex flex-wrap gap-4">
+
+        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
+          Apple
+        </button>
+
+        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
+          Гаджеты
+        </button>
+
+        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
+          Акустика
+        </button>
+
+        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
+          Ноутбуки
+        </button>
+
+        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
+          Телевизоры
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- INFO TEXT -->
+    <section class="max-w-7xl mx-auto px-6 mb-12">
+
+      <div class="bg-white rounded-2xl shadow-sm p-5 text-center text-gray-600 text-sm">
+
+        Чтобы отремонтировать технику, не обязательно ехать к нам —
+        оформите заявку на сайте и отправьте устройство по почте.
+
+      </div>
+
+    </section>
+
+    <!-- PRODUCTS GRID -->
+    <section class="max-w-7xl mx-auto px-6 pb-20">
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <!-- CARD -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover">
+
+          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
+
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/15/15874.png"
+              class="w-32 opacity-90"
+              alt="Пульт">
+
+          </div>
+
+          <h3 class="text-xl font-semibold mb-2">
+            Пульты
+          </h3>
+
+          <p class="text-gray-500 text-sm">
+            Продажа и ремонт пультов дистанционного управления.
+          </p>
+
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover">
+
+          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
+
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/179/179386.png"
+              class="w-32 opacity-90"
+              alt="Ноутбук">
+
+          </div>
+
+          <h3 class="text-xl font-semibold mb-2">
+            Ноутбуки
+          </h3>
+
+          <p class="text-gray-500 text-sm">
+            Ремонт, чистка и замена комплектующих.
+          </p>
+
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover">
+
+          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
+
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png"
+              class="w-32 opacity-90"
+              alt="Телевизор">
+
+          </div>
+
+          <h3 class="text-xl font-semibold mb-2">
+            Телевизоры
+          </h3>
+
+          <p class="text-gray-500 text-sm">
+            Диагностика и восстановление телевизоров.
+          </p>
+
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover">
+
+          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
+
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/15/15874.png"
+              class="w-28 opacity-90"
+              alt="Телефон">
+
+          </div>
+
+          <h3 class="text-xl font-semibold mb-2">
+            Телефоны
+          </h3>
+
+          <p class="text-gray-500 text-sm">
+            Замена экранов, батарей и ремонт плат.
+          </p>
+
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover">
+
+          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
+
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/179/179309.png"
+              class="w-32 opacity-90"
+              alt="Планшет">
+
+          </div>
+
+          <h3 class="text-xl font-semibold mb-2">
+            Планшеты
+          </h3>
+
+          <p class="text-gray-500 text-sm">
+            Ремонт дисплеев, зарядки и системных плат.
+          </p>
+
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover">
+
+          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden gap-4">
+
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png"
+              class="w-24 opacity-90"
+              alt="TV">
+
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/727/727245.png"
+              class="w-20 opacity-90"
+              alt="Колонка">
+
+          </div>
+
+          <h3 class="text-xl font-semibold mb-2">
+            Акустика и TV
+          </h3>
+
+          <p class="text-gray-500 text-sm">
+            Ремонт аудиосистем, колонок и Smart TV.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Пульт+</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- HEADER -->
+  <header class="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <!-- LOGO -->
+      <a href="/"
+         class="text-2xl font-semibold text-blue-600 hover:opacity-80 transition">
+        Пульт+
+      </a>
+
+      <!-- PHONE -->
+      <div class="hidden md:block text-sm text-gray-600">
+        +380 XX XXX XX XX
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="pt-28">
+
+    <!-- HERO -->
+    <section class="max-w-6xl mx-auto px-6 py-16">
+
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+
+        <!-- LEFT -->
+        <div>
+
+          <!-- TITLE PLACE -->
+          <div class="bg-white rounded-2xl shadow-sm p-8 mb-6 h-40 flex items-center justify-center border border-dashed border-gray-300">
+            <span class="text-gray-400 text-lg">
+              Место для заголовка
+            </span>
+          </div>
+
+          <!-- TEXT PLACE -->
+          <div class="bg-white rounded-2xl shadow-sm p-8 h-56 flex items-center justify-center border border-dashed border-gray-300">
+            <span class="text-gray-400 text-lg">
+              Место для описания сервиса
+            </span>
+          </div>
+
+        </div>
+
+        <!-- RIGHT FORM -->
+        <div>
+
+          <form id="startForm"
+                class="bg-white p-8 rounded-2xl shadow-lg">
+
+            <h2 class="text-2xl font-semibold mb-6 text-center">
+              Оставить заявку
+            </h2>
+
+            <!-- NAME -->
+            <input
+              type="text"
+              name="name"
+              placeholder="Ваше имя"
+              required
+              class="mb-4 w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+
+            <!-- PHONE -->
+            <input
+              type="text"
+              name="phone"
+              placeholder="Телефон"
+              required
+              class="mb-4 w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+
+            <!-- SERVICE -->
+            <select
+              name="service"
+              required
+              class="mb-6 w-full p-3 border rounded-xl bg-white outline-none focus:ring-2 focus:ring-blue-500">
+
+              <option value="" disabled selected>
+                Выберите услугу
+              </option>
+
+              <option value="phone">
+                Ремонт телефонов
+              </option>
+
+              <option value="laptop">
+                Ремонт ноутбуков
+              </option>
+
+              <option value="pc">
+                Ремонт ПК
+              </option>
+
+              <option value="tv">
+                Ремонт телевизоров
+              </option>
+
+            </select>
+
+            <!-- BUTTON -->
+            <button
+              type="submit"
+              class="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition">
+
+              Продолжить
+
+            </button>
+
+            <!-- SMALL TEXT -->
+            <p class="text-sm text-gray-500 text-center mt-4">
+              Мы свяжемся с вами после оформления заявки
+            </p>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SERVICES -->
+    <section class="max-w-6xl mx-auto px-6 py-12">
+
+      <h2 class="text-3xl font-semibold mb-10 text-center">
+        Услуги
+      </h2>
+
+      <div class="grid md:grid-cols-4 gap-6">
+
+        <!-- CARD -->
+        <div class="bg-white rounded-2xl shadow-sm p-6 h-56 border border-dashed border-gray-300 flex items-center justify-center">
+          <span class="text-gray-400">
+            Карточка услуги
+          </span>
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-white rounded-2xl shadow-sm p-6 h-56 border border-dashed border-gray-300 flex items-center justify-center">
+          <span class="text-gray-400">
+            Карточка услуги
+          </span>
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-white rounded-2xl shadow-sm p-6 h-56 border border-dashed border-gray-300 flex items-center justify-center">
+          <span class="text-gray-400">
+            Карточка услуги
+          </span>
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-white rounded-2xl shadow-sm p-6 h-56 border border-dashed border-gray-300 flex items-center justify-center">
+          <span class="text-gray-400">
+            Карточка услуги
+          </span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ADVANTAGES -->
+    <section class="max-w-6xl mx-auto px-6 py-12">
+
+      <h2 class="text-3xl font-semibold mb-10 text-center">
+        Почему выбирают нас
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <!-- ADV -->
+        <div class="bg-white rounded-2xl shadow-sm p-8 h-44 border border-dashed border-gray-300 flex items-center justify-center">
+          <span class="text-gray-400">
+            Преимущество
+          </span>
+        </div>
+
+        <!-- ADV -->
+        <div class="bg-white rounded-2xl shadow-sm p-8 h-44 border border-dashed border-gray-300 flex items-center justify-center">
+          <span class="text-gray-400">
+            Преимущество
+          </span>
+        </div>
+
+        <!-- ADV -->
+        <div class="bg-white rounded-2xl shadow-sm p-8 h-44 border border-dashed border-gray-300 flex items-center justify-center">
+          <span class="text-gray-400">
+            Преимущество
+          </span>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t mt-16">
+
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center text-gray-500 text-sm">
+
+      Место для контактов и информации
+
+    </div>
+
+  </footer>
+
+  <script src="js/main.js"></script>
+
+</body>
+</html>

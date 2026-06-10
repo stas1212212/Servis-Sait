@@ -1,0 +1,33 @@
+service-shop/
+│
+├── server/
+│   ├── app.js                 # основной сервер (Express)
+│   ├── db.js                  # подключение к PostgreSQL
+│   │
+│   ├── routes/
+│   │   ├── services.js        # маршруты услуг
+│   │   ├── products.js        # маршруты товаров (если будут)
+│   │   └── orders.js          # маршруты заявок
+│   │
+│   └── controllers/
+│       ├── servicesController.js
+│       ├── productsController.js
+│       └── ordersController.js
+│
+├── public/
+│   ├── index.html             # выбор услуги
+│   ├── phone.html             # анкета телефонов
+│   ├── laptop.html            # анкета ноутбуков
+│   ├── pc.html                # анкета ПК
+│   ├── tv.html                # анкета ТВ
+│   ├── thanks.html            # спасибо за заявку
+│   │
+│   └── js/
+│       ├── main.js            # первая форма (выбор услуги)
+│       ├── phone.js
+│       ├── laptop.js
+│       ├── pc.js
+│       └── tv.js
+│
+├── package.json
+└── README.md
