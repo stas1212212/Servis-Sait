@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ремонт ноутбуків | PULT+</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container header-container">
+
+        <a href="index.html" class="logo">
+
+            <div class="logo-title">
+                PULT+
+            </div>
+
+            <div class="logo-subtitle">
+                Сервісний центр
+            </div>
+
+        </a>
+
+        <nav class="navigation">
+
+            <a href="index.html">Головна</a>
+            <a href="#">Послуги</a>
+            <a href="#">Контакти</a>
+
+        </nav>
+
+        <div class="header-right">
+
+            <button id="contactsButton" class="header-button">
+                Контакти
+            </button>
+
+            <button id="languageButton" class="header-button">
+                UA
+            </button>
+
+            <a href="#repairForm" class="request-button">
+                Заявка
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+    <div class="container hero-container">
+
+        <div class="hero-text">
+
+            <span class="hero-icon">
+                💻
+            </span>
+
+            <h1>
+                Ремонт ноутбуків
+            </h1>
+
+            <p>
+
+                Виконуємо професійний ремонт ноутбуків будь-якої складності.
+                Діагностика, чистка, заміна комплектуючих та ремонт материнських плат.
+
+            </p>
+
+            <a href="#repairForm" class="hero-button">
+                Оформити заявку
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="laptop-section">
+
+    <div class="container laptop-layout">
+
+        <div class="laptop-preview">
+
+            <div class="preview-card">
+
+                <img
+                    id="laptopImage"
+                    src="https://dlcdnwebimgs.asus.com/gain/3A7395AA-45DD-42A8-B07C-66C5D4A2C87B/w1000"
+                    alt="Laptop">
+
+            </div>
+
+            <h2 id="brandTitle">
+                ASUS
+            </h2>
+
+            <div class="brand-selector">
+
+                <button class="brand active"
+                        data-brand="Samsung"
+                        data-image=""D:\cайт\Servis-Sait\server\public\Pnz\Samsung.webp"">
+
+                    Samsung
+
+                </button>
+
+                <button class="brand"
+                        data-brand="Lenovo"
+                        data-image="https://p4-ofp.static.pub//fes/cms/2024/01/17/2x6o7r8v5n7n9k4nzzs5gqq7gk8a4t.png">
+
+                    Lenovo
+
+                </button>
+
+                <button class="brand"
+                        data-brand="HP"
+                        data-image="https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08945444.png">
+
+                    HP
+
+                </button>
+
+                <button class="brand"
+                        data-brand="Dell"
+                        data-image="https://i.dell.com/is/image/DellContent/content/dam/images/products/laptops-and-2-in-1s/xps/16-9640/media-gallery/silver/notebook-xps-16-9640-t-sl-gallery-2.psd">
+
+                    Dell
+
+                </button>
+
+                <button class="brand"
+                        data-brand="Acer"
+                        data-image="https://static.acer.com/up/Resource/Acer/Laptops/Swift_Go_14/Product_Gallery/20240108/Swift_Go_14_SFG14-73_modelmain.png">
+
+                    Acer
+
+                </button>
+
+                <button class="brand"
+                        data-brand="MSI"
+                        data-image="https://storage-asset.msi.com/global/picture/image/feature/nb/2024/Raider18HX/images/kv.png">
+
+                    MSI
+
+                </button>
+
+                <button class="brand"
+                        data-brand="Sony"
+                        data-image="https://www.apple.com/v/macbook-air/u/images/overview/hero/hero_static__c9sislzzicq6_large.png">
+
+                    Sony
+
+                </button>
+
+                <button class="brand"
+                        data-brand="Інший"
+                        data-image="https://cdn-icons-png.flaticon.com/512/179/179386.png">
+
+                    Інше
+
+        </div>
+
+        <div class="repair-form-card" id="repairForm">
+
+            <h2>
+
+                Анкета ремонту
+
+            </h2>
+
+            <form id="laptopRepairForm">
+
+                <div class="input-group">
+
+                    <label>
+
+                        Ваше ім'я
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Введіть ім'я"
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+
+                        Телефон
+
+                    </label>
+
+                    <input
+                        type="tel"
+                        name="phone"
+                        placeholder="+380..."
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+
+                        Email
+
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="mail@example.com">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+
+                        Бренд ноутбука
+
+                    </label>
+
+                    <input
+                        id="selectedBrand"
+                        type="text"
+                        value="ASUS"
+                        readonly>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+
+                        Модель ноутбука
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="model"
+                        placeholder="ROG Zephyrus G16">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+
+                        Яка несправність?
+
+                    </label>
+
+                    <textarea
+                        rows="4"
+                        name="problem"
+                        placeholder="Не вмикається, перегрівається, немає зображення..."></textarea>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+
+                        Як виникла проблема?
+
+                    </label>
+
+                    <textarea
+                        rows="4"
+                        name="history"
+                        placeholder="Після падіння, залили водою, перестав заряджатися..."></textarea>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>
+
+                        Тип ремонту
+
+                    </label>
+
+                    <select name="repair">
+
+                        <option>
+
+                            Максимально бюджетний
+
+                        </option>
+
+                        <option>
+
+                            Оригінальні комплектуючі
+
+                        </option>
+
+                        <option>
+
+                            Порадьте найкращий варіант
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="submit-button">
+
+                    Надіслати заявку
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="advantages">
+
+    <div class="container">
+
+        <h2>
+
+            Наші переваги
+
+        </h2>
+
+        <div class="advantages-grid">
+
+            <div class="advantage-card">
+
+                <div class="advantage-icon">
+                    🔍
+                </div>
+
+                <h3>
+
+                    Безкоштовна діагностика
+
+                </h3>
+
+                <p>
+
+                    Виявляємо несправність перед початком ремонту.
+
+                </p>
+
+            </div>
+
+            <div class="advantage-card">
+
+                <div class="advantage-icon">
+                    🛡️
+                </div>
+
+                <h3>
+
+                    Гарантія
+
+                </h3>
+
+                <p>
+
+                    До 12 місяців гарантії на всі виконані роботи.
+
+                </p>
+
+            </div>
+
+            <div class="advantage-card">
+
+                <div class="advantage-icon">
+                    📦
+                </div>
+
+                <h3>
+
+                    Нова Пошта
+
+                </h3>
+
+                <p>
+
+                    Приймаємо ноутбуки з будь-якого міста України.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="steps">
+
+    <div class="container">
+
+        <h2>
+
+            Як проходить ремонт
+
+        </h2>
+
+        <div class="steps-grid">
+
+            <div class="step">
+
+                <div class="step-number">
+
+                    1
+
+                </div>
+
+                <h3>
+
+                    Заповнення заявки
+
+                </h3>
+
+                <p>
+
+                    Ви оформлюєте заявку на сайті.
+
+                </p>
+
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">
+
+                    2
+
+                </div>
+
+                <h3>
+
+                    Надсилання ноутбука
+
+                </h3>
+
+                <p>
+
+                    Відправляєте пристрій Новою Поштою.
+
+                </p>
+
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">
+
+                    3
+
+                </div>
+
+                <h3>
+
+                    Діагностика та ремонт
+
+                </h3>
+
+                <p>
+
+                    Узгоджуємо вартість та виконуємо ремонт.
+
+                </p>
+
+            </div>
+
+            <div class="step">
+
+                <div class="step-number">
+
+                    4
+
+                </div>
+
+                <h3>
+
+                    Повернення
+
+                </h3>
+
+                <p>
+
+                    Надсилаємо відремонтований ноутбук назад.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer class="footer">
+
+    <div class="container footer-container">
+
+        <div>
+
+            <h3>
+
+                PULT+
+
+            </h3>
+
+            <p>
+
+                Сервісний центр електроніки.
+
+            </p>
+
+        </div>
+
+        <div>
+
+            <h4>
+
+                Контакти
+
+            </h4>
+
+            <p>
+
+                +380 XX XXX XX XX
+
+            </p>
+
+            <p>
+
+                support@pultplus.ua
+
+            </p>
+
+        </div>
+
+        <div>
+
+            <h4>
+
+                Навігація
+
+            </h4>
+
+            <a href="index.html">
+
+                Головна
+
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</main>
+
+<script src="js/device.js"></script>
+
+</body>
+</html>
+```
