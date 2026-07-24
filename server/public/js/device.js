@@ -301,3 +301,146 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const tvImage = document.getElementById("tvImage");
+    const brandTitle = document.getElementById("brandTitle");
+    const selectedBrand = document.getElementById("selectedBrand");
+
+    const brandButtons = document.querySelectorAll(".brand");
+
+    const models = {
+
+        "Samsung": [
+            "UE55DU7100",
+            "QN90D",
+            "S90D OLED",
+            "CU8000",
+            "Q60D"
+        ],
+
+        "LG": [
+            "OLED C4",
+            "OLED G4",
+            "QNED86",
+            "NanoCell NANO81",
+            "UR7800"
+        ],
+
+        "Sony": [
+            "BRAVIA 9",
+            "BRAVIA 8 OLED",
+            "X90L",
+            "X85L",
+            "A80L"
+        ],
+
+        "Philips": [
+            "The One",
+            "OLED809",
+            "PUS8919",
+            "PUS8518"
+        ],
+
+        "TCL": [
+            "C855",
+            "C745",
+            "C655",
+            "P755"
+        ],
+
+        "Hisense": [
+            "U8N",
+            "U7N",
+            "E7N",
+            "A7N"
+        ],
+
+        "Інший": [
+            "Введіть модель вручну"
+        ]
+
+    };
+
+    const modelInput = document.querySelector('input[name="model"]');
+
+    function updateModelPlaceholder(brand) {
+
+        if (!models[brand]) return;
+
+        modelInput.placeholder = models[brand][0];
+
+    }
+
+    brandButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            brandButtons.forEach(btn => {
+
+                btn.classList.remove("active");
+
+            });
+
+            button.classList.add("active");
+
+            const brand = button.dataset.brand;
+            const image = button.dataset.image;
+
+            tvImage.style.opacity = "0";
+
+            setTimeout(() => {
+
+                tvImage.src = image;
+                tvImage.style.opacity = "1";
+
+            }, 180);
+
+            brandTitle.textContent = brand;
+            selectedBrand.value = brand;
+
+            updateModelPlaceholder(brand);
+
+        });
+
+    });
+
+    updateModelPlaceholder("Samsung");
+
+    const form = document.getElementById("tvRepairForm");
+
+    form.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        const formData = {
+
+            name: form.name.value,
+            phone: form.phone.value,
+            email: form.email.value,
+
+            brand: selectedBrand.value,
+
+            model: form.model.value,
+
+            type: form.type.value,
+
+            problem: form.problem.value,
+
+            history: form.history.value,
+
+            repairType: form.repair.value
+
+        };
+
+        console.log(formData);
+
+        // Здесь позже будет отправка на сервер
+        // fetch('/api/orders', {...})
+
+        window.location.href = "thanks.html";
+
+    });
+
+});
