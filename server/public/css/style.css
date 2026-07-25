@@ -38,9 +38,38 @@ button {
     border: none;
 }
 
-.container {
-    width: min(1200px, 92%);
-    margin: auto;
+/* =========================
+   DROPDOWN MENU
+========================= */
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(8px);
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease,
+        visibility .25s;
+
+    pointer-events: none;
+}
+
+.dropdown-menu.show {
+
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+
+    pointer-events: auto;
 }
 
 /* =========================

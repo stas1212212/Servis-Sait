@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+  <link rel="stylesheet" href="style.css">
+
   <title>PULT+ Service</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,7 +26,7 @@
     }
 
     .card-hover {
-      transition: 0.25s ease;
+      transition: 0.3s ease;
     }
 
     .card-hover:hover {
@@ -70,7 +72,7 @@
 
           </button>
 
-          <div class="dropdown-menu hidden absolute top-12 left-0 bg-white shadow-xl rounded-2xl w-56 p-4 border border-gray-100">
+          <div class="dropdown-menu hidden absolute top-12 left-0 bg-white shadow-xl rounded-2xl w-56 p-4 border border-gray-100 group-hover:block">
 
             <p class="text-sm mb-2 text-gray-500">
               Телефон
@@ -93,36 +95,33 @@
         </div>
 
         <!-- LANGUAGE -->
-        <div class="relative dropdown">
+<div class="relative dropdown" id="languageDropdown">
 
-          <button class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition text-sm font-medium">
+    <button
+        class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition text-sm font-medium">
 
-            Мова ▼
+        Мова ▼
 
-          </button>
+    </button>
 
-          <div class="dropdown-menu hidden absolute top-12 left-0 bg-white shadow-xl rounded-2xl w-40 p-3 border border-gray-100">
+    <div
+        class="dropdown-menu absolute top-full left-0 mt-1 bg-white shadow-xl rounded-2xl w-40 p-3 border border-gray-100">
 
-            <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
-              Українська
-            </button>
+        <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+            Українська
+        </button>
 
-            <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
-              Русский
-            </button>
+        <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+            Русский
+        </button>
 
-            <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
-              English
-            </button>
-
-          </div>
-
-        </div>
-
-      </nav>
+        <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+            English
+        </button>
 
     </div>
 
+</div>
   </header>
 
   <!-- MAIN -->
@@ -180,7 +179,7 @@
           <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
 
             <img
-              src="https://cdn-icons-png.flaticon.com/512/15/15874.png"
+              src="png/Пульт.png"
               class="w-32 opacity-90"
               alt="Пульт">
 
@@ -316,6 +315,6 @@
     </section>
 
   </main>
-
+<script src="main.js"></script>s
 </body>
 </html>

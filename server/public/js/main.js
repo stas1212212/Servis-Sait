@@ -12,3 +12,26 @@ form.addEventListener('submit', (e) => {
 
   window.location.href = `/${service}.html`;
 });
+
+const dropdown = document.getElementById("languageDropdown");
+const menu = dropdown.querySelector(".dropdown-menu");
+
+let timeout;
+
+dropdown.addEventListener("mouseenter", () => {
+
+    clearTimeout(timeout);
+
+    menu.classList.add("show");
+
+});
+
+dropdown.addEventListener("mouseleave", () => {
+
+    timeout = setTimeout(() => {
+
+        menu.classList.remove("show");
+
+    }, 300);
+
+});
