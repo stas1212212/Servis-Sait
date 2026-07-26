@@ -38,13 +38,13 @@ button {
     border: none;
 }
 
-/* =========================
-   DROPDOWN MENU
-========================= */
 
 .dropdown {
     position: relative;
-}
+}/* =========================
+   DROPDOWN MENU
+========================= */
+
 
 .dropdown-menu {
     position: absolute;

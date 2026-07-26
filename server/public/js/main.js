@@ -13,25 +13,38 @@ form.addEventListener('submit', (e) => {
   window.location.href = `/${service}.html`;
 });
 
-const dropdown = document.getElementById("languageDropdown");
-const menu = dropdown.querySelector(".dropdown-menu");
+document.addEventListener("DOMContentLoaded", () => {
 
-let timeout;
+    // =========================
+    // LANGUAGE DROPDOWN
+    // =========================
 
-dropdown.addEventListener("mouseenter", () => {
+    const dropdown = document.getElementById("languageDropdown");
 
-    clearTimeout(timeout);
+    if (dropdown) {
 
-    menu.classList.add("show");
+        const menu = dropdown.querySelector(".dropdown-menu");
 
-});
+        let timeout;
 
-dropdown.addEventListener("mouseleave", () => {
+        dropdown.addEventListener("mouseenter", () => {
 
-    timeout = setTimeout(() => {
+            clearTimeout(timeout);
 
-        menu.classList.remove("show");
+            menu.classList.add("show");
 
-    }, 300);
+        });
+
+        dropdown.addEventListener("mouseleave", () => {
+
+            timeout = setTimeout(() => {
+
+                menu.classList.remove("show");
+
+            }, 300);
+
+        });
+
+    }
 
 });
