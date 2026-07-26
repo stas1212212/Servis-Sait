@@ -1,50 +1,79 @@
-const form = document.getElementById('startForm');
+// =========================
+// Мова
+// =========================
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+const form = document.getElementById("startForm");
 
-  const data = new FormData(form);
+if (form) {
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-  sessionStorage.setItem('name', data.get('name'));
-  sessionStorage.setItem('phone', data.get('phone'));
+        const data = new FormData(form);
 
-  const service = data.get('service');
+        sessionStorage.setItem("name", data.get("name"));
+        sessionStorage.setItem("phone", data.get("phone"));
 
-  window.location.href = `/${service}.html`;
-});
+        const service = data.get("service");
+
+        window.location.href = `/${service}.html`;
+    });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // =========================
-    // LANGUAGE DROPDOWN
-    // =========================
-
     const dropdown = document.getElementById("languageDropdown");
 
-    if (dropdown) {
+    if (!dropdown) return;
 
-        const menu = dropdown.querySelector(".dropdown-menu");
+    const menu = dropdown.querySelector(".dropdown-menu");
 
-        let timeout;
+    let timeout;
 
-        dropdown.addEventListener("mouseenter", () => {
-
-            clearTimeout(timeout);
-
-            menu.classList.add("show");
-
-        });
-
-        dropdown.addEventListener("mouseleave", () => {
-
-            timeout = setTimeout(() => {
-
-                menu.classList.remove("show");
-
-            }, 300);
-
-        });
-
+    function openMenu() {
+        clearTimeout(timeout);
+        menu.classList.add("show");
     }
 
+    function closeMenu() {
+        timeout = setTimeout(() => {
+            menu.classList.remove("show");
+        }, 300);
+    }
+
+    dropdown.addEventListener("mouseenter", openMenu);
+    dropdown.addEventListener("mouseleave", closeMenu);
+
+    menu.addEventListener("mouseenter", openMenu);
+    menu.addEventListener("mouseleave", closeMenu);
+
 });
+
+// =========================
+// Контакти
+// =========================
+
+const contactsDropdown = document.getElementById("contactsDropdown");
+
+if (contactsDropdown) {
+
+    const menu = contactsDropdown.querySelector(".dropdown-menu");
+
+    let timeout;
+
+    function openMenu() {
+        clearTimeout(timeout);
+        menu.classList.add("show");
+    }
+
+    function closeMenu() {
+        timeout = setTimeout(() => {
+            menu.classList.remove("show");
+        }, 300);
+    }
+
+    contactsDropdown.addEventListener("mouseenter", openMenu);
+    contactsDropdown.addEventListener("mouseleave", closeMenu);
+
+    menu.addEventListener("mouseenter", openMenu);
+    menu.addEventListener("mouseleave", closeMenu);
+}
