@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ремонт акустики | PULT+</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container header-container">
+
+        <a href="index.html" class="logo">
+
+            <div class="logo-title">
+
+                PULT+
+
+            </div>
+
+            <div class="logo-subtitle">
+
+                Сервісний центр
+
+            </div>
+
+        </a>
+
+        <nav class="navigation">
+
+            <a href="index.html">Головна</a>
+            <a href="#">Послуги</a>
+            <a href="#">Контакти</a>
+
+        </nav>
+
+        <div class="header-right">
+
+            <button class="header-button">
+
+                Контакти
+
+            </button>
+
+            <button class="header-button">
+
+                UA
+
+            </button>
+
+            <a href="#repairForm" class="request-button">
+
+                Заявка
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+    <div class="container hero-container">
+
+        <div class="hero-text">
+
+            <span class="hero-icon">
+
+                🔊
+
+            </span>
+
+            <h1>
+
+                Ремонт акустики
+
+            </h1>
+
+            <p>
+
+                Ремонтуємо Bluetooth-колонки, домашні аудіосистеми,
+                саундбари, музичні центри та професійну акустику.
+                Працюємо з будь-якими брендами.
+
+            </p>
+
+            <a href="#repairForm" class="hero-button">
+
+                Оформити заявку
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="speakers-section">
+
+<div class="container speakers-layout">
+
+<div class="speakers-preview">
+
+<div class="preview-card">
+
+<img
+id="speakerImage"
+src="https://pngimg.com/d/jbl_PNG22.png"
+alt="Колонка">
+
+</div>
+
+<h2 id="brandTitle">
+
+JBL
+
+</h2>
+
+<div class="brand-selector">
+
+<button
+class="brand active"
+data-brand="JBL"
+data-image="https://pngimg.com/d/jbl_PNG22.png">
+
+JBL
+
+</button>
+
+<button
+class="brand"
+data-brand="Sony"
+data-image="https://pngimg.com/d/speaker_PNG31.png">
+
+Sony
+
+</button>
+
+<button
+class="brand"
+data-brand="Marshall"
+data-image="https://pngimg.com/d/speaker_PNG37.png">
+
+Marshall
+
+</button>
+
+<button
+class="brand"
+data-brand="Bose"
+data-image="https://pngimg.com/d/speaker_PNG30.png">
+
+Bose
+
+</button>
+
+<button
+class="brand"
+data-brand="LG"
+data-image="https://pngimg.com/d/speaker_PNG27.png">
+
+LG
+
+</button>
+
+<button
+class="brand"
+data-brand="Samsung"
+data-image="https://pngimg.com/d/speaker_PNG25.png">
+
+Samsung
+
+</button>
+
+<button
+class="brand"
+data-brand="Інший"
+data-image="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+
+Інший
+
+</button>
+
+</div>
+
+</div>
+
+<div class="repair-form-card" id="repairForm">
+
+<h2>
+
+Анкета ремонту
+
+</h2>
+
+<form id="speakerRepairForm">
+
+<div class="input-group">
+
+<label>
+
+Ваше ім'я
+
+</label>
+
+<input
+type="text"
+name="name"
+placeholder="Введіть ім'я"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Телефон
+
+</label>
+
+<input
+type="tel"
+name="phone"
+placeholder="+380..."
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Email
+
+</label>
+
+<input
+type="email"
+name="email"
+placeholder="mail@example.com">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Бренд пристрою
+
+</label>
+
+<input
+id="selectedBrand"
+type="text"
+value="JBL"
+readonly>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Модель
+
+</label>
+
+<input
+type="text"
+name="model"
+placeholder="Charge 5">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Тип пристрою
+
+</label>
+
+<select name="device">
+
+<option>Bluetooth колонка</option>
+<option>Саундбар</option>
+<option>Домашній кінотеатр</option>
+<option>Музичний центр</option>
+<option>Професійна акустика</option>
+<option>Інше</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Яка несправність?
+
+</label>
+
+<textarea
+rows="4"
+name="problem"
+placeholder="Не вмикається, немає звуку, не заряджається..."></textarea>
+
+</div>
+<div class="input-group">
+
+<label>
+
+Комплектація
+
+</label>
+
+<select name="equipment">
+
+<option>Тільки пристрій</option>
+<option>Пристрій + кабель</option>
+<option>Пристрій + зарядний пристрій</option>
+<option>Повний комплект</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Чи був пристрій у ремонті раніше?
+
+</label>
+
+<select name="beforeRepair">
+
+<option>Ні</option>
+<option>Так</option>
+<option>Не знаю</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Бажаний спосіб зв'язку
+
+</label>
+
+<select name="contact">
+
+<option>Телефон</option>
+<option>Telegram</option>
+<option>Viber</option>
+<option>Email</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Додатковий коментар
+
+</label>
+
+<textarea
+rows="3"
+name="comment"
+placeholder="Будь-яка додаткова інформація..."></textarea>
+
+</div>
+<div class="input-group">
+
+<label>
+
+Як виникла проблема?
+
+</label>
+
+<textarea
+rows="4"
+name="history"
+placeholder="Опишіть, коли саме виникла несправність..."></textarea>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Тип ремонту
+
+</label>
+
+<select name="repair">
+
+<option>
+
+Максимально бюджетний
+
+</option>
+
+<option>
+
+Оригінальні комплектуючі
+
+</option>
+
+<option>
+
+Порадьте найкращий варіант
+
+</option>
+
+</select>
+
+</div>
+<div class="input-group">
+
+<label>
+
+Комплектація
+
+</label>
+
+<select name="equipment">
+
+<option>Тільки пристрій</option>
+<option>Пристрій + кабель</option>
+<option>Пристрій + зарядний пристрій</option>
+<option>Повний комплект</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Чи був пристрій у ремонті раніше?
+
+</label>
+
+<select name="beforeRepair">
+
+<option>Ні</option>
+<option>Так</option>
+<option>Не знаю</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Бажаний спосіб зв'язку
+
+</label>
+
+<select name="contact">
+
+<option>Телефон</option>
+<option>Telegram</option>
+<option>Viber</option>
+<option>Email</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Додатковий коментар
+
+</label>
+
+<textarea
+rows="3"
+name="comment"
+placeholder="Будь-яка додаткова інформація..."></textarea>
+
+</div>
+<button
+type="submit"
+class="submit-button">
+
+Надіслати заявку
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="advantages">
+
+<div class="container">
+
+<h2>
+
+Наші переваги
+
+</h2>
+
+<div class="advantages-grid">
+
+<div class="advantage-card">
+
+<div class="advantage-icon">
+
+🔍
+
+</div>
+
+<h3>
+
+Безкоштовна діагностика
+
+</h3>
+
+<p>
+
+Спочатку знаходимо причину несправності,
+а вже потім виконуємо ремонт.
+
+</p>
+
+</div>
+
+<div class="advantage-card">
+
+<div class="advantage-icon">
+
+🛡️
+
+</div>
+
+<h3>
+
+Гарантія
+
+</h3>
+
+<p>
+
+До 12 місяців гарантії
+на виконані роботи.
+
+</p>
+
+</div>
+
+<div class="advantage-card">
+
+<div class="advantage-icon">
+
+📦
+
+</div>
+
+<h3>
+
+Ремонт поштою
+
+</h3>
+
+<p>
+
+Приймаємо акустику
+з усієї України через Нову Пошту.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="steps">
+
+<div class="container">
+
+<h2>
+
+Як проходить ремонт
+
+</h2>
+
+<div class="steps-grid">
+
+<div class="step">
+
+<div class="step-number">
+
+1
+
+</div>
+
+<h3>
+
+Заповнення заявки
+
+</h3>
+
+<p>
+
+Описуєте проблему
+та модель пристрою.
+
+</p>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+
+2
+
+</div>
+
+<h3>
+
+Надсилання
+
+</h3>
+
+<p>
+
+Відправляєте колонку
+Новою Поштою.
+
+</p>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+
+3
+
+</div>
+
+<h3>
+
+Діагностика
+
+</h3>
+
+<p>
+
+Погоджуємо вартість
+та виконуємо ремонт.
+
+</p>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+
+4
+
+</div>
+
+<h3>
+
+Повернення
+
+</h3>
+
+<p>
+
+Надсилаємо повністю
+відремонтований пристрій.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<footer class="footer">
+
+<div class="container footer-container">
+
+<div>
+
+<h3>
+
+PULT+
+
+</h3>
+
+<p>
+
+Сервісний центр електроніки.
+
+</p>
+
+</div>
+
+<div>
+
+<h4>
+
+Контакти
+
+</h4>
+
+<p>
+
++380 XX XXX XX XX
+
+</p>
+
+<p>
+
+support@pultplus.ua
+
+</p>
+
+</div>
+
+<div>
+
+<h4>
+
+Навігація
+
+</h4>
+
+<a href="index.html">
+
+Головна
+
+</a>
+
+</div>
+
+</div>
+
+</footer>
+
+</main>
+
+<script src="js/device.js"></script>
+
+</body>
+
+</html>
+```

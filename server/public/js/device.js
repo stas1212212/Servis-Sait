@@ -444,3 +444,156 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+// ======================
+// SPEAKER
+// ======================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const speakerImage = document.getElementById("speakerImage");
+    const brandTitle = document.getElementById("brandTitle");
+    const selectedBrand = document.getElementById("selectedBrand");
+
+    const brandButtons = document.querySelectorAll(".brand");
+
+    const models = {
+
+        "JBL": [
+            "Charge 5",
+            "Charge 6",
+            "Flip 6",
+            "Flip 7",
+            "Boombox 3",
+            "Xtreme 4",
+            "PartyBox 110"
+        ],
+
+        "Sony": [
+            "SRS-XB23",
+            "SRS-XB43",
+            "ULT Field 7",
+            "XV800",
+            "HT-S400"
+        ],
+
+        "Marshall": [
+            "Acton III",
+            "Stanmore III",
+            "Woburn III",
+            "Emberton II",
+            "Middleton"
+        ],
+
+        "Bose": [
+            "SoundLink Flex",
+            "SoundLink Revolve+",
+            "Smart Soundbar 900",
+            "Portable Smart Speaker"
+        ],
+
+        "LG": [
+            "XBOOM Go XG7",
+            "XBOOM 360",
+            "Sound Bar S80QR",
+            "Sound Bar SC9"
+        ],
+
+        "Samsung": [
+            "HW-Q990D",
+            "HW-Q800D",
+            "MX-ST50B",
+            "Sound Tower MX-T70"
+        ],
+
+        "Інший": [
+            "Введіть модель вручну"
+        ]
+
+    };
+
+    const modelInput = document.querySelector('input[name="model"]');
+
+    function updatePlaceholder(brand) {
+
+        if (!models[brand]) return;
+
+        modelInput.placeholder = models[brand][0];
+
+    }
+
+    brandButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            brandButtons.forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            const brand = button.dataset.brand;
+            const image = button.dataset.image;
+
+            speakerImage.style.opacity = "0";
+
+            setTimeout(() => {
+
+                speakerImage.src = image;
+                speakerImage.style.opacity = "1";
+
+            }, 180);
+
+            brandTitle.textContent = brand;
+            selectedBrand.value = brand;
+
+            updatePlaceholder(brand);
+
+        });
+
+    });
+
+    updatePlaceholder("JBL");
+
+    const form = document.getElementById("speakerRepairForm");
+
+    form.addEventListener("submit", function(e){
+
+        e.preventDefault();
+
+        const formData = {
+
+            name: form.name.value,
+            phone: form.phone.value,
+            email: form.email.value,
+
+            brand: selectedBrand.value,
+
+            model: form.model.value,
+
+            device: form.device.value,
+
+            problem: form.problem.value,
+
+            history: form.history.value,
+
+            repair: form.repair.value,
+
+            equipment: form.equipment.value,
+
+            beforeRepair: form.beforeRepair.value,
+
+            contact: form.contact.value,
+
+            comment: form.comment.value
+
+        };
+
+        console.log(formData);
+
+        // Здесь позже будет отправка на сервер
+        // fetch("/api/orders", {...})
+
+        window.location.href = "thanks.html";
+
+    });
+
+});
