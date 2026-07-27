@@ -10,6 +10,8 @@
 
     <link rel="stylesheet" href="css/style.css">
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -19,59 +21,7 @@
 
 <body>
 
-<header class="header">
-
-    <div class="container header-container">
-
-        <a href="index.html" class="logo">
-
-            <div class="logo-title">
-
-                PULT+
-
-            </div>
-
-            <div class="logo-subtitle">
-
-                Сервісний центр
-
-            </div>
-
-        </a>
-
-        <nav class="navigation">
-
-            <a href="index.html">Головна</a>
-            <a href="services.html">Послуги</a>
-            <a href="contacts.html">Контакти</a>
-
-        </nav>
-
-        <div class="header-right">
-
-            <button class="header-button">
-
-                Контакти
-
-            </button>
-
-            <button class="header-button">
-
-                UA
-
-            </button>
-
-            <a href="#repairForm" class="request-button">
-
-                Заявка
-
-            </a>
-
-        </div>
-
-    </div>
-
-</header>
+<div id="header"></div>
 
 <main>
 
@@ -294,61 +244,6 @@ placeholder="UE55DU7100">
 
 <label>
 
-Тип телевізора
-
-</label>
-
-<select name="type">
-
-<option>LED</option>
-<option>QLED</option>
-<option>OLED</option>
-<option>NanoCell</option>
-<option>Mini LED</option>
-<option>Smart TV</option>
-<option>Не знаю</option>
-
-</select>
-
-</div>
-
-<div class="input-group">
-
-<label>
-
-Яка несправність?
-
-</label>
-
-<textarea
-rows="4"
-name="problem"
-placeholder="Не вмикається, немає зображення, звук є, екран чорний..."></textarea>
-
-</div>
-</main>
-</body>
-</html>
-
-<div class="input-group">
-
-<label>
-
-Як виникла несправність?
-
-</label>
-
-<textarea
-rows="4"
-name="history"
-placeholder="Після перепаду напруги, удару, транспортування, потрапляння води або без видимої причини..."></textarea>
-
-</div>
-
-<div class="input-group">
-
-<label>
-
 Комплектація
 
 </label>
@@ -396,6 +291,60 @@ placeholder="Після перепаду напруги, удару, транс�
 
 </div>
 
+<div class="input-group">
+
+<label>
+
+Тип телевізора
+
+</label>
+
+<select name="type">
+
+<option>LED</option>
+<option>QLED</option>
+<option>OLED</option>
+<option>NanoCell</option>
+<option>Mini LED</option>
+<option>Smart TV</option>
+<option>Не знаю</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Як виникла несправність?
+
+</label>
+
+<textarea
+rows="4"
+name="history"
+placeholder="Після перепаду напруги, удару, транспортування, потрапляння води або без видимої причини..."></textarea>
+
+</div>
+
+
+
+<div class="input-group">
+
+<label>
+
+Яка несправність?
+
+</label>
+
+<textarea
+rows="4"
+name="problem"
+placeholder="Не вмикається, немає зображення, звук є, екран чорний..."></textarea>
+
+</div>
+
 <button
 type="submit"
 class="submit-button">
@@ -403,6 +352,12 @@ class="submit-button">
 Надіслати заявку
 
 </button>
+
+</main>
+</body>
+</html>
+
+
 
 </form>
 
@@ -687,6 +642,8 @@ support@pultplus.ua
 </footer>
 
 </main>
+
+<script src="js/main.js"></script>
 
 <script src="js/device.js"></script>
 

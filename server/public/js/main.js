@@ -1,11 +1,35 @@
 // =========================
-// Мова
+// Підвантаження header
+// =========================
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const header = document.getElementById("header");
+
+    if (header) {
+
+        const response = await fetch("header.html");
+        const html = await response.text();
+
+        header.innerHTML = html;
+
+        initLanguageDropdown();
+        initContactsDropdown();
+    }
+
+});
+
+
+// =========================
+// Форма
 // =========================
 
 const form = document.getElementById("startForm");
 
 if (form) {
+
     form.addEventListener("submit", (e) => {
+
         e.preventDefault();
 
         const data = new FormData(form);
@@ -15,11 +39,18 @@ if (form) {
 
         const service = data.get("service");
 
-        window.location.href = `/${service}.html`;
+        window.location.href = `${service}.html`;
+
     });
+
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+
+// =========================
+// Мова
+// =========================
+
+function initLanguageDropdown() {
 
     const dropdown = document.getElementById("languageDropdown");
 
@@ -30,14 +61,20 @@ document.addEventListener("DOMContentLoaded", () => {
     let timeout;
 
     function openMenu() {
+
         clearTimeout(timeout);
         menu.classList.add("show");
+
     }
 
     function closeMenu() {
+
         timeout = setTimeout(() => {
+
             menu.classList.remove("show");
+
         }, 300);
+
     }
 
     dropdown.addEventListener("mouseenter", openMenu);
@@ -46,34 +83,44 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.addEventListener("mouseenter", openMenu);
     menu.addEventListener("mouseleave", closeMenu);
 
-});
+}
+
 
 // =========================
 // Контакти
 // =========================
 
-const contactsDropdown = document.getElementById("contactsDropdown");
+function initContactsDropdown() {
 
-if (contactsDropdown) {
+    const dropdown = document.getElementById("contactsDropdown");
 
-    const menu = contactsDropdown.querySelector(".dropdown-menu");
+    if (!dropdown) return;
+
+    const menu = dropdown.querySelector(".dropdown-menu");
 
     let timeout;
 
     function openMenu() {
+
         clearTimeout(timeout);
         menu.classList.add("show");
+
     }
 
     function closeMenu() {
+
         timeout = setTimeout(() => {
+
             menu.classList.remove("show");
+
         }, 300);
+
     }
 
-    contactsDropdown.addEventListener("mouseenter", openMenu);
-    contactsDropdown.addEventListener("mouseleave", closeMenu);
+    dropdown.addEventListener("mouseenter", openMenu);
+    dropdown.addEventListener("mouseleave", closeMenu);
 
     menu.addEventListener("mouseenter", openMenu);
     menu.addEventListener("mouseleave", closeMenu);
+
 }
