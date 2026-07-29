@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ремонт планшетів | PULT+</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div id="header"></div>
+
+<main>
+
+<section class="hero">
+
+    <div class="container hero-container">
+
+        <div class="hero-text">
+
+            <span class="hero-icon">
+
+                📱
+
+            </span>
+
+            <h1>
+
+                Ремонт планшетів
+
+            </h1>
+
+            <p>
+
+                Виконуємо професійний ремонт планшетів Apple, Samsung,
+                Xiaomi, Lenovo, Huawei та інших брендів.
+                Заміна дисплеїв, акумуляторів, роз'ємів зарядки,
+                ремонт материнських плат та відновлення після потрапляння води.
+
+            </p>
+
+            <a href="#repairForm" class="hero-button">
+
+                Оформити заявку
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="tablet-section">
+
+<div class="container tablet-layout">
+
+<div class="tablet-preview">
+
+<div class="preview-card">
+
+<img
+
+id="tabletImage"
+
+src="png/iPad.png"
+
+alt="Планшет">
+
+</div>
+
+<h2 id="brandTitle">
+
+Apple
+
+</h2>
+
+<div class="brand-selector">
+
+<button
+
+class="brand active"
+
+data-brand="Apple"
+
+data-image="png/iPad.png">
+
+Apple
+
+</button>
+
+<button
+
+class="brand"
+
+data-brand="Samsung"
+
+data-image="png/GalaxyTab.png">
+
+Samsung
+
+</button>
+
+<button
+
+class="brand"
+
+data-brand="Xiaomi"
+
+data-image="png/XiaomiPad.png">
+
+Xiaomi
+
+</button>
+
+<button
+
+class="brand"
+
+data-brand="Lenovo"
+
+data-image="png/LenovoTab.png">
+
+Lenovo
+
+</button>
+
+<button
+
+class="brand"
+
+data-brand="Huawei"
+
+data-image="png/HuaweiMatePad.png">
+
+Huawei
+
+</button>
+
+<button
+
+class="brand"
+
+data-brand="Microsoft"
+
+data-image="png/Surface.png">
+
+Microsoft
+
+</button>
+
+<button
+
+class="brand"
+
+data-brand="Інший"
+
+data-image="png/Tablet.png">
+
+Інший
+
+</button>
+
+</div>
+
+</div>
+
+<div class="repair-form-card" id="repairForm">
+
+<h2>
+
+Анкета ремонту
+
+</h2>
+
+<form id="tabletRepairForm">
+
+<div class="input-group">
+
+<label>
+
+Ваше ім'я
+
+</label>
+
+<input
+
+type="text"
+
+name="name"
+
+placeholder="Введіть ім'я"
+
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Телефон
+
+</label>
+
+<input
+
+type="tel"
+
+name="phone"
+
+placeholder="+380..."
+
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Email
+
+</label>
+
+<input
+
+type="email"
+
+name="email"
+
+placeholder="mail@example.com">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Бренд планшета
+
+</label>
+
+<input
+
+id="selectedBrand"
+
+type="text"
+
+value="Apple"
+
+readonly>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Модель планшета
+
+</label>
+
+<input
+
+type="text"
+
+name="model"
+
+placeholder="iPad Air M2">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Тип пристрою
+
+</label>
+
+<select name="device">
+
+<option>Планшет</option>
+<option>Графічний планшет</option>
+<option>Планшет з клавіатурою</option>
+<option>Не знаю</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Яка несправність?
+
+</label>
+
+<textarea
+
+rows="4"
+
+name="problem"
+
+placeholder="Розбитий екран, не заряджається, не вмикається, швидко розряджається..."></textarea>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Як виникла проблема?
+
+</label>
+
+<textarea
+
+rows="4"
+
+name="history"
+
+placeholder="Опишіть, коли саме виникла несправність..."></textarea>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Тип ремонту
+
+</label>
+
+<select name="repair">
+
+<option>Максимально бюджетний</option>
+<option>Оригінальні комплектуючі</option>
+<option>Оптимальний варіант</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Чи був планшет у ремонті раніше?
+
+</label>
+
+<select name="beforeRepair">
+
+<option>Ні</option>
+<option>Так</option>
+<option>Не знаю</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Бажаний спосіб зв'язку
+
+</label>
+
+<select name="contact">
+
+<option>Телефон</option>
+<option>Telegram</option>
+<option>Viber</option>
+<option>Email</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Додатковий коментар
+
+</label>
+
+<textarea
+
+rows="3"
+
+name="comment"
+
+placeholder="Будь-які додаткові побажання..."></textarea>
+
+</div>
+
+<button
+
+type="submit"
+
+class="submit-button">
+
+Надіслати заявку
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="advantages">
+
+<div class="container">
+
+<h2>
+
+Чому обирають PULT+?
+
+</h2>
+
+<div class="advantages-grid">
+
+<div class="advantage-card">
+
+<div class="advantage-icon">🔍</div>
+
+<h3>
+
+Безкоштовна діагностика
+
+</h3>
+
+<p>
+
+Перед ремонтом ми повністю перевіряємо пристрій.
+
+</p>
+
+</div>
+
+<div class="advantage-card">
+
+<div class="advantage-icon">📦</div>
+
+<h3>
+
+Ремонт поштою
+
+</h3>
+
+<p>
+
+Приймаємо планшети з усієї України.
+
+</p>
+
+</div>
+
+<div class="advantage-card">
+
+<div class="advantage-icon">🛡️</div>
+
+<h3>
+
+Гарантія
+
+</h3>
+
+<p>
+
+До 12 місяців гарантії на виконані роботи.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="steps">
+
+<div class="container">
+
+<h2>
+
+Як проходить ремонт
+
+</h2>
+
+<div class="steps-grid">
+
+<div class="step">
+
+<div class="step-number">1</div>
+
+<h3>Заявка</h3>
+
+<p>
+
+Заповнюєте анкету.
+
+</p>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">2</div>
+
+<h3>Відправка</h3>
+
+<p>
+
+Надсилаєте планшет Новою Поштою.
+
+</p>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">3</div>
+
+<h3>Діагностика</h3>
+
+<p>
+
+Ми погоджуємо ремонт та його вартість.
+
+</p>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">4</div>
+
+<h3>Повернення</h3>
+
+<p>
+
+Отримуєте повністю справний пристрій.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<div id="footer"></div>
+
+</main>
+
+<script src="js/main.js"></script>
+
+<script src="js/device.js"></script>
+
+</body>
+
+</html>

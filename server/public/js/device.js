@@ -597,3 +597,149 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+// =======================
+// TABLETS
+// =======================
+
+if (document.getElementById("tabletRepairForm")) {
+
+    const tabletImage = document.getElementById("tabletImage");
+    const brandTitle = document.getElementById("brandTitle");
+    const selectedBrand = document.getElementById("selectedBrand");
+
+    const brandButtons = document.querySelectorAll(".brand");
+
+    const models = {
+
+        "Apple": [
+            "iPad 10",
+            "iPad Air M2",
+            "iPad Pro M4",
+            "iPad mini 7"
+        ],
+
+        "Samsung": [
+            "Galaxy Tab S10 Ultra",
+            "Galaxy Tab S9",
+            "Galaxy Tab A9",
+            "Galaxy Tab Active5"
+        ],
+
+        "Xiaomi": [
+            "Pad 6",
+            "Pad 6S Pro",
+            "Redmi Pad SE",
+            "Redmi Pad Pro"
+        ],
+
+        "Lenovo": [
+            "Tab P12",
+            "Tab M11",
+            "Yoga Tab 13",
+            "Legion Y700"
+        ],
+
+        "Huawei": [
+            "MatePad 11.5",
+            "MatePad Air",
+            "MatePad Pro",
+            "MatePad SE"
+        ],
+
+        "Microsoft": [
+            "Surface Pro 11",
+            "Surface Go 4",
+            "Surface Pro 9"
+        ],
+
+        "Інший": [
+            "Введіть модель вручну"
+        ]
+
+    };
+
+    const modelInput = document.querySelector('input[name="model"]');
+
+    function updatePlaceholder(brand) {
+
+        if (!models[brand]) return;
+
+        modelInput.placeholder = models[brand][0];
+
+    }
+
+    brandButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            brandButtons.forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            const brand = button.dataset.brand;
+            const image = button.dataset.image;
+
+            tabletImage.style.opacity = "0";
+
+            setTimeout(() => {
+
+                tabletImage.src = image;
+                tabletImage.style.opacity = "1";
+
+            }, 180);
+
+            brandTitle.textContent = brand;
+
+            selectedBrand.value = brand;
+
+            updatePlaceholder(brand);
+
+        });
+
+    });
+
+    updatePlaceholder("Apple");
+
+    const form = document.getElementById("tabletRepairForm");
+
+    form.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        const formData = {
+
+            name: form.name.value,
+            phone: form.phone.value,
+            email: form.email.value,
+
+            brand: selectedBrand.value,
+
+            model: form.model.value,
+
+            device: form.device.value,
+
+            problem: form.problem.value,
+
+            history: form.history.value,
+
+            repair: form.repair.value,
+
+            beforeRepair: form.beforeRepair.value,
+
+            contact: form.contact.value,
+
+            comment: form.comment.value
+
+        };
+
+        console.log(formData);
+
+        // Отправка на сервер позже
+        // fetch("/api/orders", {...})
+
+        window.location.href = "thanks.html";
+
+    });
+
+}
