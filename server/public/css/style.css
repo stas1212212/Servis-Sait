@@ -570,3 +570,44 @@ button {
     }
 
 }
+
+/* ========================= */
+/* Dark Theme */
+/* ========================= */
+
+body.dark {
+    background: #111827;
+    color: #f3f4f6;
+}
+
+body.dark header {
+    background: rgba(17,24,39,.92) !important;
+    border-color: #374151 !important;
+}
+
+body.dark footer {
+    background: #111827 !important;
+    border-color: #374151 !important;
+}
+
+body.dark #burgerMenu {
+    background: #1f2937 !important;
+}
+
+body.dark .dropdown-menu {
+    background: #1f2937 !important;
+    color: white;
+    border-color: #374151;
+}
+
+body.dark a,
+body.dark p,
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6,
+body.dark span {
+    color: inherit;
+}

@@ -1,4 +1,4 @@
-<header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-200 z-50">
+<header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm z-50">
 
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
@@ -7,65 +7,164 @@
 
             <!-- BURGER -->
             <button
-                class="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-gray-100 transition text-2xl text-gray-700">
+                id="burgerButton"
+                class="w-11 h-11 rounded-xl flex items-center justify-center hover:bg-gray-100 transition">
 
-                ☰
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="w-6 h-6"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16"/>
+
+                </svg>
 
             </button>
 
             <!-- LOGO -->
-            <a href="index.html" class="flex flex-col leading-none">
+            <a href="index.html"
+               class="flex items-center gap-3">
 
-                <span class="text-3xl font-black tracking-tight text-gray-900">
-                    PULT+
-                </span>
+                <div class="w-11 h-11 rounded-2xl bg-black text-white flex items-center justify-center text-xl font-bold">
 
-                <span class="text-xs text-gray-500 font-medium">
-                    Сервісний центр
-                </span>
+                    +
+
+                </div>
+
+                <div>
+
+                    <div class="text-2xl font-bold tracking-tight">
+
+                        PULT+
+
+                    </div>
+
+                    <div class="text-xs text-gray-500">
+
+                        Service Center
+
+                    </div>
+
+                </div>
 
             </a>
 
         </div>
 
+        <!-- CENTER -->
+        <nav class="hidden lg:flex items-center gap-2">
+
+            <a href="index.html"
+               class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
+
+                Головна
+
+            </a>
+
+            <a href="phone.html"
+               class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
+
+                Телефони
+
+            </a>
+
+            <a href="laptop.html"
+               class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
+
+                Ноутбуки
+
+            </a>
+
+            <a href="tv.html"
+               class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
+
+                Телевізори
+
+            </a>
+
+            <a href="speaker.html"
+               class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
+
+                Колонки
+
+            </a>
+
+            <a href="pults.html"
+               class="px-4 py-2 rounded-full bg-black text-white">
+
+                Пульти
+
+            </a>
+
+        </nav>
+
         <!-- RIGHT -->
         <div class="flex items-center gap-3">
+
+            <!-- PHONE -->
+            <a href="tel:+380XXXXXXXXX"
+               class="w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
+
+                📞
+
+            </a>
 
             <!-- CONTACTS -->
             <div class="relative dropdown" id="contactsDropdown">
 
-                <button
-                    class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition text-sm font-medium">
+                <button id="contactsBtn"
+                    class="w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
 
-                    📞 Контакти
+                    📍
 
                 </button>
 
-                <div
-                    class="dropdown-menu absolute right-0 top-full mt-2 bg-white shadow-xl rounded-2xl w-64 p-5 border border-gray-100">
+                <div class="dropdown-menu absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 w-64 p-5">
 
-                    <p class="text-xs uppercase tracking-wide text-gray-400 mb-1">
+                    <h3 class="font-semibold mb-4">
+
+                        Контакти
+
+                    </h3>
+
+                    <p class="text-sm text-gray-500">
+
                         Телефон
+
                     </p>
 
-                    <p class="font-semibold mb-4">
+                    <p class="mb-4 font-medium">
+
                         +380 XX XXX XX XX
+
                     </p>
 
-                    <p class="text-xs uppercase tracking-wide text-gray-400 mb-1">
+                    <p class="text-sm text-gray-500">
+
                         Telegram
+
                     </p>
 
-                    <p class="font-semibold mb-4">
+                    <p class="mb-4 font-medium">
+
                         @pultservice
+
                     </p>
 
-                    <p class="text-xs uppercase tracking-wide text-gray-400 mb-1">
+                    <p class="text-sm text-gray-500">
+
                         Email
+
                     </p>
 
-                    <p class="font-semibold">
+                    <p class="font-medium">
+
                         support@pultplus.ua
+
                     </p>
 
                 </div>
@@ -76,37 +175,41 @@
             <div class="relative dropdown" id="languageDropdown">
 
                 <button
-                    class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition text-sm font-medium">
+                    class="w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
 
-                    🌐 UA
+                    🌐
 
                 </button>
 
-                <div
-                    class="dropdown-menu absolute right-0 top-full mt-2 bg-white shadow-xl rounded-2xl w-44 p-3 border border-gray-100">
+                <div class="dropdown-menu absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 w-44 p-3">
 
                     <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+
                         🇺🇦 Українська
+
                     </button>
 
                     <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+
                         🇷🇺 Русский
+
                     </button>
 
                     <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+
                         🇬🇧 English
+
                     </button>
 
                 </div>
 
             </div>
 
-            <!-- LOGIN -->
-            <a
-                href="login.html"
-                class="px-5 py-2.5 rounded-full bg-black text-white hover:bg-gray-800 transition text-sm font-medium">
+            <!-- ACCOUNT -->
+            <a href="login.html"
+               class="w-11 h-11 rounded-xl bg-black text-white hover:bg-gray-800 flex items-center justify-center transition">
 
-                👤 Увійти
+                👤
 
             </a>
 
