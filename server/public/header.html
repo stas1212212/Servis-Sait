@@ -1,5 +1,115 @@
 <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm z-50">
 
+    <!-- ========================= -->
+<!-- Burger Overlay -->
+<!-- ========================= -->
+
+<div
+    id="burgerOverlay"
+    class="fixed inset-0 bg-black/40 hidden opacity-0 transition-opacity duration-300 z-40">
+
+</div>
+
+<!-- ========================= -->
+<!-- Burger Menu -->
+<!-- ========================= -->
+
+<div
+    id="burgerMenu"
+    class="fixed top-0 left-0 h-full w-80 bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 z-50 flex flex-col">
+
+    <!-- HEADER -->
+
+    <div class="flex items-center justify-between px-6 h-20 border-b">
+
+        <h2 class="text-2xl font-bold">
+
+            PULT+
+
+        </h2>
+
+        <button
+            id="closeBurger"
+            class="text-3xl hover:text-red-500 transition">
+
+            ✕
+
+        </button>
+
+    </div>
+
+    <!-- MENU -->
+
+    <nav class="flex-1 px-6 py-6 space-y-2">
+
+        <a href="index.html"
+           class="block px-4 py-3 rounded-xl hover:bg-gray-100">
+
+            🏠 Головна
+
+        </a>
+
+        <a href="phone.html"
+           class="block px-4 py-3 rounded-xl hover:bg-gray-100">
+
+            📱 Телефони
+
+        </a>
+
+        <a href="laptop.html"
+           class="block px-4 py-3 rounded-xl hover:bg-gray-100">
+
+            💻 Ноутбуки
+
+        </a>
+
+        <a href="tv.html"
+           class="block px-4 py-3 rounded-xl hover:bg-gray-100">
+
+            📺 Телевізори
+
+        </a>
+
+        <a href="speaker.html"
+           class="block px-4 py-3 rounded-xl hover:bg-gray-100">
+
+            🔊 Колонки
+
+        </a>
+
+        <a href="pults.html"
+           class="block px-4 py-3 rounded-xl hover:bg-gray-100">
+
+            🎮 Пульти
+
+        </a>
+
+    </nav>
+
+    <!-- FOOTER -->
+
+    <div class="border-t p-6 space-y-3">
+
+        <button
+            id="themeButton"
+            class="w-full py-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
+
+            🌙 Темна тема
+
+        </button>
+
+        <a
+            href="login.html"
+            class="block text-center py-3 rounded-xl bg-black text-white hover:bg-gray-800 transition">
+
+            👤 Особистий кабінет
+
+        </a>
+
+    </div>
+
+</div>
+
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
         <!-- LEFT -->
