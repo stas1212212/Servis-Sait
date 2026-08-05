@@ -1,13 +1,10 @@
-<header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm z-50">
-
-    <!-- ========================= -->
+<!-- ========================= -->
 <!-- Burger Overlay -->
 <!-- ========================= -->
 
 <div
     id="burgerOverlay"
     class="fixed inset-0 bg-black/40 hidden opacity-0 transition-opacity duration-300 z-40">
-
 </div>
 
 <!-- ========================= -->
@@ -23,9 +20,7 @@
     <div class="flex items-center justify-between px-6 h-20 border-b">
 
         <h2 class="text-2xl font-bold">
-
             PULT+
-
         </h2>
 
         <button
@@ -99,6 +94,16 @@
         </button>
 
         <a
+             href="cart.html"
+            class="block text-center py-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
+
+             🛒 Кошик
+
+             <span id="burgerCartCounter">(0)</span>
+
+        </a>
+        
+        <a
             href="login.html"
             class="block text-center py-3 rounded-xl bg-black text-white hover:bg-gray-800 transition">
 
@@ -110,12 +115,20 @@
 
 </div>
 
+<!-- ========================= -->
+<!-- HEADER -->
+<!-- ========================= -->
+
+<header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm z-30">
+
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
         <!-- LEFT -->
+
         <div class="flex items-center gap-5">
 
             <!-- BURGER -->
+
             <button
                 id="burgerButton"
                 class="w-11 h-11 rounded-xl flex items-center justify-center hover:bg-gray-100 transition">
@@ -136,6 +149,7 @@
             </button>
 
             <!-- LOGO -->
+
             <a href="index.html"
                class="flex items-center gap-3">
 
@@ -166,6 +180,7 @@
         </div>
 
         <!-- CENTER -->
+
         <nav class="hidden lg:flex items-center gap-2">
 
             <a href="index.html"
@@ -213,23 +228,37 @@
         </nav>
 
         <!-- RIGHT -->
+
         <div class="flex items-center gap-3">
 
             <!-- PHONE -->
-            <a href="tel:+380XXXXXXXXX"
-               class="w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
 
-                📞
+            <!-- CART -->
+
+            <a href="cart.html"
+              class="relative w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
+
+                 🛒
+
+                <span id="cartCounter"
+                     class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+
+                  0
+
+                </span>
 
             </a>
 
             <!-- CONTACTS -->
-            <div class="relative dropdown" id="contactsDropdown">
 
-                <button id="contactsBtn"
+            <div
+                id="contactsDropdown"
+                class="relative dropdown">
+
+                <button
                     class="w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
 
-                    📍
+                    📞
 
                 </button>
 
@@ -282,7 +311,10 @@
             </div>
 
             <!-- LANGUAGE -->
-            <div class="relative dropdown" id="languageDropdown">
+
+            <div
+                id="languageDropdown"
+                class="relative dropdown">
 
                 <button
                     class="w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
@@ -316,6 +348,7 @@
             </div>
 
             <!-- ACCOUNT -->
+
             <a href="login.html"
                class="w-11 h-11 rounded-xl bg-black text-white hover:bg-gray-800 flex items-center justify-center transition">
 

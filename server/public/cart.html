@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Кошик | PULT+</title>
+
+    <!-- Tailwind -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Styles -->
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+<!-- HEADER -->
+
+<div id="header"></div>
+
+<main>
+
+<!-- ========================= -->
+<!-- Hero -->
+<!-- ========================= -->
+
+<section class="pt-40 pb-16">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="flex items-center justify-between flex-wrap gap-6">
+
+            <div>
+
+                <span class="inline-block px-5 py-2 rounded-full bg-black text-white mb-6">
+
+                    PULT+ STORE
+
+                </span>
+
+                <h1 class="text-5xl font-black">
+
+                    Кошик
+
+                </h1>
+
+            </div>
+
+            <a href="pults-shop.html"
+               class="px-6 py-3 rounded-2xl border border-gray-300 hover:bg-gray-100 transition">
+
+                ← Продовжити покупки
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Cart -->
+<!-- ========================= -->
+
+<section class="pb-24">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="grid lg:grid-cols-[1fr_360px] gap-12">
+
+            <!-- Products -->
+
+            <div>
+
+                <div id="cartItems"
+                     class="space-y-6">
+
+                    <!-- JS -->
+
+                </div>
+
+                <div id="emptyCart"
+                     class="hidden text-center py-24">
+
+                    <div class="text-7xl mb-8">
+
+                        🛒
+
+                    </div>
+
+                    <h2 class="text-3xl font-bold mb-4">
+
+                        Ваш кошик порожній
+
+                    </h2>
+
+                    <p class="text-gray-500 mb-8">
+
+                        Додайте товари до кошика.
+
+                    </p>
+
+                    <a href="pults-shop.html"
+                       class="inline-block px-8 py-4 rounded-2xl bg-black text-white">
+
+                        Перейти до магазину
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Summary -->
+
+            <aside>
+
+                <div class="summary-card">
+
+                    <h2>
+
+                        Підсумок
+
+                    </h2>
+
+                    <div class="summary-row">
+
+                        <span>
+
+                            Товарів
+
+                        </span>
+
+                        <span id="summaryCount">
+
+                            0
+
+                        </span>
+
+                    </div>
+
+                    <div class="summary-row">
+
+                        <span>
+
+                            Сума
+
+                        </span>
+
+                        <span id="summaryPrice">
+
+                            0₴
+
+                        </span>
+
+                    </div>
+
+                    <button id="checkoutButton"
+                            class="checkout-btn">
+
+                        Оформити замовлення
+
+                    </button>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<!-- FOOTER -->
+
+<div id="footer"></div>
+
+<!-- JS -->
+
+<script src="js/dropdown.js"></script>
+<script src="js/burger.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/cart-page.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

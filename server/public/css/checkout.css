@@ -1,0 +1,201 @@
+/* =========================
+   Cards
+========================= */
+
+.checkout-card,
+.checkout-summary {
+
+    background: white;
+
+    border-radius: 30px;
+
+    padding: 40px;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,.06);
+
+}
+
+.checkout-summary {
+
+    position: sticky;
+
+    top: 120px;
+
+}
+
+.checkout-card h2,
+.checkout-summary h2 {
+
+    font-size: 30px;
+
+    font-weight: 800;
+
+    margin-bottom: 30px;
+
+}
+
+/* =========================
+   Form
+========================= */
+
+.checkout-card form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 22px;
+
+}
+
+.checkout-card input,
+.checkout-card textarea {
+
+    width: 100%;
+
+    padding: 18px 22px;
+
+    border-radius: 18px;
+
+    border: 1px solid #ddd;
+
+    background: #fafafa;
+
+    transition: .25s;
+
+}
+
+.checkout-card input:focus,
+.checkout-card textarea:focus {
+
+    border-color: black;
+
+    background: white;
+
+    outline: none;
+
+}
+
+.checkout-card textarea {
+
+    resize: vertical;
+
+    min-height: 140px;
+
+}
+/* =========================
+   Order
+========================= */
+
+.checkout-product {
+
+    display: flex;
+
+    gap: 16px;
+
+    align-items: center;
+
+    padding: 16px 0;
+
+    border-bottom: 1px solid #eee;
+
+}
+
+.checkout-product img {
+
+    width: 70px;
+    height: 70px;
+
+    object-fit: contain;
+
+}
+
+.checkout-product h3 {
+
+    font-weight: 700;
+    font-size: 18px;
+
+}
+
+.checkout-product p {
+
+    color: #666;
+    font-size: 15px;
+
+}
+
+.summary-line {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 18px 0;
+
+    border-bottom: 1px solid #eee;
+
+    font-size: 18px;
+
+}
+
+.summary-line:last-of-type {
+
+    border-bottom: none;
+
+    font-size: 28px;
+
+    font-weight: 900;
+
+}
+
+/* =========================
+   Button
+========================= */
+
+.checkout-button {
+
+    width: 100%;
+
+    margin-top: 30px;
+
+    padding: 18px;
+
+    border-radius: 20px;
+
+    background: black;
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    transition: .25s;
+
+}
+
+.checkout-button:hover {
+
+    background: #222;
+
+    transform: translateY(-2px);
+
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width:900px){
+
+    .checkout-summary{
+
+        position: static;
+
+        margin-top: 40px;
+
+    }
+
+}

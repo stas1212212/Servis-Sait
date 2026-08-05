@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Оформлення замовлення | PULT+</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/checkout.css">
+
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+<div id="header"></div>
+
+<main>
+
+<section class="pt-40 pb-20">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="mb-16">
+
+            <span class="inline-block px-5 py-2 rounded-full bg-black text-white mb-6">
+
+                PULT+
+
+            </span>
+
+            <h1 class="text-5xl font-black">
+
+                Оформлення замовлення
+
+            </h1>
+
+        </div>
+
+        <div class="grid lg:grid-cols-[1fr_380px] gap-14">
+
+            <!-- FORM -->
+
+            <div>
+
+                <div class="checkout-card">
+
+                    <h2>
+
+                        Контактні дані
+
+                    </h2>
+
+                    <form id="checkoutForm">
+
+                        <div class="grid md:grid-cols-2 gap-6">
+
+                            <input
+                                type="text"
+                                placeholder="Ім'я"
+                                required>
+
+                            <input
+                                type="tel"
+                                placeholder="Телефон"
+                                required>
+
+                        </div>
+
+                        <input
+                            type="email"
+                            placeholder="Email">
+
+                        <input
+                            type="text"
+                            placeholder="Місто">
+
+                        <textarea
+                            placeholder="Коментар до замовлення"
+                            rows="5"></textarea>
+
+                    </form>
+
+                </div>
+
+            </div>
+                        <!-- SUMMARY -->
+
+            <aside>
+
+                <div class="checkout-summary">
+
+                    <h2>
+
+                        Ваше замовлення
+
+                    </h2>
+
+                    <div id="checkoutItems">
+
+                        <!-- JS -->
+
+                    </div>
+
+                    <div class="summary-line">
+
+                        <span>
+
+                            Товарів
+
+                        </span>
+
+                        <span id="checkoutCount">
+
+                            0
+
+                        </span>
+
+                    </div>
+
+                    <div class="summary-line">
+
+                        <span>
+
+                            До сплати
+
+                        </span>
+
+                        <span id="checkoutTotal">
+
+                            0₴
+
+                        </span>
+
+                    </div>
+
+                    <button
+                        form="checkoutForm"
+                        class="checkout-button">
+
+                        Підтвердити замовлення
+
+                    </button>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<div id="footer"></div>
+
+<!-- JS -->
+
+<script src="js/dropdown.js"></script>
+<script src="js/burger.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/checkout.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+
+</html>

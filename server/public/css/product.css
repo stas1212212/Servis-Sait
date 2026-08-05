@@ -1,0 +1,273 @@
+/* =========================
+   Product
+========================= */
+
+.product-image{
+
+    background:white;
+
+    border-radius:36px;
+
+    padding:50px;
+
+    box-shadow:0 15px 45px rgba(0,0,0,.08);
+
+}
+
+.product-image img{
+
+    width:100%;
+
+    max-height:520px;
+
+    object-fit:contain;
+
+}
+
+.buy-btn{
+
+    background:black;
+
+    color:white;
+
+    border:none;
+
+    padding:18px 42px;
+
+    border-radius:20px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.buy-btn:hover{
+
+    background:#222;
+
+    transform:translateY(-3px);
+
+}
+
+.telegram-btn{
+
+    background:#229ED9;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:18px 42px;
+
+    border-radius:20px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.telegram-btn:hover{
+
+    background:#1b8ac2;
+
+    transform:translateY(-3px);
+
+}
+
+/* =========================
+   Info cards
+========================= */
+
+.info-card{
+
+    background:white;
+
+    border-radius:30px;
+
+    padding:45px;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+
+}
+
+.info-card h2{
+
+    font-size:32px;
+
+    font-weight:800;
+
+    margin-bottom:30px;
+
+}
+
+.info-card ul{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.info-card li{
+
+    font-size:18px;
+
+    color:#4b5563;
+
+}
+
+/* =========================
+   Description
+========================= */
+
+.description-card{
+
+    background:white;
+
+    border-radius:30px;
+
+    padding:60px;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+
+}
+
+.description-card h2{
+
+    font-size:38px;
+
+    font-weight:800;
+
+    margin-bottom:25px;
+
+}
+
+.description-card p{
+
+    font-size:19px;
+
+    line-height:2;
+
+    color:#4b5563;
+
+}
+
+/* =========================
+   CTA
+========================= */
+
+.cta-product{
+
+    background:linear-gradient(135deg,#111827,#000);
+
+    border-radius:36px;
+
+    padding:80px;
+
+    text-align:center;
+
+    color:white;
+
+}
+
+.cta-product h2{
+
+    font-size:44px;
+
+    font-weight:800;
+
+    margin-bottom:20px;
+
+}
+
+.cta-product p{
+
+    max-width:650px;
+
+    margin:auto;
+
+    color:#d1d5db;
+
+    font-size:20px;
+
+    margin-bottom:35px;
+
+}
+
+.cta-product a{
+
+    display:inline-block;
+
+    padding:18px 42px;
+
+    border-radius:20px;
+
+    background:white;
+
+    color:black;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.cta-product a:hover{
+
+    transform:scale(1.05);
+
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media(max-width:992px){
+
+    .product-image{
+
+        margin-bottom:40px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .description-card{
+
+        padding:35px;
+
+    }
+
+    .info-card{
+
+        padding:35px;
+
+    }
+
+    .cta-product{
+
+        padding:50px 30px;
+
+    }
+
+    .cta-product h2{
+
+        font-size:34px;
+
+    }
+
+}

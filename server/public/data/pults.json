@@ -1,0 +1,873 @@
+{
+  "categories": [
+    {
+      "id": "tv",
+      "icon": "📺",
+      "label": "Для телевізорів"
+    },
+    {
+      "id": "universal",
+      "icon": "📦",
+      "label": "Універсальні"
+    },
+    {
+      "id": "receiver",
+      "icon": "📡",
+      "label": "Для ресиверів"
+    },
+    {
+      "id": "tvbox",
+      "icon": "📱",
+      "label": "Android TV / TV Box"
+    },
+    {
+      "id": "ac",
+      "icon": "❄️",
+      "label": "Для кондиціонерів"
+    },
+    {
+      "id": "audio",
+      "icon": "🔊",
+      "label": "Для аудіотехніки"
+    },
+    {
+      "id": "parts",
+      "icon": "🔧",
+      "label": "Запчастини"
+    }
+  ],
+
+  "products": [
+
+    {
+      "id": "bn59-01357a",
+      "slug": "bn59-01357a",
+      "brand": "Samsung",
+      "title": "BN59-01357A",
+      "description": "Оригінальний Smart TV Remote",
+      "price": 399,
+      "oldPrice": 499,
+      "rating": 5,
+      "stock": 15,
+      "category": "tv",
+      "images": [
+        "img/products/samsung.webp"
+      ],
+      "features": [
+        "Bluetooth",
+        "Smart TV",
+        "Голосове керування",
+        "Оригінальний"
+      ],
+      "compatible": [
+        "Samsung Crystal UHD",
+        "Samsung QLED",
+        "Samsung Neo QLED"
+      ]
+    },
+
+    {
+      "id": "bn59-01312f",
+      "slug": "bn59-01312f",
+      "brand": "Samsung",
+      "title": "BN59-01312F",
+      "description": "Smart TV Remote",
+      "price": 379,
+      "oldPrice": 449,
+      "rating": 5,
+      "stock": 18,
+      "category": "tv",
+      "images": [
+        "img/products/samsung2.webp"
+      ],
+      "features": [
+        "Smart Hub",
+        "Bluetooth",
+        "Original Quality"
+      ],
+      "compatible": [
+        "Samsung UE Series",
+        "Samsung TU Series"
+      ]
+    },
+
+    {
+      "id": "lg-magic-2023",
+      "slug": "lg-magic-2023",
+      "brand": "LG",
+      "title": "Magic Remote MR23",
+      "description": "Magic Remote з голосовим керуванням",
+      "price": 549,
+      "oldPrice": 649,
+      "rating": 5,
+      "stock": 11,
+      "category": "tv",
+      "images": [
+        "img/products/lg.webp"
+      ],
+      "features": [
+        "Magic Pointer",
+        "Bluetooth",
+        "Voice Control"
+      ],
+      "compatible": [
+        "LG OLED",
+        "LG NanoCell",
+        "LG UHD"
+      ]
+    },
+
+    {
+      "id": "lg-akb75095308",
+      "slug": "lg-akb75095308",
+      "brand": "LG",
+      "title": "AKB75095308",
+      "description": "Оригінальний пульт LG",
+      "price": 349,
+      "oldPrice": 429,
+      "rating": 5,
+      "stock": 24,
+      "category": "tv",
+      "images": [
+        "img/products/lg2.webp"
+      ],
+      "features": [
+        "Original",
+        "Smart TV"
+      ],
+      "compatible": [
+        "LG Smart TV"
+      ]
+    },
+
+    {
+      "id": "sony-rmf-tx310e",
+      "slug": "sony-rmf-tx310e",
+      "brand": "Sony",
+      "title": "RMF-TX310E",
+      "description": "Пульт Sony Bravia",
+      "price": 499,
+      "oldPrice": 599,
+      "rating": 5,
+      "stock": 10,
+      "category": "tv",
+      "images": [
+        "img/products/sony.webp"
+      ],
+      "features": [
+        "Bluetooth",
+        "Netflix",
+        "Google Assistant"
+      ],
+      "compatible": [
+        "Sony Bravia"
+      ]
+    },
+
+    {
+      "id": "sony-rmf-tx500",
+      "slug": "sony-rmf-tx500",
+      "brand": "Sony",
+      "title": "RMF-TX500",
+      "description": "Smart Remote",
+      "price": 579,
+      "oldPrice": 679,
+      "rating": 5,
+      "stock": 8,
+      "category": "tv",
+      "images": [
+        "img/products/sony2.webp"
+      ],
+      "features": [
+        "Voice",
+        "Bluetooth"
+      ],
+      "compatible": [
+        "Sony Android TV"
+      ]
+    },
+
+    {
+      "id": "philips-ykf474",
+      "slug": "philips-ykf474",
+      "brand": "Philips",
+      "title": "YKF474",
+      "description": "Original Philips Remote",
+      "price": 359,
+      "oldPrice": 449,
+      "rating": 5,
+      "stock": 13,
+      "category": "tv",
+      "images": [
+        "img/products/philips.webp"
+      ],
+      "features": [
+        "Original",
+        "Smart TV"
+      ],
+      "compatible": [
+        "Philips Android TV"
+      ]
+    },
+
+    {
+      "id": "tcl-rc802",
+      "slug": "tcl-rc802",
+      "brand": "TCL",
+      "title": "RC802",
+      "description": "Google TV Remote",
+      "price": 379,
+      "oldPrice": 469,
+      "rating": 5,
+      "stock": 19,
+      "category": "tv",
+      "images": [
+        "img/products/tcl.webp"
+      ],
+      "features": [
+        "Bluetooth",
+        "Voice"
+      ],
+      "compatible": [
+        "TCL Google TV"
+      ]
+    },
+
+    {
+      "id": "hisense-en2g27",
+      "slug": "hisense-en2g27",
+      "brand": "Hisense",
+      "title": "EN2G27",
+      "description": "Original Remote",
+      "price": 339,
+      "oldPrice": 419,
+      "rating": 5,
+      "stock": 20,
+      "category": "tv",
+      "images": [
+        "img/products/hisense.webp"
+      ],
+      "features": [
+        "Smart TV"
+      ],
+      "compatible": [
+        "Hisense VIDAA"
+      ]
+    },
+
+    {
+      "id": "panasonic-n2q",
+      "slug": "panasonic-n2q",
+      "brand": "Panasonic",
+      "title": "N2QAYB001181",
+      "description": "Original Panasonic Remote",
+      "price": 329,
+      "oldPrice": 399,
+      "rating": 5,
+      "stock": 16,
+      "category": "tv",
+      "images": [
+        "img/products/panasonic.webp"
+      ],
+      "features": [
+        "Original"
+      ],
+      "compatible": [
+        "Panasonic Viera"
+      ]
+    },
+        {
+      "id": "sharp-gj220",
+      "slug": "sharp-gj220",
+      "brand": "Sharp",
+      "title": "GJ220",
+      "description": "Original Sharp Smart TV Remote",
+      "price": 329,
+      "oldPrice": 399,
+      "rating": 5,
+      "stock": 17,
+      "category": "tv",
+      "images": [
+        "img/products/sharp.webp"
+      ],
+      "features": [
+        "Smart TV",
+        "Original"
+      ],
+      "compatible": [
+        "Sharp Aquos"
+      ]
+    },
+
+    {
+      "id": "toshiba-ct90405",
+      "slug": "toshiba-ct90405",
+      "brand": "Toshiba",
+      "title": "CT-90405",
+      "description": "Original Toshiba Remote",
+      "price": 319,
+      "oldPrice": 389,
+      "rating": 5,
+      "stock": 9,
+      "category": "tv",
+      "images": [
+        "img/products/toshiba.webp"
+      ],
+      "features": [
+        "Original"
+      ],
+      "compatible": [
+        "Toshiba Smart TV"
+      ]
+    },
+
+    {
+      "id": "xiaomi-mi-box",
+      "slug": "xiaomi-mi-box",
+      "brand": "Xiaomi",
+      "title": "Mi Box Remote",
+      "description": "Bluetooth пульт для Mi Box",
+      "price": 299,
+      "oldPrice": 359,
+      "rating": 5,
+      "stock": 28,
+      "category": "tvbox",
+      "images": [
+        "img/products/xiaomi.webp"
+      ],
+      "features": [
+        "Bluetooth",
+        "Voice Control"
+      ],
+      "compatible": [
+        "Mi Box S",
+        "Mi TV Stick"
+      ]
+    },
+
+    {
+      "id": "chromecast-google-tv",
+      "slug": "chromecast-google-tv",
+      "brand": "Google",
+      "title": "Chromecast Remote",
+      "description": "Google TV Remote",
+      "price": 349,
+      "oldPrice": 429,
+      "rating": 5,
+      "stock": 12,
+      "category": "tvbox",
+      "images": [
+        "img/products/google.webp"
+      ],
+      "features": [
+        "Bluetooth",
+        "Voice"
+      ],
+      "compatible": [
+        "Chromecast with Google TV"
+      ]
+    },
+
+    {
+      "id": "apple-tv-siri",
+      "slug": "apple-tv-siri",
+      "brand": "Apple",
+      "title": "Siri Remote",
+      "description": "Apple TV Siri Remote",
+      "price": 999,
+      "oldPrice": 1099,
+      "rating": 5,
+      "stock": 5,
+      "category": "tvbox",
+      "images": [
+        "img/products/apple.webp"
+      ],
+      "features": [
+        "Bluetooth",
+        "Siri",
+        "Touch"
+      ],
+      "compatible": [
+        "Apple TV HD",
+        "Apple TV 4K"
+      ]
+    },
+
+    {
+      "id": "huayu-rm-l1130",
+      "slug": "huayu-rm-l1130",
+      "brand": "HUAYU",
+      "title": "RM-L1130+8",
+      "description": "Універсальний пульт",
+      "price": 179,
+      "oldPrice": 229,
+      "rating": 4,
+      "stock": 60,
+      "category": "universal",
+      "images": [
+        "img/products/universal.webp"
+      ],
+      "features": [
+        "1000+ моделей"
+      ],
+      "compatible": [
+        "Samsung",
+        "LG",
+        "Sony",
+        "Philips"
+      ]
+    },
+
+    {
+      "id": "huayu-rm-d1078",
+      "slug": "huayu-rm-d1078",
+      "brand": "HUAYU",
+      "title": "RM-D1078",
+      "description": "Universal TV Remote",
+      "price": 199,
+      "oldPrice": 249,
+      "rating": 5,
+      "stock": 41,
+      "category": "universal",
+      "images": [
+        "img/products/universal2.webp"
+      ],
+      "features": [
+        "Автоналаштування"
+      ],
+      "compatible": [
+        "Понад 1500 моделей"
+      ]
+    },
+
+    {
+      "id": "air-condition-daikin",
+      "slug": "air-condition-daikin",
+      "brand": "Daikin",
+      "title": "ARC480A1",
+      "description": "Пульт для кондиціонера",
+      "price": 359,
+      "oldPrice": 429,
+      "rating": 5,
+      "stock": 22,
+      "category": "ac",
+      "images": [
+        "img/products/daikin.webp"
+      ],
+      "features": [
+        "Original"
+      ],
+      "compatible": [
+        "Daikin Split"
+      ]
+    },
+
+    {
+      "id": "gree-y512",
+      "slug": "gree-y512",
+      "brand": "Gree",
+      "title": "Y512",
+      "description": "Пульт кондиціонера Gree",
+      "price": 339,
+      "oldPrice": 399,
+      "rating": 5,
+      "stock": 20,
+      "category": "ac",
+      "images": [
+        "img/products/gree.webp"
+      ],
+      "features": [
+        "Original"
+      ],
+      "compatible": [
+        "Gree"
+      ]
+    },
+
+    {
+      "id": "cooper-hunter",
+      "slug": "cooper-hunter",
+      "brand": "Cooper&Hunter",
+      "title": "CH Remote",
+      "description": "Оригінальний пульт",
+      "price": 349,
+      "oldPrice": 419,
+      "rating": 5,
+      "stock": 16,
+      "category": "ac",
+      "images": [
+        "img/products/ch.webp"
+      ],
+      "features": [
+        "Original"
+      ],
+      "compatible": [
+        "Cooper&Hunter"
+      ]
+    },
+        {
+      "id": "mitsubishi-ac",
+      "slug": "mitsubishi-ac",
+      "brand": "Mitsubishi",
+      "title": "RKX502A001",
+      "description": "Пульт для кондиціонера Mitsubishi",
+      "price": 369,
+      "oldPrice": 449,
+      "rating": 5,
+      "stock": 18,
+      "category": "ac",
+      "images": [
+        "img/products/mitsubishi.webp"
+      ],
+      "features": [
+        "Original",
+        "LCD Display"
+      ],
+      "compatible": [
+        "Mitsubishi Electric"
+      ]
+    },
+
+    {
+      "id": "yamaha-rav",
+      "slug": "yamaha-rav",
+      "brand": "Yamaha",
+      "title": "RAV283",
+      "description": "Пульт для AV ресивера",
+      "price": 389,
+      "oldPrice": 469,
+      "rating": 5,
+      "stock": 9,
+      "category": "audio",
+      "images": [
+        "img/products/yamaha.webp"
+      ],
+      "features": [
+        "Original",
+        "Audio Receiver"
+      ],
+      "compatible": [
+        "Yamaha RX Series"
+      ]
+    },
+
+    {
+      "id": "denon-rc",
+      "slug": "denon-rc",
+      "brand": "Denon",
+      "title": "RC-1216",
+      "description": "Пульт для домашнього кінотеатру",
+      "price": 419,
+      "oldPrice": 499,
+      "rating": 5,
+      "stock": 8,
+      "category": "audio",
+      "images": [
+        "img/products/denon.webp"
+      ],
+      "features": [
+        "Original"
+      ],
+      "compatible": [
+        "Denon AVR"
+      ]
+    },
+
+    {
+      "id": "sony-audio",
+      "slug": "sony-audio",
+      "brand": "Sony",
+      "title": "RM-AMU197",
+      "description": "Пульт музичного центру",
+      "price": 299,
+      "oldPrice": 359,
+      "rating": 5,
+      "stock": 11,
+      "category": "audio",
+      "images": [
+        "img/products/sony-audio.webp"
+      ],
+      "features": [
+        "Original"
+      ],
+      "compatible": [
+        "Sony Hi-Fi"
+      ]
+    },
+
+    {
+      "id": "orton-4060",
+      "slug": "orton-4060",
+      "brand": "Orton",
+      "title": "4060CX",
+      "description": "Пульт супутникового ресивера",
+      "price": 189,
+      "oldPrice": 239,
+      "rating": 4,
+      "stock": 33,
+      "category": "receiver",
+      "images": [
+        "img/products/orton.webp"
+      ],
+      "features": [
+        "Satellite Receiver"
+      ],
+      "compatible": [
+        "Orton 4060"
+      ]
+    },
+
+    {
+      "id": "u2c-mini",
+      "slug": "u2c-mini",
+      "brand": "U2C",
+      "title": "Mini HD",
+      "description": "Пульт цифрового ресивера",
+      "price": 179,
+      "oldPrice": 219,
+      "rating": 4,
+      "stock": 26,
+      "category": "receiver",
+      "images": [
+        "img/products/u2c.webp"
+      ],
+      "features": [
+        "DVB-T2"
+      ],
+      "compatible": [
+        "U2C"
+      ]
+    },
+
+    {
+      "id": "worldvision",
+      "slug": "worldvision",
+      "brand": "World Vision",
+      "title": "T624A",
+      "description": "Пульт цифрової приставки",
+      "price": 199,
+      "oldPrice": 249,
+      "rating": 5,
+      "stock": 29,
+      "category": "receiver",
+      "images": [
+        "img/products/worldvision.webp"
+      ],
+      "features": [
+        "DVB-T2"
+      ],
+      "compatible": [
+        "World Vision"
+      ]
+    },
+
+    {
+      "id": "battery-cover-samsung",
+      "slug": "battery-cover-samsung",
+      "brand": "Samsung",
+      "title": "Кришка батарейного відсіку",
+      "description": "Запасна кришка",
+      "price": 99,
+      "oldPrice": 129,
+      "rating": 5,
+      "stock": 45,
+      "category": "parts",
+      "images": [
+        "img/products/cover.webp"
+      ],
+      "features": [
+        "Original Fit"
+      ],
+      "compatible": [
+        "Samsung BN59 Series"
+      ]
+    },
+
+    {
+      "id": "silicone-case",
+      "slug": "silicone-case",
+      "brand": "Universal",
+      "title": "Силіконовий чохол",
+      "description": "Захист пульта від ударів",
+      "price": 149,
+      "oldPrice": 199,
+      "rating": 5,
+      "stock": 54,
+      "category": "parts",
+      "images": [
+        "img/products/case.webp"
+      ],
+      "features": [
+        "Силікон",
+        "Миючий"
+      ],
+      "compatible": [
+        "Samsung",
+        "LG",
+        "Sony"
+      ]
+    },
+
+    {
+      "id": "ir-led",
+      "slug": "ir-led",
+      "brand": "Universal",
+      "title": "IR LED",
+      "description": "Інфрачервоний світлодіод",
+      "price": 39,
+      "oldPrice": 59,
+      "rating": 5,
+      "stock": 120,
+      "category": "parts",
+      "images": [
+        "img/products/ir.webp"
+      ],
+      "features": [
+        "3мм",
+        "940nm"
+      ],
+      "compatible": [
+        "Будь-який пульт"
+      ]
+    },
+    
+        {
+      "id": "button-kit",
+      "slug": "button-kit",
+      "brand": "Universal",
+      "title": "Комплект кнопок",
+      "description": "Силіконові кнопки для ремонту пультів",
+      "price": 79,
+      "oldPrice": 99,
+      "rating": 5,
+      "stock": 72,
+      "category": "parts",
+      "images": [
+        "img/products/buttons.webp"
+      ],
+      "features": [
+        "М'який силікон",
+        "Зносостійкі"
+      ],
+      "compatible": [
+        "Універсальні"
+      ]
+    },
+
+    {
+      "id": "remote-shell",
+      "slug": "remote-shell",
+      "brand": "Universal",
+      "title": "Корпус пульта",
+      "description": "Корпус для заміни",
+      "price": 129,
+      "oldPrice": 159,
+      "rating": 4,
+      "stock": 38,
+      "category": "parts",
+      "images": [
+        "img/products/shell.webp"
+      ],
+      "features": [
+        "ABS пластик"
+      ],
+      "compatible": [
+        "Samsung",
+        "LG"
+      ]
+    },
+
+    {
+      "id": "fire-tv",
+      "slug": "fire-tv",
+      "brand": "Amazon",
+      "title": "Fire TV Remote",
+      "description": "Bluetooth пульт",
+      "price": 399,
+      "oldPrice": 479,
+      "rating": 5,
+      "stock": 14,
+      "category": "tvbox",
+      "images": [
+        "img/products/firetv.webp"
+      ],
+      "features": [
+        "Bluetooth",
+        "Voice"
+      ],
+      "compatible": [
+        "Amazon Fire TV"
+      ]
+    },
+
+    {
+      "id": "nvidia-shield",
+      "slug": "nvidia-shield",
+      "brand": "NVIDIA",
+      "title": "Shield TV Remote",
+      "description": "Пульт NVIDIA Shield",
+      "price": 599,
+      "oldPrice": 699,
+      "rating": 5,
+      "stock": 6,
+      "category": "tvbox",
+      "images": [
+        "img/products/shield.webp"
+      ],
+      "features": [
+        "Bluetooth",
+        "Voice",
+        "Backlight"
+      ],
+      "compatible": [
+        "NVIDIA Shield TV"
+      ]
+    },
+
+    {
+      "id": "huayu-lg",
+      "slug": "huayu-lg",
+      "brand": "HUAYU",
+      "title": "RM-L930+",
+      "description": "Замінник для LG",
+      "price": 229,
+      "oldPrice": 289,
+      "rating": 5,
+      "stock": 27,
+      "category": "universal",
+      "images": [
+        "img/products/huayu-lg.webp"
+      ],
+      "features": [
+        "Без налаштування"
+      ],
+      "compatible": [
+        "LG LCD",
+        "LG LED"
+      ]
+    },
+
+    {
+      "id": "huayu-samsung",
+      "slug": "huayu-samsung",
+      "brand": "HUAYU",
+      "title": "RM-D1078 Samsung",
+      "description": "Замінник Samsung",
+      "price": 219,
+      "oldPrice": 279,
+      "rating": 5,
+      "stock": 32,
+      "category": "universal",
+      "images": [
+        "img/products/huayu-samsung.webp"
+      ],
+      "features": [
+        "Plug & Play"
+      ],
+      "compatible": [
+        "Samsung TV"
+      ]
+    }
+
+  ]
+}
