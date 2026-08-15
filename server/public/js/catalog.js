@@ -5,7 +5,7 @@
 let allProducts = [];
 
 function star(n) {
-return "⭐".repeat(n) + "☆".repeat(5 - n);
+    return "⭐".repeat(n) + "☆".repeat(5 - n);
 }
 
 // =========================
@@ -14,45 +14,43 @@ return "⭐".repeat(n) + "☆".repeat(5 - n);
 
 function renderCategories(categories) {
 
-```
-const root = document.getElementById("categories");
+    const root = document.getElementById("categories");
 
-if (!root) return;
+    if (!root) return;
 
-root.innerHTML = categories.map((c) => `
-    <div class="category-card" data-cat="${c.label}">
-        <div>${c.icon}</div>
-        <span>${c.label}</span>
-    </div>
-`).join("");
+    root.innerHTML = categories.map((c) => `
+        <div class="category-card" data-cat="${c.label}">
+            <div>${c.icon}</div>
+            <span>${c.label}</span>
+        </div>
+    `).join("");
 
-const first = root.querySelector(".category-card");
+    const first = root.querySelector(".category-card");
 
-if (first) {
-    first.classList.add("active");
-}
+    if (first) {
+        first.classList.add("active");
+    }
 
-root.querySelectorAll(".category-card").forEach((card) => {
+    root.querySelectorAll(".category-card").forEach((card) => {
 
-    card.addEventListener("click", () => {
+        card.addEventListener("click", () => {
 
-        root.querySelectorAll(".category-card")
-            .forEach((c) => c.classList.remove("active"));
+            root.querySelectorAll(".category-card")
+                .forEach((c) => c.classList.remove("active"));
 
-        card.classList.add("active");
+            card.classList.add("active");
 
-        const category = card.dataset.cat;
+            const category = card.dataset.cat;
 
-        renderProducts(
-            allProducts.filter(
-                (product) => product.category === category
-            )
-        );
+            renderProducts(
+                allProducts.filter(
+                    (product) => product.category === category
+                )
+            );
+
+        });
 
     });
-
-});
-```
 
 }
 
@@ -62,125 +60,98 @@ root.querySelectorAll(".category-card").forEach((card) => {
 
 function renderProducts(products) {
 
-```
-const root = document.getElementById("productList");
-const count = document.getElementById("productCount");
+    const root = document.getElementById("productList");
+    const count = document.getElementById("productCount");
 
-if (!root) return;
+    if (!root) return;
 
-root.innerHTML = products.map((p) => `
+    root.innerHTML = products.map((p) => `
 
-    <div class="product-card">
+        <div class="product-card">
 
-        <img
-            src="${p.image || p.images?.[0] || ""}"
-            alt="${p.title}"
-        >
+            <img
+                src="${p.image || (p.images && p.images[0]) || ""}"
+                alt="${p.title}"
+            >
 
-        <div class="product-body">
+            <div class="product-body">
 
-            <h3>
-                ${p.title}
-            </h3>
+                <h3>
+                    ${p.title}
+                </h3>
 
-            <p>
-                ${p.description || ""}
-            </p>
+                <p>
+                    ${p.description || ""}
+                </p>
 
-            <div class="rating">
-                ${star(p.rating || 0)}
+                <div class="rating">
+                    ${star(p.rating || 0)}
+                </div>
+
+                <div class="price">
+                    ${p.price}₴
+                </div>
+
+                <button
+                    type="button"
+                    class="buy-product-btn"
+                    data-id="${p.id}">
+
+                    Купити
+
+                </button>
+
             </div>
-
-            <div class="price">
-                ${p.price}₴
-            </div>
-
-            <button
-                type="button"
-                class="buy-product-btn"
-                data-id="${p.id}">
-
-                Купити
-
-            </button>
 
         </div>
 
-    </div>
+    `).join("");
 
-`).join("");
+    if (count) {
+        count.textContent = `${products.length} товарів`;
+    }
 
-if (count) {
-    count.textContent = `${products.length} товарів`;
-}
+    // =========================
+    // BUY BUTTON
+    // =========================
 
-// =========================
-// BUY BUTTON
-// =========================
+    root.querySelectorAll(".buy-product-btn").forEach((button) => {
 
-root.querySelectorAll(".buy-product-btn").forEach((button) => {
+        button.addEventListener("click", (event) => {
 
-    button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
 
-        // ВАЖНО:
-        // Никакого product.html здесь нет.
+            const id = button.dataset.id;
 
-        event.preventDefault();
-        event.stopImmediatePropagation();
+            const product = allProducts.find(
+                (p) => p.id === id
+            );
 
-        const id = button.dataset.id;
+            if (!product) {
+                console.error("Товар не знайдено:", id);
+                return;
+            }
 
-        const product = allProducts.find(
-            (p) => p.id === id
-        );
+            const image =
+                product.image ||
+                (product.images && product.images[0]) ||
+                "";
 
-        if (!product) {
-            console.error("Товар не знайдено:", id);
-            return;
-        }
+            addToCart({
+                id: product.id,
+                title: product.title,
+                price: Number(product.price),
+                image: image
+            });
 
-        const image =
-            product.image ||
-            product.images?.[0] ||
-            "";
-
-        // Добавляем товар в корзину
-        addToCart({
-
-            id: product.id,
-
-            title: product.title,
-
-            price: Number(product.price),
-
-            image: image
+            button.textContent = "✓ Додано";
+            button.disabled = true;
+            button.style.opacity = "0.8";
 
         });
 
-        // Меняем состояние кнопки
-        button.textContent = "✓ Додано";
-
-        button.disabled = true;
-
-        button.style.opacity = ".8";
-
-        // Открываем наше окно
-        if (typeof openCartModal === "function") {
-
-            openCartModal(product);
-
-        } else {
-
-            console.warn(
-                "openCartModal() не знайдено. Перевір cart-modal.js"
-            );
-
-        }
-
     });
-
-});
-```
 
 }
 
@@ -190,42 +161,41 @@ root.querySelectorAll(".buy-product-btn").forEach((button) => {
 
 async function loadCatalog() {
 
-```
-try {
+    try {
 
-    const response = await fetch("data/pults.json");
+        const response =
+            await fetch("data/pults.json");
 
-    if (!response.ok) {
+        if (!response.ok) {
+            throw new Error(
+                "HTTP " + response.status
+            );
+        }
 
-        throw new Error(
-            "HTTP " + response.status
+        const data =
+            await response.json();
+
+        allProducts =
+            data.products || [];
+
+        renderCategories(
+            data.categories || []
+        );
+
+        renderProducts(
+            allProducts
+        );
+
+        initSearch();
+
+    } catch (error) {
+
+        console.error(
+            "Не вдалося завантажити pults.json:",
+            error
         );
 
     }
-
-    const data = await response.json();
-
-    allProducts = data.products || [];
-
-    renderCategories(
-        data.categories || []
-    );
-
-    renderProducts(
-        allProducts
-    );
-
-    initSearch();
-
-} catch (error) {
-
-    console.error(
-        "Не вдалося завантажити pults.json:",
-        error
-    );
-
-}
-```
 
 }
 
@@ -235,40 +205,36 @@ try {
 
 function initSearch() {
 
-```
-const input =
-    document.querySelector(".search-box input");
+    const input =
+        document.querySelector(".search-box input");
 
-if (!input) return;
+    if (!input) return;
 
-input.addEventListener("input", () => {
+    input.addEventListener("input", () => {
 
-    const query =
-        input.value.toLowerCase().trim();
+        const query =
+            input.value.toLowerCase().trim();
 
-    const filtered =
-        allProducts.filter((product) => {
+        const filtered =
+            allProducts.filter((product) => {
 
-            return (
+                return (
+                    product.title
+                        .toLowerCase()
+                        .includes(query)
 
-                product.title
-                    .toLowerCase()
-                    .includes(query)
+                    ||
 
-                ||
+                    (product.description || "")
+                        .toLowerCase()
+                        .includes(query)
+                );
 
-                (product.description || "")
-                    .toLowerCase()
-                    .includes(query)
+            });
 
-            );
+        renderProducts(filtered);
 
-        });
-
-    renderProducts(filtered);
-
-});
-```
+    });
 
 }
 
@@ -277,6 +243,6 @@ input.addEventListener("input", () => {
 // =========================
 
 document.addEventListener(
-"DOMContentLoaded",
-loadCatalog
+    "DOMContentLoaded",
+    loadCatalog
 );
