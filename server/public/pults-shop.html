@@ -18,6 +18,7 @@
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/pults-shop.css">
+    <link rel="stylesheet" href="css/cart-modal.css">
 
 </head>
 
@@ -28,6 +29,61 @@
 <!-- ========================= -->
 
 <div id="header"></div>
+
+<!-- ========================= -->
+<!-- CART MODAL -->
+<!-- ========================= -->
+
+<div id="cartOverlay" class="cart-overlay">
+
+    <div id="cartModal" class="cart-modal">
+
+        <div class="cart-modal-icon">
+            🛒
+        </div>
+
+        <h2>
+            Товар додано до кошика
+        </h2>
+
+        <p id="cartModalProduct">
+            Товар
+        </p>
+
+        <div class="cart-modal-actions">
+
+            <button
+                id="continueShopping"
+                class="cart-modal-secondary">
+
+                Продовжити покупки
+
+            </button>
+
+            <button
+                id="openCart"
+                class="cart-modal-primary">
+
+                Перейти до кошика
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- CART TOAST -->
+<!-- ========================= -->
+
+<div id="cartToast" class="cart-toast">
+
+    ✓ Додано до кошика
+
+</div>
 
 <main>
 
@@ -286,9 +342,12 @@
 <script src="js/dropdown.js"></script>
 <script src="js/burger.js"></script>
 <script src="js/theme.js"></script>
-<script src="js/catalog.js"></script>
+
+<script src="js/cart-modal.js"></script>
 <script src="js/cart.js"></script>
-<!-- Основной -->
+<script src="js/product.js"></script>
+<script src="js/catalog.js"></script>
+
 <script src="js/main.js"></script>
 
 </body>

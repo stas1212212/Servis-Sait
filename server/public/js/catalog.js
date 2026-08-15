@@ -1,101 +1,282 @@
 // =========================
-// Render catalog from JSON
+// PULT+ Catalog
 // =========================
 
 let allProducts = [];
 
 function star(n) {
-    return "⭐".repeat(n) + "☆".repeat(5 - n);
+return "⭐".repeat(n) + "☆".repeat(5 - n);
 }
+
+// =========================
+// Categories
+// =========================
 
 function renderCategories(categories) {
-    const root = document.getElementById("categories");
-    if (!root) return;
 
-    root.innerHTML = categories.map((c, i) => `
-        <div class="category-card" data-cat="${c.label}">
-            <div>${c.icon}</div>
-            <span>${c.label}</span>
-        </div>
-    `).join("");
+```
+const root = document.getElementById("categories");
 
-    // Активуємо першу категорію за замовчуванням
-    root.querySelector(".category-card")?.classList.add("active");
+if (!root) return;
 
-    // Click handler (відновлюємо після innerHTML)
-    root.querySelectorAll(".category-card").forEach((card) => {
-        card.addEventListener("click", () => {
-            root.querySelectorAll(".category-card").forEach((c) => c.classList.remove("active"));
-            card.classList.add("active");
-            const cat = card.dataset.cat;
-            renderProducts(allProducts.filter((p) => p.category === cat));
-        });
-    });
+root.innerHTML = categories.map((c) => `
+    <div class="category-card" data-cat="${c.label}">
+        <div>${c.icon}</div>
+        <span>${c.label}</span>
+    </div>
+`).join("");
+
+const first = root.querySelector(".category-card");
+
+if (first) {
+    first.classList.add("active");
 }
 
-function renderProducts(products) {
-    const root = document.getElementById("productList");
-    const count = document.getElementById("productCount");
-    if (!root) return;
+root.querySelectorAll(".category-card").forEach((card) => {
 
-    root.innerHTML = products.map((p) => `
-        <div class="product-card">
-            <img src="${p.image}" alt="${p.title}">
-            <div class="product-body">
-                <h3>${p.title}</h3>
-                <p>${p.description}</p>
-                <div class="rating">${star(p.rating)}</div>
-                <div class="price">${p.price}₴</div>
-                <button data-id="${p.id}">Купити</button>
-            </div>
-        </div>
-    `).join("");
+    card.addEventListener("click", () => {
 
-    if (count) count.textContent = `${products.length} товарів`;
+        root.querySelectorAll(".category-card")
+            .forEach((c) => c.classList.remove("active"));
 
-    // Click handler для "Купити"
-    // Click handler для переходу на товар
-root.querySelectorAll(".product-card button").forEach((btn) => {
+        card.classList.add("active");
 
-    btn.addEventListener("click", () => {
+        const category = card.dataset.cat;
 
-        const id = btn.dataset.id;
-
-        window.location.href = `product.html?id=${id}`;
+        renderProducts(
+            allProducts.filter(
+                (product) => product.category === category
+            )
+        );
 
     });
 
 });
+```
 
 }
 
-function loadCatalog() {
-    fetch("data/pults.json")
-        .then((r) => {
-            if (!r.ok) throw new Error("HTTP " + r.status);
-            return r.json();
-        })
-        .then((data) => {
-            allProducts = data.products || [];
-            renderCategories(data.categories || []);
-            renderProducts(allProducts);
-            initSearch();
-        })
-        .catch((err) => {
-            console.error("Не вдалося завантажити products.json:", err);
+// =========================
+// Products
+// =========================
+
+function renderProducts(products) {
+
+```
+const root = document.getElementById("productList");
+const count = document.getElementById("productCount");
+
+if (!root) return;
+
+root.innerHTML = products.map((p) => `
+
+    <div class="product-card">
+
+        <img
+            src="${p.image || p.images?.[0] || ""}"
+            alt="${p.title}"
+        >
+
+        <div class="product-body">
+
+            <h3>
+                ${p.title}
+            </h3>
+
+            <p>
+                ${p.description || ""}
+            </p>
+
+            <div class="rating">
+                ${star(p.rating || 0)}
+            </div>
+
+            <div class="price">
+                ${p.price}₴
+            </div>
+
+            <button
+                type="button"
+                class="buy-product-btn"
+                data-id="${p.id}">
+
+                Купити
+
+            </button>
+
+        </div>
+
+    </div>
+
+`).join("");
+
+if (count) {
+    count.textContent = `${products.length} товарів`;
+}
+
+// =========================
+// BUY BUTTON
+// =========================
+
+root.querySelectorAll(".buy-product-btn").forEach((button) => {
+
+    button.addEventListener("click", (event) => {
+
+        // ВАЖНО:
+        // Никакого product.html здесь нет.
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        const id = button.dataset.id;
+
+        const product = allProducts.find(
+            (p) => p.id === id
+        );
+
+        if (!product) {
+            console.error("Товар не знайдено:", id);
+            return;
+        }
+
+        const image =
+            product.image ||
+            product.images?.[0] ||
+            "";
+
+        // Добавляем товар в корзину
+        addToCart({
+
+            id: product.id,
+
+            title: product.title,
+
+            price: Number(product.price),
+
+            image: image
+
         });
+
+        // Меняем состояние кнопки
+        button.textContent = "✓ Додано";
+
+        button.disabled = true;
+
+        button.style.opacity = ".8";
+
+        // Открываем наше окно
+        if (typeof openCartModal === "function") {
+
+            openCartModal(product);
+
+        } else {
+
+            console.warn(
+                "openCartModal() не знайдено. Перевір cart-modal.js"
+            );
+
+        }
+
+    });
+
+});
+```
+
 }
+
+// =========================
+// Load JSON
+// =========================
+
+async function loadCatalog() {
+
+```
+try {
+
+    const response = await fetch("data/pults.json");
+
+    if (!response.ok) {
+
+        throw new Error(
+            "HTTP " + response.status
+        );
+
+    }
+
+    const data = await response.json();
+
+    allProducts = data.products || [];
+
+    renderCategories(
+        data.categories || []
+    );
+
+    renderProducts(
+        allProducts
+    );
+
+    initSearch();
+
+} catch (error) {
+
+    console.error(
+        "Не вдалося завантажити pults.json:",
+        error
+    );
+
+}
+```
+
+}
+
+// =========================
+// Search
+// =========================
 
 function initSearch() {
-    const input = document.querySelector(".search-box input");
-    if (!input) return;
-    input.addEventListener("input", () => {
-        const q = input.value.toLowerCase().trim();
-        renderProducts(allProducts.filter((p) =>
-            p.title.toLowerCase().includes(q) ||
-            p.description.toLowerCase().includes(q)
-        ));
-    });
+
+```
+const input =
+    document.querySelector(".search-box input");
+
+if (!input) return;
+
+input.addEventListener("input", () => {
+
+    const query =
+        input.value.toLowerCase().trim();
+
+    const filtered =
+        allProducts.filter((product) => {
+
+            return (
+
+                product.title
+                    .toLowerCase()
+                    .includes(query)
+
+                ||
+
+                (product.description || "")
+                    .toLowerCase()
+                    .includes(query)
+
+            );
+
+        });
+
+    renderProducts(filtered);
+
+});
+```
+
 }
 
-document.addEventListener("DOMContentLoaded", loadCatalog);
+// =========================
+// Start
+// =========================
+
+document.addEventListener(
+"DOMContentLoaded",
+loadCatalog
+);

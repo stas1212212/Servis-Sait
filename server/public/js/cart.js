@@ -130,7 +130,7 @@ function getCartTotal() {
 // Counter
 // =========================
 
-function updateCartCounter() {
+function updateCartCounter() { 
 
     const count = getCartCount();
 
