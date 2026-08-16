@@ -1,0 +1,18 @@
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    client_name VARCHAR(100),
+    phone VARCHAR(20),
+    service VARCHAR(100),
+    address TEXT,
+    status VARCHAR(20) DEFAULT 'Новая',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
