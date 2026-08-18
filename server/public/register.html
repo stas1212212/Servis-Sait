@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Реєстрація | PULT+</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+    <main class="min-h-screen flex items-center justify-center px-6">
+
+        <section class="w-full max-w-md">
+
+            <div class="bg-white rounded-3xl shadow-xl p-8">
+
+                <div class="text-center mb-8">
+
+                    <div class="w-14 h-14 mx-auto mb-4 rounded-2xl
+                                bg-black text-white
+                                flex items-center justify-center
+                                text-2xl font-bold">
+
+                        +
+
+                    </div>
+
+                    <h1 class="text-3xl font-bold">
+                        Створити акаунт
+                    </h1>
+
+                    <p class="text-gray-500 mt-2">
+                        Зареєструйтесь у PULT+
+                    </p>
+
+                </div>
+
+
+                <form id="registerForm" class="space-y-5">
+
+                    <div>
+
+                        <label class="block text-sm font-medium mb-2">
+                            Ім'я
+                        </label>
+
+                        <input
+                            id="name"
+                            type="text"
+                            required
+                            autocomplete="name"
+                            class="w-full px-4 py-3 rounded-xl border
+                                   border-gray-200 outline-none
+                                   focus:ring-2 focus:ring-black"
+                            placeholder="Ваше ім'я">
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="block text-sm font-medium mb-2">
+                            Email
+                        </label>
+
+                        <input
+                            id="email"
+                            type="email"
+                            required
+                            autocomplete="email"
+                            class="w-full px-4 py-3 rounded-xl border
+                                   border-gray-200 outline-none
+                                   focus:ring-2 focus:ring-black"
+                            placeholder="example@email.com">
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="block text-sm font-medium mb-2">
+                            Пароль
+                        </label>
+
+                        <input
+                            id="password"
+                            type="password"
+                            required
+                            minlength="6"
+                            autocomplete="new-password"
+                            class="w-full px-4 py-3 rounded-xl border
+                                   border-gray-200 outline-none
+                                   focus:ring-2 focus:ring-black"
+                            placeholder="Мінімум 6 символів">
+
+                    </div>
+
+
+                    <p
+                        id="registerMessage"
+                        class="hidden text-sm text-center">
+                    </p>
+
+
+                    <button
+                        type="submit"
+                        class="w-full py-3 rounded-xl
+                               bg-black text-white
+                               hover:bg-gray-800
+                               transition font-medium">
+
+                        Зареєструватися
+
+                    </button>
+
+                </form>
+
+
+                <div class="text-center mt-6 text-sm text-gray-500">
+
+                    Вже маєте акаунт?
+
+                    <a
+                        href="login.html"
+                        class="text-black font-medium hover:underline">
+
+                        Увійти
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/register.js"></script>
+
+</body>
+
+</html>

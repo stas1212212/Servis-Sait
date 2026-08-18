@@ -47,6 +47,8 @@ Servis-Sait/
 │   │   ├── burger.js
 │   │   ├── theme.js
 │   │   │
+│   │   ├── register.html
+│   │   │
 │   │   ├── catalog.js
 │   │   ├── product.js
 │   │   ├── cart.js

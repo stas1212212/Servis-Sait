@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Вхід | PULT+</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body class="bg-gray-50 min-h-screen">
+
+    <main class="min-h-screen flex items-center justify-center px-6">
+
+        <section class="w-full max-w-md">
+
+            <div class="bg-white rounded-3xl shadow-xl p-8">
+
+                <!-- LOGO -->
+
+                <div class="text-center mb-8">
+
+                    <div class="w-14 h-14 mx-auto mb-4
+                                rounded-2xl bg-black text-white
+                                flex items-center justify-center
+                                text-2xl font-bold">
+
+                        +
+
+                    </div>
+
+                    <h1 class="text-3xl font-bold">
+
+                        Вхід до акаунта
+
+                    </h1>
+
+                    <p class="text-gray-500 mt-2">
+
+                        Увійдіть до свого акаунта PULT+
+
+                    </p>
+
+                </div>
+
+
+                <!-- LOGIN FORM -->
+
+                <form id="loginForm" class="space-y-5">
+
+                    <div>
+
+                        <label class="block text-sm font-medium mb-2">
+
+                            Email
+
+                        </label>
+
+                        <input
+                            id="email"
+                            type="email"
+                            required
+                            autocomplete="email"
+                            class="w-full px-4 py-3 rounded-xl
+                                   border border-gray-200
+                                   outline-none
+                                   focus:ring-2 focus:ring-black"
+                            placeholder="example@email.com">
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="block text-sm font-medium mb-2">
+
+                            Пароль
+
+                        </label>
+
+                        <input
+                            id="password"
+                            type="password"
+                            required
+                            autocomplete="current-password"
+                            class="w-full px-4 py-3 rounded-xl
+                                   border border-gray-200
+                                   outline-none
+                                   focus:ring-2 focus:ring-black"
+                            placeholder="Ваш пароль">
+
+                    </div>
+
+
+                    <p
+                        id="loginMessage"
+                        class="hidden text-sm text-center">
+                    </p>
+
+
+                    <button
+                        type="submit"
+                        class="w-full py-3 rounded-xl
+                               bg-black text-white
+                               hover:bg-gray-800
+                               transition font-medium">
+
+                        Увійти
+
+                    </button>
+
+                </form>
+
+
+                <!-- REGISTER -->
+
+                <div class="text-center mt-6 text-sm text-gray-500">
+
+                    Ще немає акаунта?
+
+                    <a
+                        href="register.html"
+                        class="text-black font-medium hover:underline">
+
+                        Зареєструватися
+
+                    </a>
+
+                </div>
+
+
+                <!-- BACK -->
+
+                <div class="text-center mt-4">
+
+                    <a
+                        href="index.html"
+                        class="text-sm text-gray-400
+                               hover:text-black">
+
+                        ← На головну
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/login.js"></script>
+
+</body>
+
+</html>
