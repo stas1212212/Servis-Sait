@@ -9,6 +9,7 @@ const ordersRoutes = require('./routes/orders');
 const servicesRoutes = require('./routes/services');
 const productsRoutes = require('./routes/products');
 const authRoutes = require('./routes/auth');
+const uiRoutes = require('./routes/ui');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,7 +20,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: false,
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: 1000 * 60 * 60 * 24 * 30 // 30 дней
     }
 }));
 
@@ -30,6 +31,8 @@ app.use('/api/orders', ordersRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/auth', authRoutes);
+// Dynamic UI fragments (header)
+app.use('/_header', uiRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

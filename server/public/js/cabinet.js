@@ -3,10 +3,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const logoutButton = document.getElementById("logoutButton");
 
     try {
-        const response = await fetch("/api/auth/me");
+        const response = await fetch("/api/auth/me", {
+            credentials: "same-origin"
+        });
 
         if (!response.ok) {
-            // Пользователь не авторизован
             window.location.href = "/login.html";
             return;
         }
@@ -29,23 +30,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
     }
 
-    logoutButton.addEventListener("click", async () => {
-        try {
-            const response = await fetch("/api/auth/logout", {
-                method: "POST"
-            });
+    if (logoutButton) {
+        logoutButton.addEventListener("click", async () => {
+            try {
+                const response = await fetch("/api/auth/logout", {
+                    method: "POST",
+                    credentials: "same-origin"
+                });
 
-            if (!response.ok) {
-                throw new Error("Logout failed");
+                if (!response.ok) {
+                    throw new Error("Logout failed");
+                }
+
+                window.location.href = "/login.html";
+
+            } catch (error) {
+                console.error("Logout error:", error);
+                alert("Не вдалося вийти з акаунта");
             }
-
-            window.location.href = "/login.html";
-
-        } catch (error) {
-            console.error("Logout error:", error);
-            alert("Не вдалося вийти з акаунта");
-        }
-    });
+        });
+    }
 });
 
 function escapeHtml(value) {

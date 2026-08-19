@@ -1,8 +1,5 @@
-// =========================
-// Login
-// =========================
-
 const loginForm = document.getElementById("loginForm");
+
 const loginMessage = document.getElementById("loginMessage");
 
 loginForm.addEventListener("submit", async (event) => {
@@ -17,6 +14,8 @@ loginForm.addEventListener("submit", async (event) => {
         const response = await fetch("/api/auth/login", {
             method: "POST",
 
+            credentials: "include",
+
             headers: {
                 "Content-Type": "application/json"
             },
@@ -30,7 +29,7 @@ loginForm.addEventListener("submit", async (event) => {
         const data = await response.json();
 
         if (!response.ok) {
-
+            
             showMessage(
                 data.message || "Не вдалося увійти",
                 false
@@ -44,21 +43,14 @@ loginForm.addEventListener("submit", async (event) => {
             true
         );
 
-        // Пока просто сохраняем данные пользователя.
-        // Позже заменим это на нормальную сессию/JWT.
-        localStorage.setItem(
-            "pultplus-user",
-            JSON.stringify(data.user)
-        );
+        // Ничего не сохраняем в localStorage.
+        // Авторизация хранится на сервере в session.
 
         setTimeout(() => {
-
-            window.location.href = "index.html";
-
-        }, 1000);
+            window.location.href = "cabinet.html";
+        }, 800);
 
     } catch (error) {
-
         console.error("Login error:", error);
 
         showMessage(

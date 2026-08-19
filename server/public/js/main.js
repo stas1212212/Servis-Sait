@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (header) {
 
-        const response = await fetch("header.html");
+        const response = await fetch("/_header");
         header.innerHTML = await response.text();
 
         initLanguageDropdown();

@@ -13,17 +13,20 @@ router.post("/register", async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
+
         if (!name || !email || !password) {
             return res.status(400).json({
                 message: "Заповніть усі поля"
             });
         }
 
+
         if (password.length < 6) {
             return res.status(400).json({
                 message: "Пароль повинен містити щонайменше 6 символів"
             });
         }
+
 
         const existingUser = await pool.query(
             "SELECT id FROM users WHERE email = $1",
@@ -36,7 +39,9 @@ router.post("/register", async (req, res) => {
             });
         }
 
+    
         const passwordHash = await bcrypt.hash(password, 10);
+
 
         const result = await pool.query(
             `INSERT INTO users (name, email, password_hash)
@@ -60,6 +65,7 @@ router.post("/register", async (req, res) => {
         });
 
     } catch (error) {
+        
         console.error("Registration error:", error);
 
         res.status(500).json({
