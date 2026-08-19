@@ -3,58 +3,297 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Особистий кабінет | PULT+</title>
 
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/cart.css">
-    <link rel="stylesheet" href="css/checkout.css">
-    <link rel="stylesheet" href="css/cart-modal.css">
-
+    <link rel="stylesheet" href="css/cabinet.css">
 </head>
-
-<div id="header"></div>
 
 <body>
 
+    <!-- Твой header -->
+    <div id="header"></div>
+
+
     <main class="cabinet-page">
 
-        <section class="cabinet-card">
+        <div class="cabinet-container">
 
-            <div class="cabinet-icon">
-                👤
+            <!-- Верхняя часть -->
+            <section class="cabinet-hero">
+
+                <div class="cabinet-avatar">
+                    👤
+                </div>
+
+                <div>
+                    <p class="cabinet-label">
+                        ОСОБИСТИЙ КАБІНЕТ
+                    </p>
+
+                    <h1 id="welcomeTitle">
+                        Завантаження...
+                    </h1>
+
+                    <p class="cabinet-subtitle">
+                        Керуйте своїм профілем та замовленнями
+                    </p>
+                </div>
+
+            </section>
+
+
+            <div class="cabinet-grid">
+
+                <!-- Профиль -->
+                <section class="cabinet-card profile-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <p class="card-label">
+                                ПРОФІЛЬ
+                            </p>
+
+                            <h2>
+                                Особисті дані
+                            </h2>
+                        </div>
+
+                        <span class="card-icon">
+                            👤
+                        </span>
+
+                    </div>
+
+
+                    <div class="profile-info">
+
+                        <div class="info-row">
+                            <span>Ім'я</span>
+                            <strong id="userName">
+                                —
+                            </strong>
+                        </div>
+
+                        <div class="info-row">
+                            <span>Email</span>
+                            <strong id="userEmail">
+                                —
+                            </strong>
+                        </div>
+
+                        <div class="info-row">
+                            <span>Дата реєстрації</span>
+                            <strong id="userCreated">
+                                —
+                            </strong>
+                        </div>
+
+                        <div class="info-row">
+                            <span>Статус</span>
+                            <strong class="status">
+                                ● Авторизований
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        id="editProfileButton"
+                        class="cabinet-button secondary">
+
+                        ✏️ Редагувати профіль
+
+                    </button>
+
+                </section>
+
+
+                <!-- Заказы -->
+                <section class="cabinet-card orders-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <p class="card-label">
+                                ЗАМОВЛЕННЯ
+                            </p>
+
+                            <h2>
+                                Мої замовлення
+                            </h2>
+                        </div>
+
+                        <span class="card-icon">
+                            🛒
+                        </span>
+
+                    </div>
+
+
+                    <div class="empty-orders">
+
+                        <div class="empty-icon">
+                            📦
+                        </div>
+
+                        <h3>
+                            Замовлень поки немає
+                        </h3>
+
+                        <p>
+                            Тут з'являться ваші замовлення,
+                            коли ви щось придбаєте.
+                        </p>
+
+                        <a
+                            href="pults-shop.html"
+                            class="cabinet-button primary">
+
+                            Перейти до магазину
+
+                        </a>
+
+                    </div>
+
+                </section>
+
             </div>
 
-            <h1>Особистий кабінет</h1>
 
-            <div id="cabinetContent">
-                Завантаження...
-            </div>
+            <!-- Настройки -->
+            <section class="cabinet-card settings-card">
 
-            <button
-                id="logoutButton"
-                class="logout-button"
-                type="button">
+                <div class="card-header">
 
-                Вийти з акаунта
+                    <div>
+                        <p class="card-label">
+                            НАЛАШТУВАННЯ
+                        </p>
 
-            </button>
+                        <h2>
+                            Акаунт
+                        </h2>
+                    </div>
 
-        </section>
+                    <span class="card-icon">
+                        ⚙️
+                    </span>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        id="editProfileButton2"
+                        class="setting-button">
+
+                        ✏️
+                        <span>
+                            Редагувати профіль
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        id="logoutButton"
+                        class="setting-button logout">
+
+                        🚪
+                        <span>
+                            Вийти з акаунта
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
 
     </main>
 
+
+    <!-- Модальное окно редактирования -->
+    <div
+        id="profileModal"
+        class="profile-modal hidden">
+
+        <div class="profile-modal-box">
+
+            <button
+                id="closeProfileModal"
+                class="modal-close">
+
+                ×
+
+            </button>
+
+            <p class="card-label">
+                ПРОФІЛЬ
+            </p>
+
+            <h2>
+                Редагування профілю
+            </h2>
+
+
+            <form id="profileForm">
+
+                <label>
+                    Ім'я
+
+                    <input
+                        id="profileName"
+                        type="text"
+                        required>
+                </label>
+
+
+                <label>
+                    Email
+
+                    <input
+                        id="profileEmail"
+                        type="email"
+                        required>
+                </label>
+
+
+                <div
+                    id="profileMessage"
+                    class="profile-message">
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="cabinet-button primary">
+
+                    Зберегти зміни
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="js/header.js"></script>
+    <script src="js/auth-ui.js"></script>
     <script src="js/cabinet.js"></script>
 
 </body>
 
 </html>
-
-
-<script src="js/dropdown.js"></script>
-<script src="js/burger.js"></script>
-<script src="js/theme.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/cart-page.js"></script>
-<script src="js/main.js"></script>

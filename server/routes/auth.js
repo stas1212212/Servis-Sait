@@ -2,6 +2,11 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const pool = require("../db");
 
+const {
+    getUserById,
+    updateUser
+} = require("../models/user");
+
 const router = express.Router();
 
 // =========================
@@ -144,17 +149,127 @@ router.post("/login", async (req, res) => {
 // GET /api/auth/me
 // =========================
 
-router.get("/me", (req, res) => {
+router.get("/me", async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.status(401).json({
+                message: "Користувач не авторизований"
+            });
+        }
 
-    if (!req.session.user) {
-        return res.status(401).json({
-            message: "Користувач не авторизований"
+        const user = await getUserById(req.session.user.id);
+
+        if (!user) {
+            req.session.destroy(() => {});
+
+            return res.status(401).json({
+                message: "Користувача не знайдено"
+            });
+        }
+
+        // Обновляем данные в сессии
+        req.session.user = {
+            id: user.id,
+            name: user.name,
+            email: user.email
+        };
+
+        res.json({
+            user
+        });
+
+    } catch (error) {
+        console.error("Get current user error:", error);
+
+        res.status(500).json({
+            message: "Помилка сервера"
         });
     }
+});
 
-    res.json({
-        user: req.session.user
-    });
+
+// =========================
+// Изменение профиля
+// PUT /api/auth/profile
+// =========================
+
+router.put("/profile", async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.status(401).json({
+                message: "Користувач не авторизований"
+            });
+        }
+
+        const { name, email } = req.body;
+
+        if (!name || !email) {
+            return res.status(400).json({
+                message: "Заповніть усі поля"
+            });
+        }
+
+        const cleanName = name.trim();
+        const cleanEmail = email.trim().toLowerCase();
+
+        if (cleanName.length < 2) {
+            return res.status(400).json({
+                message: "Ім'я занадто коротке"
+            });
+        }
+
+        if (!cleanEmail.includes("@")) {
+            return res.status(400).json({
+                message: "Введіть коректний email"
+            });
+        }
+
+        // Проверяем, не занят ли email другим пользователем
+        const existing = await pool.query(
+            `SELECT id
+             FROM users
+             WHERE email = $1
+             AND id != $2`,
+            [cleanEmail, req.session.user.id]
+        );
+
+        if (existing.rows.length > 0) {
+            return res.status(409).json({
+                message: "Цей email вже використовується"
+            });
+        }
+
+        const user = await updateUser(
+            req.session.user.id,
+            cleanName,
+            cleanEmail
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                message: "Користувача не знайдено"
+            });
+        }
+
+        // Обновляем сессию
+        req.session.user = {
+            id: user.id,
+            name: user.name,
+            email: user.email
+        };
+
+        res.json({
+            message: "Профіль оновлено",
+            user
+        });
+
+    } catch (error) {
+        console.error("Update profile error:", error);
+
+        res.status(500).json({
+            message: "Помилка сервера"
+        });
+    }
 });
 
 
@@ -164,7 +279,6 @@ router.get("/me", (req, res) => {
 // =========================
 
 router.post("/logout", (req, res) => {
-
     req.session.destroy((error) => {
 
         if (error) {
@@ -182,6 +296,5 @@ router.post("/logout", (req, res) => {
         });
     });
 });
-
 
 module.exports = router;

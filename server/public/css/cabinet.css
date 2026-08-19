@@ -1,0 +1,433 @@
+.cabinet-page {
+    min-height: calc(100vh - 80px);
+    background: #f5f5f7;
+    padding: 50px 20px 80px;
+}
+
+.cabinet-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+
+/* HERO */
+
+.cabinet-hero {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    padding: 32px;
+
+    background: #111;
+    color: white;
+
+    border-radius: 28px;
+
+    margin-bottom: 24px;
+}
+
+.cabinet-avatar {
+    width: 76px;
+    height: 76px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+
+    background: white;
+    color: #111;
+
+    font-size: 34px;
+}
+
+.cabinet-label,
+.card-label {
+    margin: 0 0 6px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    color: #888;
+}
+
+.cabinet-hero .cabinet-label {
+    color: #aaa;
+}
+
+.cabinet-hero h1 {
+    margin: 0;
+
+    font-size: 32px;
+}
+
+.cabinet-subtitle {
+    margin: 8px 0 0;
+
+    color: #aaa;
+}
+
+
+/* GRID */
+
+.cabinet-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 24px;
+}
+
+
+/* CARDS */
+
+.cabinet-card {
+    background: white;
+
+    border-radius: 24px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 24px;
+}
+
+.card-header h2 {
+    margin: 0;
+
+    font-size: 22px;
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f2f2f2;
+
+    border-radius: 14px;
+
+    font-size: 20px;
+}
+
+
+/* PROFILE */
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+
+    margin-bottom: 24px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.info-row span {
+    color: #777;
+}
+
+.info-row strong {
+    text-align: right;
+}
+
+.status {
+    color: #16a34a;
+}
+
+
+/* ORDERS */
+
+.empty-orders {
+    min-height: 240px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f3f3f3;
+
+    border-radius: 20px;
+
+    font-size: 28px;
+
+    margin-bottom: 16px;
+}
+
+.empty-orders h3 {
+    margin: 0 0 8px;
+}
+
+.empty-orders p {
+    max-width: 320px;
+
+    margin: 0 0 20px;
+
+    color: #777;
+    line-height: 1.5;
+}
+
+
+/* BUTTONS */
+
+.cabinet-button {
+    border: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 13px 20px;
+
+    border-radius: 14px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.cabinet-button.primary {
+    background: #111;
+    color: white;
+}
+
+.cabinet-button.primary:hover {
+    background: #333;
+}
+
+.cabinet-button.secondary {
+    background: #f1f1f1;
+    color: #111;
+}
+
+.cabinet-button.secondary:hover {
+    background: #e5e5e5;
+}
+
+
+/* SETTINGS */
+
+.settings-card {
+    margin-top: 24px;
+}
+
+.settings-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.setting-button {
+    border: 0;
+
+    background: #f3f3f3;
+
+    padding: 14px 18px;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-weight: 600;
+}
+
+.setting-button:hover {
+    background: #e8e8e8;
+}
+
+.setting-button.logout {
+    color: #dc2626;
+}
+
+
+/* MODAL */
+
+.profile-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.profile-modal.hidden {
+    display: none;
+}
+
+.profile-modal-box {
+    position: relative;
+
+    width: 100%;
+    max-width: 480px;
+
+    padding: 32px;
+
+    background: white;
+
+    border-radius: 24px;
+}
+
+.profile-modal-box h2 {
+    margin: 0 0 25px;
+}
+
+.modal-close {
+    position: absolute;
+
+    top: 16px;
+    right: 18px;
+
+    border: 0;
+
+    background: transparent;
+
+    font-size: 28px;
+
+    cursor: pointer;
+}
+
+#profileForm {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+#profileForm label {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    font-weight: 600;
+}
+
+#profileForm input {
+    padding: 13px 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    font-size: 15px;
+}
+
+#profileForm input:focus {
+    border-color: #111;
+}
+
+.profile-message {
+    min-height: 20px;
+
+    font-size: 14px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 750px) {
+
+    .cabinet-page {
+        padding: 25px 15px 50px;
+    }
+
+    .cabinet-hero {
+        padding: 24px;
+
+        border-radius: 22px;
+    }
+
+    .cabinet-avatar {
+        width: 58px;
+        height: 58px;
+
+        font-size: 26px;
+    }
+
+    .cabinet-hero h1 {
+        font-size: 24px;
+    }
+
+    .cabinet-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cabinet-card {
+        padding: 22px;
+    }
+
+    .info-row {
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .info-row strong {
+        text-align: left;
+    }
+
+    .settings-actions {
+        flex-direction: column;
+    }
+
+    .setting-button {
+        width: 100%;
+    }
+}
