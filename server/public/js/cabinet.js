@@ -1,446 +1,462 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
-    const content = document.getElementById("cabinetContent");
+const content = document.getElementById("cabinetContent");
 
-    const userName = document.getElementById("userName");
-    const userEmail = document.getElementById("userEmail");
-    const userCreated = document.getElementById("userCreated");
-    const welcomeTitle = document.getElementById("welcomeTitle");
+const userName = document.getElementById("userName");
+const userEmail = document.getElementById("userEmail");
+const userCreatedAt = document.getElementById("userCreatedAt");
+const welcomeName = document.getElementById("welcomeName");
 
-    const logoutButton = document.getElementById("logoutButton");
+const logoutButton = document.getElementById("logoutButton");
 
-    const editProfileButton =
-        document.getElementById("editProfileButton");
-
-    const editProfileButton2 =
-        document.getElementById("editProfileButton2");
-
-    const profileModal =
-        document.getElementById("profileModal");
-
-    const closeProfileModal =
-        document.getElementById("closeProfileModal");
-
-    const profileForm =
-        document.getElementById("profileForm");
-
-    const profileName =
-        document.getElementById("profileName");
-
-    const profileEmail =
-        document.getElementById("profileEmail");
-
-    const profileMessage =
-        document.getElementById("profileMessage");
+const editProfileButton = document.getElementById("editProfileButton");
+const editProfileButtonBottom = document.getElementById("editProfileButtonBottom");
 
 
-    let currentUser = null;
+// =========================================
+// ПОЛУЧЕНИЕ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ
+// =========================================
+
+try {
+
+    const response = await fetch("/api/auth/me", {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+            "Accept": "application/json"
+        }
+    });
 
 
-    // =========================
-    // Получение пользователя
-    // =========================
+    // Пользователь не авторизован
+    if (!response.ok) {
 
-    async function loadUser() {
+        window.location.href = "/login.html";
+        return;
+
+    }
+
+
+    const data = await response.json();
+
+
+    if (!data.user) {
+
+        window.location.href = "/login.html";
+        return;
+
+    }
+
+
+    const user = data.user;
+
+
+    // =========================================
+    // ИМЯ
+    // =========================================
+
+    const name = user.name || "Користувач";
+
+    if (welcomeName) {
+        welcomeName.textContent = `Вітаємо, ${name}!`;
+    }
+
+    if (userName) {
+        userName.textContent = name;
+    }
+
+
+    // =========================================
+    // EMAIL
+    // =========================================
+
+    if (userEmail) {
+        userEmail.textContent = user.email || "—";
+    }
+
+
+    // =========================================
+    // ДАТА РЕЄСТРАЦІЇ
+    // =========================================
+
+    if (userCreatedAt) {
+
+        if (user.created_at) {
+
+            const date = new Date(user.created_at);
+
+            if (!Number.isNaN(date.getTime())) {
+
+                userCreatedAt.textContent =
+                    date.toLocaleDateString("uk-UA", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    });
+
+            } else {
+
+                userCreatedAt.textContent = "—";
+
+            }
+
+        } else {
+
+            userCreatedAt.textContent = "—";
+
+        }
+
+    }
+
+
+    // =========================================
+    // УСПІШНЕ ЗАВАНТАЖЕННЯ
+    // =========================================
+
+    if (content) {
+        content.innerHTML = "";
+    }
+
+
+    // =========================================
+    // ЗАМОВЛЕННЯ
+    // =========================================
+
+    await loadOrders(user);
+
+
+} catch (error) {
+
+    console.error("Cabinet error:", error);
+
+
+    if (content) {
+
+        content.innerHTML = `
+            <div class="cabinet-card">
+                <p>
+                    Не вдалося завантажити дані акаунта.
+                </p>
+            </div>
+        `;
+
+    }
+
+}
+
+
+// =========================================
+// ВИХІД З АКАУНТА
+// =========================================
+
+if (logoutButton) {
+
+    logoutButton.addEventListener("click", async () => {
+
+        const originalText = logoutButton.textContent;
+
+        logoutButton.disabled = true;
+        logoutButton.textContent = "Вихід...";
+
 
         try {
 
-            const response = await fetch("/api/auth/me", {
-                credentials: "same-origin"
+            const response = await fetch("/api/auth/logout", {
+
+                method: "POST",
+
+                credentials: "same-origin",
+
+                headers: {
+                    "Accept": "application/json"
+                }
+
             });
 
 
             if (!response.ok) {
-
-                window.location.href = "/login.html";
-
-                return;
-
+                throw new Error("Logout failed");
             }
 
 
-            const data = await response.json();
-
-            if (!data.user) {
-
-                window.location.href = "/login.html";
-
-                return;
-
-            }
-
-
-            currentUser = data.user;
-
-            renderUser(currentUser);
+            // Переходимо на сторінку входу
+            window.location.href = "/login.html";
 
 
         } catch (error) {
 
-            console.error("Cabinet error:", error);
+            console.error("Logout error:", error);
 
-            if (content) {
+            alert("Не вдалося вийти з акаунта");
 
-                content.innerHTML = `
-                    <p>
-                        Не вдалося завантажити дані акаунта.
-                    </p>
-                `;
-
-            }
+            logoutButton.disabled = false;
+            logoutButton.textContent = originalText;
 
         }
 
-    }
+    });
 
+}
 
-    // =========================
-    // Отображение пользователя
-    // =========================
 
-    function renderUser(user) {
+// =========================================
+// РЕДАГУВАННЯ ПРОФІЛЮ
+// =========================================
 
-        if (welcomeTitle) {
+function editProfile() {
 
-            welcomeTitle.textContent =
-                `Вітаємо, ${user.name}!`;
+    alert(
+        "Редагування профілю ми підключимо наступним етапом."
+    );
 
-        }
+}
 
 
-        if (userName) {
+if (editProfileButton) {
 
-            userName.textContent =
-                user.name;
+    editProfileButton.addEventListener(
+        "click",
+        editProfile
+    );
 
-        }
+}
 
 
-        if (userEmail) {
+if (editProfileButtonBottom) {
 
-            userEmail.textContent =
-                user.email;
+    editProfileButtonBottom.addEventListener(
+        "click",
+        editProfile
+    );
 
-        }
-
-
-        if (userCreated) {
-
-            userCreated.textContent =
-                formatDate(user.created_at);
-
-        }
-
-    }
-
-
-    // =========================
-    // Дата регистрации
-    // =========================
-
-    function formatDate(value) {
-
-        if (!value) {
-            return "—";
-        }
-
-
-        const date = new Date(value);
-
-
-        return date.toLocaleDateString(
-            "uk-UA",
-            {
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
-            }
-        );
-
-    }
-
-
-    // =========================
-    // Открытие редактора
-    // =========================
-
-    function openProfileModal() {
-
-        if (!currentUser) {
-            return;
-        }
-
-
-        profileName.value =
-            currentUser.name || "";
-
-        profileEmail.value =
-            currentUser.email || "";
-
-
-        profileMessage.textContent = "";
-
-        profileMessage.style.color = "";
-
-
-        profileModal.classList.remove("hidden");
-
-    }
-
-
-    // =========================
-    // Закрытие редактора
-    // =========================
-
-    function closeProfile() {
-
-        profileModal.classList.add("hidden");
-
-    }
-
-
-    if (editProfileButton) {
-
-        editProfileButton.addEventListener(
-            "click",
-            openProfileModal
-        );
-
-    }
-
-
-    if (editProfileButton2) {
-
-        editProfileButton2.addEventListener(
-            "click",
-            openProfileModal
-        );
-
-    }
-
-
-    if (closeProfileModal) {
-
-        closeProfileModal.addEventListener(
-            "click",
-            closeProfile
-        );
-
-    }
-
-
-    if (profileModal) {
-
-        profileModal.addEventListener(
-            "click",
-            (event) => {
-
-                if (event.target === profileModal) {
-
-                    closeProfile();
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // =========================
-    // Сохранение профиля
-    // =========================
-
-    if (profileForm) {
-
-        profileForm.addEventListener(
-            "submit",
-            async (event) => {
-
-                event.preventDefault();
-
-
-                const name =
-                    profileName.value.trim();
-
-                const email =
-                    profileEmail.value.trim();
-
-
-                if (!name || !email) {
-
-                    showProfileMessage(
-                        "Заповніть усі поля",
-                        false
-                    );
-
-                    return;
-
-                }
-
-
-                try {
-
-                    const response =
-                        await fetch(
-                            "/api/auth/profile",
-                            {
-                                method: "PUT",
-
-                                credentials:
-                                    "same-origin",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body:
-                                    JSON.stringify({
-                                        name,
-                                        email
-                                    })
-                            }
-                        );
-
-
-                    const data =
-                        await response.json();
-
-
-                    if (!response.ok) {
-
-                        showProfileMessage(
-                            data.message ||
-                            "Не вдалося зберегти зміни",
-                            false
-                        );
-
-                        return;
-
-                    }
-
-
-                    currentUser =
-                        data.user;
-
-
-                    renderUser(
-                        currentUser
-                    );
-
-
-                    showProfileMessage(
-                        "✓ Профіль оновлено",
-                        true
-                    );
-
-
-                    setTimeout(
-                        closeProfile,
-                        700
-                    );
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Profile update error:",
-                        error
-                    );
-
-
-                    showProfileMessage(
-                        "Помилка з'єднання із сервером",
-                        false
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // =========================
-    // Выход
-    // =========================
-
-    if (logoutButton) {
-
-        logoutButton.addEventListener(
-            "click",
-            async () => {
-
-                try {
-
-                    const response =
-                        await fetch(
-                            "/api/auth/logout",
-                            {
-                                method: "POST",
-
-                                credentials:
-                                    "same-origin"
-                            }
-                        );
-
-
-                    if (!response.ok) {
-
-                        throw new Error(
-                            "Logout failed"
-                        );
-
-                    }
-
-
-                    window.location.href =
-                        "/login.html";
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Logout error:",
-                        error
-                    );
-
-
-                    alert(
-                        "Не вдалося вийти з акаунта"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // =========================
-    // Сообщения
-    // =========================
-
-    function showProfileMessage(
-        message,
-        success
-    ) {
-
-        profileMessage.textContent =
-            message;
-
-        profileMessage.style.color =
-            success
-                ? "#16a34a"
-                : "#dc2626";
-
-    }
-
-
-    // Запускаем загрузку
-    loadUser();
+}
 
 });
+
+// =========================================
+// ЗАВАНТАЖЕННЯ ЗАМОВЛЕНЬ
+// =========================================
+
+async function loadOrders(user) {
+
+const ordersContent =
+    document.getElementById("ordersContent");
+
+
+if (!ordersContent) {
+    return;
+}
+
+
+try {
+
+    /*
+     * Поки що не робимо жорстку залежність
+     * від формату /api/orders.
+     *
+     * Коли підключимо повноцінну систему замовлень,
+     * тут буде:
+     *
+     * GET /api/orders/my
+     *
+     * і відображення замовлень конкретного користувача.
+     */
+
+
+    const response = await fetch(
+        "/api/orders/my",
+        {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+                "Accept": "application/json"
+            }
+        }
+    );
+
+
+    // Якщо маршрут ще не зроблений —
+    // залишаємо красивий стан "замовлень немає".
+    if (response.status === 404) {
+
+        showEmptyOrders();
+
+        return;
+
+    }
+
+
+    if (!response.ok) {
+
+        showEmptyOrders();
+
+        return;
+
+    }
+
+
+    const data = await response.json();
+
+
+    const orders = Array.isArray(data.orders)
+        ? data.orders
+        : [];
+
+
+    if (orders.length === 0) {
+
+        showEmptyOrders();
+
+        return;
+
+    }
+
+
+    renderOrders(orders);
+
+
+} catch (error) {
+
+    console.error(
+        "Orders loading error:",
+        error
+    );
+
+    showEmptyOrders();
+
+}
+
+}
+
+// =========================================
+// ПОКАЗАТИ "ЗАМОВЛЕНЬ НЕМАЄ"
+// =========================================
+
+function showEmptyOrders() {
+
+const ordersContent =
+    document.getElementById("ordersContent");
+
+
+if (!ordersContent) {
+    return;
+}
+
+
+ordersContent.innerHTML = `
+
+    <div class="orders-empty-icon">
+        📦
+    </div>
+
+    <h3>
+        Замовлень поки немає
+    </h3>
+
+    <p>
+        Тут з'являться ваші замовлення,
+        коли ви щось придбаєте.
+    </p>
+
+    <a
+        href="/pults-shop.html"
+        class="cabinet-button">
+
+        Перейти до магазину
+
+    </a>
+
+`;
+
+}
+
+// =========================================
+// ВІДОБРАЖЕННЯ ЗАМОВЛЕНЬ
+// =========================================
+
+function renderOrders(orders) {
+
+const ordersContent =
+    document.getElementById("ordersContent");
+
+
+if (!ordersContent) {
+    return;
+}
+
+
+ordersContent.innerHTML = "";
+
+
+orders.forEach(order => {
+
+    const orderElement =
+        document.createElement("div");
+
+
+    orderElement.className =
+        "cabinet-order";
+
+
+    const orderNumber =
+        escapeHtml(
+            String(order.id ?? "—")
+        );
+
+
+    const status =
+        escapeHtml(
+            String(order.status ?? "Створено")
+        );
+
+
+    const total =
+        escapeHtml(
+            String(order.total ?? "—")
+        );
+
+
+    orderElement.innerHTML = `
+
+        <div class="cabinet-order-info">
+
+            <strong>
+                Замовлення #${orderNumber}
+            </strong>
+
+            <span>
+                Статус: ${status}
+            </span>
+
+        </div>
+
+        <strong>
+            ${total}
+        </strong>
+
+    `;
+
+
+    ordersContent.appendChild(
+        orderElement
+    );
+
+});
+
+}
+
+// =========================================
+// ЗАХИСТ ВІД HTML-ІН'ЄКЦІЙ
+// =========================================
+
+function escapeHtml(value) {
+
+const div =
+    document.createElement("div");
+
+div.textContent =
+    value ?? "";
+
+return div.innerHTML;
+
+}

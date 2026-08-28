@@ -1,32 +1,47 @@
 <!DOCTYPE html>
-<html lang="uk">
 
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+```
+<title>Особистий кабінет | PULT+</title>
 
-    <title>Особистий кабінет | PULT+</title>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/cabinet.css">
+<!-- Основні стилі сайту -->
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- Стилі особистого кабінету -->
+<link rel="stylesheet" href="/css/cabinet.css">
+```
+
 </head>
 
-<body>
+<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
 
-    <!-- Твой header -->
-    <div id="header"></div>
+```
+<!-- =========================
+     HEADER
+========================== -->
+<div id="header-container"></div>
 
 
-    <main class="cabinet-page">
+<!-- =========================
+     MAIN
+========================== -->
+<main class="flex-1">
+
+    <section class="cabinet-page">
 
         <div class="cabinet-container">
 
-            <!-- Верхняя часть -->
-            <section class="cabinet-hero">
+            <!-- Привітання -->
+            <div class="cabinet-hero">
 
-                <div class="cabinet-avatar">
+                <div class="cabinet-hero-icon">
                     👤
                 </div>
 
@@ -35,69 +50,84 @@
                         ОСОБИСТИЙ КАБІНЕТ
                     </p>
 
-                    <h1 id="welcomeTitle">
-                        Завантаження...
+                    <h1 id="welcomeName">
+                        Вітаємо!
                     </h1>
 
-                    <p class="cabinet-subtitle">
+                    <p>
                         Керуйте своїм профілем та замовленнями
                     </p>
                 </div>
 
-            </section>
+            </div>
 
+
+            <!-- Контент -->
+            <div id="cabinetContent">
+
+                <div class="cabinet-loading">
+                    Завантаження...
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 ОСОБИСТІ ДАНІ
+            ========================== -->
 
             <div class="cabinet-grid">
 
-                <!-- Профиль -->
-                <section class="cabinet-card profile-card">
+                <section class="cabinet-card">
 
-                    <div class="card-header">
+                    <div class="cabinet-card-header">
 
                         <div>
-                            <p class="card-label">
+                            <span class="cabinet-label">
                                 ПРОФІЛЬ
-                            </p>
+                            </span>
 
                             <h2>
                                 Особисті дані
                             </h2>
                         </div>
 
-                        <span class="card-icon">
+                        <div class="cabinet-card-icon">
                             👤
-                        </span>
+                        </div>
 
                     </div>
 
 
-                    <div class="profile-info">
+                    <div class="cabinet-info">
 
-                        <div class="info-row">
+                        <div class="cabinet-info-row">
                             <span>Ім'я</span>
                             <strong id="userName">
                                 —
                             </strong>
                         </div>
 
-                        <div class="info-row">
+                        <div class="cabinet-info-row">
                             <span>Email</span>
                             <strong id="userEmail">
                                 —
                             </strong>
                         </div>
 
-                        <div class="info-row">
+                        <div class="cabinet-info-row">
                             <span>Дата реєстрації</span>
-                            <strong id="userCreated">
+                            <strong id="userCreatedAt">
                                 —
                             </strong>
                         </div>
 
-                        <div class="info-row">
+                        <div class="cabinet-info-row">
                             <span>Статус</span>
-                            <strong class="status">
-                                ● Авторизований
+
+                            <strong class="cabinet-status">
+                                <span></span>
+                                Авторизований
                             </strong>
                         </div>
 
@@ -105,6 +135,7 @@
 
 
                     <button
+                        type="button"
                         id="editProfileButton"
                         class="cabinet-button secondary">
 
@@ -115,31 +146,36 @@
                 </section>
 
 
-                <!-- Заказы -->
-                <section class="cabinet-card orders-card">
+                <!-- =========================
+                     ЗАМОВЛЕННЯ
+                ========================== -->
 
-                    <div class="card-header">
+                <section class="cabinet-card">
+
+                    <div class="cabinet-card-header">
 
                         <div>
-                            <p class="card-label">
+                            <span class="cabinet-label">
                                 ЗАМОВЛЕННЯ
-                            </p>
+                            </span>
 
                             <h2>
                                 Мої замовлення
                             </h2>
                         </div>
 
-                        <span class="card-icon">
+                        <div class="cabinet-card-icon">
                             🛒
-                        </span>
+                        </div>
 
                     </div>
 
 
-                    <div class="empty-orders">
+                    <div
+                        id="ordersContent"
+                        class="orders-empty">
 
-                        <div class="empty-icon">
+                        <div class="orders-empty-icon">
                             📦
                         </div>
 
@@ -153,8 +189,8 @@
                         </p>
 
                         <a
-                            href="pults-shop.html"
-                            class="cabinet-button primary">
+                            href="/pults-shop.html"
+                            class="cabinet-button">
 
                             Перейти до магазину
 
@@ -167,50 +203,49 @@
             </div>
 
 
-            <!-- Настройки -->
-            <section class="cabinet-card settings-card">
+            <!-- =========================
+                 НАСТРОЙКИ
+            ========================== -->
 
-                <div class="card-header">
+            <section class="cabinet-card cabinet-settings">
+
+                <div class="cabinet-card-header">
 
                     <div>
-                        <p class="card-label">
+                        <span class="cabinet-label">
                             НАЛАШТУВАННЯ
-                        </p>
+                        </span>
 
                         <h2>
                             Акаунт
                         </h2>
                     </div>
 
-                    <span class="card-icon">
+                    <div class="cabinet-card-icon">
                         ⚙️
-                    </span>
+                    </div>
 
                 </div>
 
 
-                <div class="settings-actions">
+                <div class="cabinet-actions">
 
                     <button
-                        id="editProfileButton2"
-                        class="setting-button">
+                        type="button"
+                        id="editProfileButtonBottom"
+                        class="cabinet-button secondary">
 
-                        ✏️
-                        <span>
-                            Редагувати профіль
-                        </span>
+                        ✏️ Редагувати профіль
 
                     </button>
 
 
                     <button
+                        type="button"
                         id="logoutButton"
-                        class="setting-button logout">
+                        class="cabinet-button danger">
 
-                        🚪
-                        <span>
-                            Вийти з акаунта
-                        </span>
+                        🚪 Вийти з акаунта
 
                     </button>
 
@@ -220,79 +255,85 @@
 
         </div>
 
-    </main>
+    </section>
+
+</main>
 
 
-    <!-- Модальное окно редактирования -->
-    <div
-        id="profileModal"
-        class="profile-modal hidden">
+<!-- =========================
+     FOOTER
+========================== -->
 
-        <div class="profile-modal-box">
-
-            <button
-                id="closeProfileModal"
-                class="modal-close">
-
-                ×
-
-            </button>
-
-            <p class="card-label">
-                ПРОФІЛЬ
-            </p>
-
-            <h2>
-                Редагування профілю
-            </h2>
+<div id="footer-container"></div>
 
 
-            <form id="profileForm">
+<!-- =========================
+     JAVASCRIPT
+========================== -->
 
-                <label>
-                    Ім'я
+<!-- Загальні скрипти сайту -->
+<script src="/js/main.js"></script>
 
-                    <input
-                        id="profileName"
-                        type="text"
-                        required>
-                </label>
-
-
-                <label>
-                    Email
-
-                    <input
-                        id="profileEmail"
-                        type="email"
-                        required>
-                </label>
+<!-- Логіка особистого кабінету -->
+<script src="/js/cabinet.js"></script>
 
 
-                <div
-                    id="profileMessage"
-                    class="profile-message">
-                </div>
+<!-- =========================
+     HEADER / FOOTER LOADER
+========================== -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        try {
+
+            const headerResponse = await fetch("/header.html");
+
+            if (headerResponse.ok) {
+
+                document.getElementById("header-container").innerHTML =
+                    await headerResponse.text();
+
+            }
+
+        } catch (error) {
+
+            console.error("Header loading error:", error);
+
+        }
 
 
-                <button
-                    type="submit"
-                    class="cabinet-button primary">
+        try {
 
-                    Зберегти зміни
+            const footerResponse = await fetch("/footer.html");
 
-                </button>
+            if (footerResponse.ok) {
 
-            </form>
+                document.getElementById("footer-container").innerHTML =
+                    await footerResponse.text();
 
-        </div>
+            }
 
-    </div>
+        } catch (error) {
 
+            console.error("Footer loading error:", error);
 
-    <script src="js/header.js"></script>
-    <script src="js/auth-ui.js"></script>
-    <script src="js/cabinet.js"></script>
+        }
+
+    });
+</script>
+```
+
+<script src="js/dropdown.js"></script>
+<script src="js/burger.js"></script>
+<script src="js/theme.js"></script>
+
+<script src="js/cart-modal.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/product.js"></script>
+
+<script src="js/main.js"></script>
+
 
 </body>
 
