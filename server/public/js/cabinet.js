@@ -232,6 +232,7 @@ if (editProfileButtonBottom) {
 }
 
 });
+ 
 
 // =========================================
 // ЗАВАНТАЖЕННЯ ЗАМОВЛЕНЬ
@@ -239,92 +240,80 @@ if (editProfileButtonBottom) {
 
 async function loadOrders(user) {
 
-const ordersContent =
-    document.getElementById("ordersContent");
+    const ordersContent =
+        document.getElementById("ordersContent");
 
 
-if (!ordersContent) {
-    return;
-}
+    if (!ordersContent) {
+        return;
+    }
 
 
-try {
+    try {
 
-    /*
-     * Поки що не робимо жорстку залежність
-     * від формату /api/orders.
-     *
-     * Коли підключимо повноцінну систему замовлень,
-     * тут буде:
-     *
-     * GET /api/orders/my
-     *
-     * і відображення замовлень конкретного користувача.
-     */
-
-
-    const response = await fetch(
-        "/api/orders",
-        {
-            method: "GET",
-            credentials: "same-origin",
-            headers: {
-                "Accept": "application/json"
+        const response = await fetch(
+            "/api/orders",
+            {
+                method: "GET",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json"
+                }
             }
+        );
+
+
+        if (response.status === 404) {
+
+            showEmptyOrders();
+
+            return;
+
         }
-    );
 
 
-    // Якщо маршрут ще не зроблений —
-    // залишаємо красивий стан "замовлень немає".
-    if (response.status === 404) {
+        if (!response.ok) {
+
+            showEmptyOrders();
+
+            return;
+
+        }
+
+
+        const data = await response.json();
+
+
+        // API повертає масив замовлень напряму
+        const orders = Array.isArray(data)
+            ? data
+            : Array.isArray(data.orders)
+                ? data.orders
+                : [];
+
+
+        if (orders.length === 0) {
+
+            showEmptyOrders();
+
+            return;
+
+        }
+
+
+        renderOrders(orders);
+
+
+    } catch (error) {
+
+        console.error(
+            "Orders loading error:",
+            error
+        );
 
         showEmptyOrders();
 
-        return;
-
     }
-
-
-    if (!response.ok) {
-
-        showEmptyOrders();
-
-        return;
-
-    }
-
-
-    const data = await response.json();
-
-
-    const orders = Array.isArray(data.orders)
-        ? data.orders
-        : [];
-
-
-    if (orders.length === 0) {
-
-        showEmptyOrders();
-
-        return;
-
-    }
-
-
-    renderOrders(orders);
-
-
-} catch (error) {
-
-    console.error(
-        "Orders loading error:",
-        error
-    );
-
-    showEmptyOrders();
-
-}
 
 }
 
@@ -376,74 +365,175 @@ ordersContent.innerHTML = `
 
 function renderOrders(orders) {
 
-const ordersContent =
-    document.getElementById("ordersContent");
+    const ordersContent =
+        document.getElementById("ordersContent");
 
 
-if (!ordersContent) {
-    return;
+    if (!ordersContent) {
+        return;
+    }
+
+
+    ordersContent.innerHTML = "";
+
+
+    orders.forEach(order => {
+
+        const orderElement =
+            document.createElement("div");
+
+
+        orderElement.className =
+            "cabinet-order";
+
+
+        const orderNumber =
+            escapeHtml(
+                String(order.id ?? "—")
+            );
+
+
+        const status =
+            escapeHtml(
+                String(order.status ?? "Створено")
+            );
+
+
+        const total =
+            escapeHtml(
+                String(order.total ?? "—")
+            );
+
+
+        const createdAt =
+            order.createdAt
+                ? new Date(order.createdAt)
+                    .toLocaleString("uk-UA")
+                : "—";
+
+
+        const safeCreatedAt =
+            escapeHtml(createdAt);
+
+
+        // Товари замовлення
+        const items =
+            Array.isArray(order.items)
+                ? order.items
+                : [];
+
+
+        const itemsHtml =
+            items.length > 0
+
+                ? items.map(item => {
+
+                    const itemName =
+                        escapeHtml(
+                            String(
+                                item.name ??
+                                item.title ??
+                                item.productName ??
+                                "Товар"
+                            )
+                        );
+
+
+                    const quantity =
+                        escapeHtml(
+                            String(
+                                item.quantity ??
+                                1
+                            )
+                        );
+
+
+                    const price =
+                        escapeHtml(
+                            String(
+                                item.price ??
+                                "—"
+                            )
+                        );
+
+
+                    return `
+                        <div class="cabinet-order-item">
+
+                            <div>
+                                <strong>
+                                    ${itemName}
+                                </strong>
+
+                                <span>
+                                    Кількість: ${quantity}
+                                </span>
+                            </div>
+
+                            <strong>
+                                ${price} грн
+                            </strong>
+
+                        </div>
+                    `;
+
+                }).join("")
+
+                : `
+                    <p>
+                        Товарів у замовленні немає.
+                    </p>
+                `;
+
+
+        orderElement.innerHTML = `
+
+            <div class="cabinet-order-info">
+
+                <div>
+
+                    <strong>
+                        Замовлення #${orderNumber}
+                    </strong>
+
+                    <span>
+                        Статус: ${status}
+                    </span>
+
+                    <span>
+                        Дата: ${safeCreatedAt}
+                    </span>
+
+                </div>
+
+                <strong>
+                    ${total} грн
+                </strong>
+
+            </div>
+
+
+            <div class="cabinet-order-items">
+
+                <h4>
+                    Товари
+                </h4>
+
+                ${itemsHtml}
+
+            </div>
+
+        `;
+
+
+        ordersContent.appendChild(
+            orderElement
+        );
+
+    });
+
 }
-
-
-ordersContent.innerHTML = "";
-
-
-orders.forEach(order => {
-
-    const orderElement =
-        document.createElement("div");
-
-
-    orderElement.className =
-        "cabinet-order";
-
-
-    const orderNumber =
-        escapeHtml(
-            String(order.id ?? "—")
-        );
-
-
-    const status =
-        escapeHtml(
-            String(order.status ?? "Створено")
-        );
-
-
-    const total =
-        escapeHtml(
-            String(order.total ?? "—")
-        );
-
-
-    orderElement.innerHTML = `
-
-        <div class="cabinet-order-info">
-
-            <strong>
-                Замовлення #${orderNumber}
-            </strong>
-
-            <span>
-                Статус: ${status}
-            </span>
-
-        </div>
-
-        <strong>
-            ${total}
-        </strong>
-
-    `;
-
-
-    ordersContent.appendChild(
-        orderElement
-    );
-
-});
-
-}
+```
 
 // =========================================
 // ЗАХИСТ ВІД HTML-ІН'ЄКЦІЙ
