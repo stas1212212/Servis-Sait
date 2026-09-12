@@ -264,7 +264,7 @@ try {
 
 
     const response = await fetch(
-        "/api/orders/my",
+        "/api/orders",
         {
             method: "GET",
             credentials: "same-origin",

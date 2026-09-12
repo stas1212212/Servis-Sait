@@ -73,7 +73,7 @@ function renderCheckout() {
 // Submit
 // =========================
 
-function submitOrder(e) {
+async function submitOrder(e) {
 
     e.preventDefault();
 
@@ -87,12 +87,45 @@ function submitOrder(e) {
 
     }
 
-    // Тут пізніше буде відправка на сервер
+    const items = cart.map(product => ({
+        productName: product.title,
+        quantity: product.quantity,
+        price: Number(product.price)
+    }));
 
-    localStorage.removeItem(CART_KEY);
+    try {
 
-    updateCartCounter();
+        const response = await fetch("/api/orders", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                items: items
+            })
+        });
 
-    window.location.href = "thanks.html";
+        const data = await response.json();
+
+        if (!response.ok) {
+
+            throw new Error(data.message || "Не вдалося оформити замовлення");
+
+        }
+
+        // Замовлення успішно створене
+        localStorage.removeItem(CART_KEY);
+
+        updateCartCounter();
+
+        window.location.href = "thanks.html";
+
+    } catch (error) {
+
+        console.error("Checkout error:", error);
+
+        alert(error.message || "Помилка оформлення замовлення");
+
+    }
 
 }
