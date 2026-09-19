@@ -8,172 +8,294 @@
 ```
 <title>Особистий кабінет | PULT+</title>
 
-<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Основні стилі сайту -->
 <link rel="stylesheet" href="/css/style.css">
-
-<!-- Стилі особистого кабінету -->
 <link rel="stylesheet" href="/css/cabinet.css">
 ```
 
 </head>
 
-<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
+<body>
 
 ```
-<!-- =========================
-     HEADER
-========================== -->
-<div id="header-container"></div>
+<!-- HEADER -->
+<div id="header"></div>
 
 
-<!-- =========================
-     MAIN
-========================== -->
-<main class="flex-1">
+<main class="cabinet-page">
 
-    <section class="cabinet-page">
+    <div class="cabinet-container">
 
-        <div class="cabinet-container">
+        <!-- =================================================
+             PROFILE HEADER
+             ================================================= -->
 
-            <!-- Привітання -->
-            <div class="cabinet-hero">
+        <section class="cabinet-hero" aria-labelledby="cabinetTitle">
 
-                <div class="cabinet-hero-icon">
-                    👤
-                </div>
+            <div class="cabinet-hero-icon">
+                👤
+            </div>
+
+            <div>
+                <span class="cabinet-label">ОСОБИСТИЙ КАБІНЕТ</span>
+
+                <h1 id="cabinetTitle">
+                    Вітаємо, <span id="welcomeName">користувачу</span>
+                </h1>
+
+                <p>
+                    Керуйте профілем та переглядайте історію своїх замовлень.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             LOADING
+             ================================================= -->
+
+        <div id="cabinetContent" class="cabinet-loading">
+            Завантаження кабінету...
+        </div>
+
+
+        <!-- =================================================
+             OVERVIEW
+             ================================================= -->
+
+        <section
+            class="cabinet-overview"
+            aria-labelledby="overviewTitle"
+        >
+
+            <div class="cabinet-section-heading">
 
                 <div>
-                    <p class="cabinet-label">
-                        ОСОБИСТИЙ КАБІНЕТ
-                    </p>
+                    <span class="cabinet-label">
+                        ОГЛЯД
+                    </span>
 
-                    <h1 id="welcomeName">
-                        Вітаємо!
-                    </h1>
-
-                    <p>
-                        Керуйте своїм профілем та замовленнями
-                    </p>
+                    <h2 id="overviewTitle">
+                        Ваш акаунт
+                    </h2>
                 </div>
 
             </div>
 
 
-            <!-- Контент -->
-            <div id="cabinetContent">
+            <div class="cabinet-stats">
 
-                <div class="cabinet-loading">
-                    Завантаження...
-                </div>
+                <!-- ORDERS -->
+                <article class="cabinet-stat">
+
+                    <div class="cabinet-stat-icon">
+                        📦
+                    </div>
+
+                    <div>
+                        <span class="cabinet-stat-label">
+                            Замовлення
+                        </span>
+
+                        <strong id="ordersCount">
+                            —
+                        </strong>
+                    </div>
+
+                </article>
+
+
+                <!-- TOTAL -->
+                <article class="cabinet-stat">
+
+                    <div class="cabinet-stat-icon">
+                        ₴
+                    </div>
+
+                    <div>
+                        <span class="cabinet-stat-label">
+                            Витрачено
+                        </span>
+
+                        <strong id="ordersTotal">
+                            —
+                        </strong>
+                    </div>
+
+                </article>
+
+
+                <!-- ACCOUNT -->
+                <article class="cabinet-stat">
+
+                    <div class="cabinet-stat-icon">
+                        ●
+                    </div>
+
+                    <div>
+                        <span class="cabinet-stat-label">
+                            Статус акаунта
+                        </span>
+
+                        <strong class="cabinet-active-status">
+                            Активний
+                        </strong>
+                    </div>
+
+                </article>
 
             </div>
 
+        </section>
 
-            <!-- =========================
-                 ОСОБИСТІ ДАНІ
-            ========================== -->
 
-            <div class="cabinet-grid">
+        <!-- =================================================
+             MAIN CONTENT
+             ================================================= -->
 
-                <section class="cabinet-card">
+        <div class="cabinet-main-grid">
 
-                    <div class="cabinet-card-header">
 
-                        <div>
-                            <span class="cabinet-label">
-                                ПРОФІЛЬ
-                            </span>
+            <!-- =================================================
+                 PROFILE
+                 ================================================= -->
 
-                            <h2>
-                                Особисті дані
-                            </h2>
-                        </div>
+            <section
+                class="cabinet-card profile-card"
+                aria-labelledby="profileTitle"
+            >
 
-                        <div class="cabinet-card-icon">
-                            👤
-                        </div>
+                <div class="cabinet-card-header">
+
+                    <div>
+                        <span class="cabinet-label">
+                            ПРОФІЛЬ
+                        </span>
+
+                        <h2 id="profileTitle">
+                            Особисті дані
+                        </h2>
+                    </div>
+
+                    <div class="cabinet-card-icon">
+                        👤
+                    </div>
+
+                </div>
+
+
+                <div class="cabinet-info">
+
+                    <div class="cabinet-info-row">
+
+                        <span>
+                            Ім'я
+                        </span>
+
+                        <strong id="userName">
+                            —
+                        </strong>
 
                     </div>
 
 
-                    <div class="cabinet-info">
+                    <div class="cabinet-info-row">
 
-                        <div class="cabinet-info-row">
-                            <span>Ім'я</span>
-                            <strong id="userName">
-                                —
-                            </strong>
-                        </div>
+                        <span>
+                            Email
+                        </span>
 
-                        <div class="cabinet-info-row">
-                            <span>Email</span>
-                            <strong id="userEmail">
-                                —
-                            </strong>
-                        </div>
-
-                        <div class="cabinet-info-row">
-                            <span>Дата реєстрації</span>
-                            <strong id="userCreatedAt">
-                                —
-                            </strong>
-                        </div>
-
-                        <div class="cabinet-info-row">
-                            <span>Статус</span>
-
-                            <strong class="cabinet-status">
-                                <span></span>
-                                Авторизований
-                            </strong>
-                        </div>
+                        <strong id="userEmail">
+                            —
+                        </strong>
 
                     </div>
 
+
+                    <div class="cabinet-info-row">
+
+                        <span>
+                            Реєстрація
+                        </span>
+
+                        <strong id="userCreatedAt">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="cabinet-info-row">
+
+                        <span>
+                            Статус
+                        </span>
+
+                        <strong class="cabinet-status">
+                            <span></span>
+                            Активний
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="cabinet-card-actions">
 
                     <button
                         type="button"
+                        class="cabinet-button secondary"
                         id="editProfileButton"
-                        class="cabinet-button secondary">
-
-                        ✏️ Редагувати профіль
-
+                    >
+                        Редагувати профіль
                     </button>
 
-                </section>
+                </div>
+
+            </section>
 
 
-                <!-- =========================
-                     ЗАМОВЛЕННЯ
-                ========================== -->
 
-                <section class="cabinet-card">
+            <!-- =================================================
+                 ORDERS
+                 ================================================= -->
 
-                    <div class="cabinet-card-header">
+            <section
+                class="cabinet-card orders-card"
+                aria-labelledby="ordersTitle"
+            >
 
-                        <div>
-                            <span class="cabinet-label">
-                                ЗАМОВЛЕННЯ
-                            </span>
+                <div class="cabinet-card-header">
 
-                            <h2>
-                                Мої замовлення
-                            </h2>
-                        </div>
+                    <div>
+                        <span class="cabinet-label">
+                            ІСТОРІЯ
+                        </span>
 
-                        <div class="cabinet-card-icon">
-                            🛒
-                        </div>
-
+                        <h2 id="ordersTitle">
+                            Останні замовлення
+                        </h2>
                     </div>
 
+                    <div class="cabinet-card-icon">
+                        📦
+                    </div>
 
-                    <div
-                        id="ordersContent"
-                        class="orders-empty">
+                </div>
+
+
+                <!--
+                    ВАЖНО:
+                    cabinet.js вставляет сюда
+                    список заказов.
+                -->
+
+                <div id="ordersContent">
+
+                    <div class="orders-empty">
 
                         <div class="orders-empty-icon">
                             📦
@@ -190,40 +312,61 @@
 
                         <a
                             href="/pults-shop.html"
-                            class="cabinet-button">
-
+                            class="cabinet-button"
+                        >
                             Перейти до магазину
-
                         </a>
 
                     </div>
 
-                </section>
+                </div>
+
+            </section>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SETTINGS
+             ================================================= -->
+
+        <section
+            class="cabinet-card cabinet-settings"
+            aria-labelledby="settingsTitle"
+        >
+
+            <div class="cabinet-card-header">
+
+                <div>
+                    <span class="cabinet-label">
+                        АКАУНТ
+                    </span>
+
+                    <h2 id="settingsTitle">
+                        Налаштування
+                    </h2>
+                </div>
+
+                <div class="cabinet-card-icon">
+                    ⚙
+                </div>
 
             </div>
 
 
-            <!-- =========================
-                 НАСТРОЙКИ
-            ========================== -->
+            <div class="cabinet-settings-content">
 
-            <section class="cabinet-card cabinet-settings">
+                <div>
 
-                <div class="cabinet-card-header">
+                    <strong>
+                        Керування акаунтом
+                    </strong>
 
-                    <div>
-                        <span class="cabinet-label">
-                            НАЛАШТУВАННЯ
-                        </span>
-
-                        <h2>
-                            Акаунт
-                        </h2>
-                    </div>
-
-                    <div class="cabinet-card-icon">
-                        ⚙️
-                    </div>
+                    <p>
+                        Ви можете змінити дані профілю
+                        або вийти з акаунта на цьому пристрої.
+                    </p>
 
                 </div>
 
@@ -232,108 +375,134 @@
 
                     <button
                         type="button"
+                        class="cabinet-button secondary"
                         id="editProfileButtonBottom"
-                        class="cabinet-button secondary">
-
-                        ✏️ Редагувати профіль
-
+                    >
+                        Редагувати
                     </button>
-
 
                     <button
                         type="button"
+                        class="cabinet-button danger"
                         id="logoutButton"
-                        class="cabinet-button danger">
-
-                        🚪 Вийти з акаунта
-
+                    >
+                        Вийти з акаунта
                     </button>
 
                 </div>
 
-            </section>
+            </div>
+
+        </section>
+
+
+    </div>
+
+</main>
+<!-- =========================================================
+     EDIT PROFILE MODAL
+     ========================================================= -->
+
+<div class="profile-modal" id="profileModal">
+
+```
+<div class="profile-modal-overlay" id="profileModalOverlay"></div>
+
+<div class="profile-modal-window">
+
+    <div class="profile-modal-header">
+        <div>
+            <span class="cabinet-label">ПРОФІЛЬ</span>
+            <h2>Редагування профілю</h2>
+        </div>
+
+        <button
+            type="button"
+            class="profile-modal-close"
+            id="closeProfileModal"
+            aria-label="Закрити"
+        >
+            ×
+        </button>
+    </div>
+
+
+    <form id="profileForm">
+
+        <div class="profile-form-group">
+            <label for="profileName">
+                Ім'я
+            </label>
+
+            <input
+                type="text"
+                id="profileName"
+                name="name"
+                autocomplete="name"
+                required
+            >
+        </div>
+
+
+        <div class="profile-form-group">
+            <label for="profileEmail">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="profileEmail"
+                name="email"
+                autocomplete="email"
+                required
+            >
+        </div>
+
+
+        <div
+            class="profile-form-message"
+            id="profileFormMessage"
+        ></div>
+
+
+        <div class="profile-modal-actions">
+
+            <button
+                type="button"
+                class="cabinet-button secondary"
+                id="cancelProfileEdit"
+            >
+                Скасувати
+            </button>
+
+            <button
+                type="submit"
+                class="cabinet-button"
+                id="saveProfileButton"
+            >
+                Зберегти зміни
+            </button>
 
         </div>
 
-    </section>
+    </form>
 
-</main>
-
-
-<!-- =========================
-     FOOTER
-========================== -->
-
-<div id="footer-container"></div>
-
-
-<!-- =========================
-     JAVASCRIPT
-========================== -->
-
-<!-- Загальні скрипти сайту -->
-<script src="/js/main.js"></script>
-
-<!-- Логіка особистого кабінету -->
-<script src="/js/cabinet.js"></script>
-
-
-<!-- =========================
-     HEADER / FOOTER LOADER
-========================== -->
-
-<script>
-    document.addEventListener("DOMContentLoaded", async () => {
-
-        try {
-
-            const headerResponse = await fetch("/header.html");
-
-            if (headerResponse.ok) {
-
-                document.getElementById("header-container").innerHTML =
-                    await headerResponse.text();
-
-            }
-
-        } catch (error) {
-
-            console.error("Header loading error:", error);
-
-        }
-
-
-        try {
-
-            const footerResponse = await fetch("/footer.html");
-
-            if (footerResponse.ok) {
-
-                document.getElementById("footer-container").innerHTML =
-                    await footerResponse.text();
-
-            }
-
-        } catch (error) {
-
-            console.error("Footer loading error:", error);
-
-        }
-
-    });
-</script>
+</div>
 ```
 
-<script src="js/dropdown.js"></script>
-<script src="js/burger.js"></script>
-<script src="js/theme.js"></script>
+</div>
 
-<script src="js/cart-modal.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/product.js"></script>
+<div id="footer"></div>
 
-<script src="js/main.js"></script>
+<!-- =================================================
+     SCRIPTS
+     ================================================= -->
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
 
+<script src="/js/cabinet.js"></script>
+
+```
 
 </body>
 

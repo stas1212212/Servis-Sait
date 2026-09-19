@@ -826,3 +826,262 @@ VERY SMALL SCREENS
 
 
 }
+
+/* =========================================================
+EDIT PROFILE MODAL
+========================================================= */
+
+.profile-modal {
+position: fixed;
+inset: 0;
+z-index: 9999;
+
+
+display: none;
+align-items: center;
+justify-content: center;
+
+padding: 20px;
+
+
+}
+
+.profile-modal.active {
+display: flex;
+}
+
+/* Затемнение страницы */
+
+.profile-modal-overlay {
+position: absolute;
+inset: 0;
+
+
+
+background: rgba(0, 0, 0, 0.65);
+
+backdrop-filter: blur(4px);
+
+
+
+}
+
+/* Само окно */
+
+.profile-modal-window {
+position: relative;
+z-index: 1;
+
+
+width: 100%;
+max-width: 520px;
+
+background: #ffffff;
+border: 1px solid #e5e7eb;
+border-radius: 20px;
+
+padding: 28px;
+
+box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.25);
+
+animation: profileModalAppear 0.18s ease-out;
+
+
+}
+
+/* Заголовок */
+
+.profile-modal-header {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+
+
+gap: 20px;
+
+margin-bottom: 28px;
+
+
+}
+
+.profile-modal-header h2 {
+margin: 5px 0 0;
+
+
+font-size: 24px;
+line-height: 1.2;
+
+
+}
+
+/* Кнопка закрытия */
+
+.profile-modal-close {
+width: 38px;
+height: 38px;
+
+
+flex-shrink: 0;
+
+border: 0;
+border-radius: 10px;
+
+background: #f3f4f6;
+
+color: #111827;
+
+font-size: 25px;
+line-height: 1;
+
+cursor: pointer;
+
+transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+
+
+}
+
+.profile-modal-close:hover {
+background: #e5e7eb;
+transform: scale(1.04);
+}
+
+/* Поля */
+
+.profile-form-group {
+margin-bottom: 20px;
+}
+
+.profile-form-group label {
+display: block;
+
+
+margin-bottom: 8px;
+
+font-size: 14px;
+font-weight: 600;
+
+color: #374151;
+
+
+}
+
+.profile-form-group input {
+width: 100%;
+
+
+padding: 13px 15px;
+
+border: 1px solid #d1d5db;
+border-radius: 10px;
+
+background: #ffffff;
+
+color: #111827;
+
+font-size: 15px;
+
+outline: none;
+
+transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+
+}
+
+.profile-form-group input:focus {
+border-color: #111827;
+
+
+box-shadow:
+    0 0 0 3px rgba(17, 24, 39, 0.08);
+
+
+}
+
+/* Сообщение об ошибке / успехе */
+
+.profile-form-message {
+min-height: 20px;
+
+
+margin-bottom: 10px;
+
+font-size: 14px;
+line-height: 1.4;
+
+
+}
+
+.profile-form-message.error {
+color: #dc2626;
+}
+
+.profile-form-message.success {
+color: #15803d;
+}
+
+/* Кнопки */
+
+.profile-modal-actions {
+display: flex;
+
+
+justify-content: flex-end;
+
+gap: 10px;
+
+margin-top: 24px;
+
+
+}
+
+/* Анимация */
+
+@keyframes profileModalAppear {
+from {
+opacity: 0;
+transform: translateY(8px) scale(0.98);
+}
+
+
+to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+
+}
+
+/* Мобильные устройства */
+
+@media (max-width: 600px) {
+
+
+.profile-modal {
+    padding: 14px;
+}
+
+.profile-modal-window {
+    padding: 22px;
+
+    border-radius: 16px;
+}
+
+.profile-modal-header h2 {
+    font-size: 21px;
+}
+
+.profile-modal-actions {
+    flex-direction: column-reverse;
+}
+
+.profile-modal-actions .cabinet-button {
+    width: 100%;
+}
+
+
+}

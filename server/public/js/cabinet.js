@@ -1,25 +1,99 @@
 document.addEventListener("DOMContentLoaded", async () => {
+setupCabinetButtons();
+await loadCabinet();
+});
 
-const content = document.getElementById("cabinetContent");
+/* =========================================================
+CABINET
+========================================================= */
 
-const userName = document.getElementById("userName");
-const userEmail = document.getElementById("userEmail");
-const userCreatedAt = document.getElementById("userCreatedAt");
-const welcomeName = document.getElementById("welcomeName");
+async function loadCabinet() {
+try {
+const response = await fetch("/api/auth/me", {
+method: "GET",
+credentials: "same-origin",
+headers: {
+"Accept": "application/json"
+}
+});
 
-const logoutButton = document.getElementById("logoutButton");
+    if (!response.ok) {
 
-const editProfileButton = document.getElementById("editProfileButton");
-const editProfileButtonBottom = document.getElementById("editProfileButtonBottom");
+        handleUnauthorized();
+        return;
+
+    }
+
+    const data = await response.json();
+    if (!data.user) {
+
+        handleUnauthorized();
+        return;
+
+    }
+
+    const user = data.user;
+
+    /*
+     * Важно:
+     * cabinet.html уже содержит слово "Вітаємо,"
+     * поэтому сюда вставляем ТОЛЬКО имя.
+     */
+    setText("welcomeName", user.name || "користувачу");
+
+    setText("userName", user.name || "—");
+    setText("userEmail", user.email || "—");
+
+    if (user.created_at) {
+        setText(
+            "userCreatedAt",
+            formatDate(user.created_at)
+        );
+    } else {
+        setText("userCreatedAt", "—");
+    }
+
+    /*
+     * Загружаем заказы пользователя.
+     */
+    await loadOrders();
+
+    /*
+     * Убираем loading-блок после загрузки.
+     */
+    const loading = document.getElementById("cabinetContent");
+
+    if (loading) {
+        loading.style.display = "none";
+    }
+
+} catch (error) {
+    console.error("Cabinet loading error:", error);
+
+    const loading = document.getElementById("cabinetContent");
+
+    if (loading) {
+        loading.textContent =
+            "Не вдалося завантажити дані кабінету.";
+    }
+}
 
 
-// =========================================
-// ПОЛУЧЕНИЕ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ
-// =========================================
+}
+
+/* =========================================================
+ORDERS
+========================================================= */
+
+async function loadOrders() {
+const ordersContent =
+document.getElementById("ordersContent");
+
+
+if (!ordersContent) return;
 
 try {
-
-    const response = await fetch("/api/auth/me", {
+    const response = await fetch("/api/orders", {
         method: "GET",
         credentials: "same-origin",
         headers: {
@@ -27,196 +101,213 @@ try {
         }
     });
 
-
-    // Пользователь не авторизован
-    if (!response.ok) {
-
-        window.location.href = "/login.html";
+    if (response.status === 401) {
+        handleUnauthorized();
         return;
-
     }
 
+    if (!response.ok) {
+        showEmptyOrders();
+        updateOverview([]);
+        return;
+    }
 
     const data = await response.json();
 
+    /*
+     * Backend сейчас возвращает массив напрямую:
+     *
+     * [
+     *   {
+     *      id,
+     *      status,
+     *      total,
+     *      createdAt,
+     *      items
+     *   }
+     * ]
+     */
+    const orders = Array.isArray(data)
+        ? data
+        : Array.isArray(data.orders)
+            ? data.orders
+            : [];
 
-    if (!data.user) {
+    /*
+     * Считаем статистику кабинета.
+     */
+    updateOverview(orders);
 
-        window.location.href = "/login.html";
+    if (orders.length === 0) {
+        showEmptyOrders();
         return;
-
     }
 
-
-    const user = data.user;
-
-
-    // =========================================
-    // ИМЯ
-    // =========================================
-
-    const name = user.name || "Користувач";
-
-    if (welcomeName) {
-        welcomeName.textContent = `Вітаємо, ${name}!`;
-    }
-
-    if (userName) {
-        userName.textContent = name;
-    }
-
-
-    // =========================================
-    // EMAIL
-    // =========================================
-
-    if (userEmail) {
-        userEmail.textContent = user.email || "—";
-    }
-
-
-    // =========================================
-    // ДАТА РЕЄСТРАЦІЇ
-    // =========================================
-
-    if (userCreatedAt) {
-
-        if (user.created_at) {
-
-            const date = new Date(user.created_at);
-
-            if (!Number.isNaN(date.getTime())) {
-
-                userCreatedAt.textContent =
-                    date.toLocaleDateString("uk-UA", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric"
-                    });
-
-            } else {
-
-                userCreatedAt.textContent = "—";
-
-            }
-
-        } else {
-
-            userCreatedAt.textContent = "—";
-
-        }
-
-    }
-
-
-    // =========================================
-    // УСПІШНЕ ЗАВАНТАЖЕННЯ
-    // =========================================
-
-    if (content) {
-        content.innerHTML = "";
-    }
-
-
-    // =========================================
-    // ЗАМОВЛЕННЯ
-    // =========================================
-
-    await loadOrders(user);
-
+    renderOrders(orders);
 
 } catch (error) {
+    console.error("Orders loading error:", error);
 
-    console.error("Cabinet error:", error);
-
-
-    if (content) {
-
-        content.innerHTML = `
-            <div class="cabinet-card">
-                <p>
-                    Не вдалося завантажити дані акаунта.
-                </p>
-            </div>
-        `;
-
-    }
-
+    updateOverview([]);
+    showEmptyOrders();
 }
 
 
-// =========================================
-// ВИХІД З АКАУНТА
-// =========================================
+}
 
-if (logoutButton) {
+/* =========================================================
+OVERVIEW
+========================================================= */
 
-    logoutButton.addEventListener("click", async () => {
+function updateOverview(orders) {
+    const ordersCount = document.getElementById("ordersCount");
+    const ordersTotal = document.getElementById("ordersTotal");
 
-        const originalText = logoutButton.textContent;
+    const count = orders.length;
+    const total = orders.reduce((sum, order) => {
+        const orderTotal = Number(order.total);
 
-        logoutButton.disabled = true;
-        logoutButton.textContent = "Вихід...";
-
-
-        try {
-
-            const response = await fetch("/api/auth/logout", {
-
-                method: "POST",
-
-                credentials: "same-origin",
-
-                headers: {
-                    "Accept": "application/json"
-                }
-
-            });
-
-
-            if (!response.ok) {
-                throw new Error("Logout failed");
-            }
-
-
-            // Переходимо на сторінку входу
-            window.location.href = "/login.html";
-
-
-        } catch (error) {
-
-            console.error("Logout error:", error);
-
-            alert("Не вдалося вийти з акаунта");
-
-            logoutButton.disabled = false;
-            logoutButton.textContent = originalText;
-
+        if (!Number.isFinite(orderTotal)) {
+            return sum;
         }
 
-    });
+        return sum + orderTotal;
+    }, 0);
 
+    if (ordersCount) {
+        ordersCount.textContent = String(count);
+    }
+
+    if (ordersTotal) {
+        ordersTotal.textContent = `${formatMoney(total)} ₴`;
+    }
 }
 
+/* =========================================================
+RENDER ORDERS
+========================================================= */
 
-// =========================================
-// РЕДАГУВАННЯ ПРОФІЛЮ
-// =========================================
+function renderOrders(orders) {
+    const ordersContent = document.getElementById("ordersContent");
 
-function editProfile() {
+    if (!ordersContent) return;
 
-    alert(
-        "Редагування профілю ми підключимо наступним етапом."
+    ordersContent.innerHTML = orders
+        .map((order) => {
+            const orderId = escapeHtml(order.id ?? "—");
+            const status = formatOrderStatus(order.status);
+            const createdAt = order.createdAt || order.created_at;
+            const date = createdAt ? formatDate(createdAt) : "—";
+            const total = Number(order.total);
+            const formattedTotal = Number.isFinite(total)
+                ? `${formatMoney(total)} ₴`
+                : "—";
+            const items = Array.isArray(order.items) ? order.items : [];
+            const itemsHtml = items.length > 0
+                ? items.map(renderOrderItem).join("")
+                : `
+                    <div class="cabinet-order-item">
+                        <div>
+                            <strong>Товари не знайдено</strong>
+                        </div>
+                    </div>
+                `;
+
+            return `
+                <article class="cabinet-order">
+                    <div class="cabinet-order-info">
+                        <div>
+                            <strong>Замовлення #${orderId}</strong>
+                            <span>Статус: ${status}</span>
+                            <span>Дата: ${escapeHtml(date)}</span>
+                        </div>
+                        <strong>${formattedTotal}</strong>
+                    </div>
+
+                    <div class="cabinet-order-items">
+                        <h4>Товари</h4>
+                        ${itemsHtml}
+                    </div>
+                </article>
+            `;
+        })
+        .join("");
+}
+
+/* =========================================================
+ORDER ITEM
+========================================================= */
+
+function renderOrderItem(item) {
+    const itemName = item.name ?? item.title ?? item.productName ?? "Товар";
+    const quantity = item.qty ?? item.quantity ?? 1;
+    const numericPrice = Number(item.price);
+    const price = Number.isFinite(numericPrice)
+        ? `${formatMoney(numericPrice)} ₴`
+        : "—";
+
+    return `
+        <div class="cabinet-order-item">
+            <div>
+                <strong>${escapeHtml(itemName)}</strong>
+                <span>Кількість: ${escapeHtml(quantity)}</span>
+            </div>
+            <strong>${price}</strong>
+        </div>
+    `;
+}
+
+/* =========================================================
+EMPTY ORDERS
+========================================================= */
+
+function showEmptyOrders() {
+    const ordersContent = document.getElementById("ordersContent");
+
+    if (!ordersContent) return;
+
+    ordersContent.innerHTML = `
+        <div class="orders-empty">
+            <div class="orders-empty-icon">📦</div>
+            <h3>Замовлень поки немає</h3>
+            <p>Тут з'являться ваші замовлення, коли ви щось придбаєте.</p>
+            <a href="/pults-shop.html" class="cabinet-button">Перейти до магазину</a>
+        </div>
+    `;
+}
+
+/* =========================================================
+BUTTONS
+========================================================= */
+
+function setupCabinetButtons() {
+
+
+const logoutButton =
+    document.getElementById("logoutButton");
+
+if (logoutButton) {
+    logoutButton.addEventListener(
+        "click",
+        logout
     );
-
 }
+
+
+const editProfileButton =
+    document.getElementById("editProfileButton");
+
+const editProfileButtonBottom =
+    document.getElementById(
+        "editProfileButtonBottom"
+    );
 
 
 if (editProfileButton) {
 
     editProfileButton.addEventListener(
         "click",
-        editProfile
+        openEditProfile
     );
 
 }
@@ -226,327 +317,424 @@ if (editProfileButtonBottom) {
 
     editProfileButtonBottom.addEventListener(
         "click",
-        editProfile
+        openEditProfile
     );
 
 }
 
-});
- 
 
-// =========================================
-// ЗАВАНТАЖЕННЯ ЗАМОВЛЕНЬ
-// =========================================
+/*
+ * Кнопки модального окна
+ */
 
-async function loadOrders(user) {
+const closeProfileModal =
+    document.getElementById(
+        "closeProfileModal"
+    );
 
-    const ordersContent =
-        document.getElementById("ordersContent");
+const cancelProfileEdit =
+    document.getElementById(
+        "cancelProfileEdit"
+    );
+
+const profileModalOverlay =
+    document.getElementById(
+        "profileModalOverlay"
+    );
 
 
-    if (!ordersContent) {
-        return;
-    }
+if (closeProfileModal) {
+    closeProfileModal.addEventListener(
+        "click",
+        closeEditProfile
+    );
+}
 
 
+if (cancelProfileEdit) {
+    cancelProfileEdit.addEventListener(
+        "click",
+        closeEditProfile
+    );
+}
+
+
+if (profileModalOverlay) {
+    profileModalOverlay.addEventListener(
+        "click",
+        closeEditProfile
+    );
+}
+
+
+}
+
+const profileForm =
+document.getElementById("profileForm");
+
+if (profileForm) {
+profileForm.addEventListener(
+"submit",
+saveProfile
+);
+}
+
+
+/* =========================================================
+LOGOUT
+========================================================= */
+
+async function logout() {
     try {
-
-        const response = await fetch(
-            "/api/orders",
-            {
-                method: "GET",
-                credentials: "same-origin",
-                headers: {
-                    "Accept": "application/json"
-                }
+        const response = await fetch("/api/auth/logout", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                Accept: "application/json"
             }
-        );
-
-
-        if (response.status === 404) {
-
-            showEmptyOrders();
-
-            return;
-
-        }
-
+        });
 
         if (!response.ok) {
-
-            showEmptyOrders();
-
-            return;
-
+            throw new Error("Не вдалося вийти з акаунта");
         }
 
-
-        const data = await response.json();
-
-
-        // API повертає масив замовлень напряму
-        const orders = Array.isArray(data)
-            ? data
-            : Array.isArray(data.orders)
-                ? data.orders
-                : [];
-
-
-        if (orders.length === 0) {
-
-            showEmptyOrders();
-
-            return;
-
-        }
-
-
-        renderOrders(orders);
-
-
+        window.location.href = "/login.html";
     } catch (error) {
-
-        console.error(
-            "Orders loading error:",
-            error
-        );
-
-        showEmptyOrders();
-
+        console.error("Logout error:", error);
+        alert(error.message || "Помилка виходу з акаунта");
     }
 
 }
 
-// =========================================
-// ПОКАЗАТИ "ЗАМОВЛЕНЬ НЕМАЄ"
-// =========================================
+/* =========================================================
+EDIT PROFILE
+========================================================= */
 
-function showEmptyOrders() {
+function openEditProfile() {
 
-const ordersContent =
-    document.getElementById("ordersContent");
+const modal =
+    document.getElementById("profileModal");
+
+const profileName =
+    document.getElementById("profileName");
+
+const profileEmail =
+    document.getElementById("profileEmail");
+
+const userName =
+    document.getElementById("userName");
+
+const userEmail =
+    document.getElementById("userEmail");
 
 
-if (!ordersContent) {
+if (!modal) return;
+
+
+/*
+ * Заполняем форму текущими данными
+ */
+
+if (profileName && userName) {
+    profileName.value =
+        userName.textContent.trim();
+}
+
+
+if (profileEmail && userEmail) {
+    profileEmail.value =
+        userEmail.textContent.trim();
+}
+
+
+/*
+ * Очищаем старое сообщение
+ */
+
+const message =
+    document.getElementById(
+        "profileFormMessage"
+    );
+
+if (message) {
+    message.textContent = "";
+    message.className =
+        "profile-form-message";
+}
+
+
+/*
+ * Показываем модальное окно
+ */
+
+modal.classList.add("active");
+
+
+/*
+ * Ставим курсор сразу в поле имени
+ */
+
+if (profileName) {
+    profileName.focus();
+}
+
+}
+
+function closeEditProfile() {
+
+const modal =
+    document.getElementById("profileModal");
+
+if (!modal) return;
+
+modal.classList.remove("active");
+
+}
+
+async function saveProfile(event) {
+
+
+event.preventDefault();
+
+
+const nameInput =
+    document.getElementById("profileName");
+
+const emailInput =
+    document.getElementById("profileEmail");
+
+const message =
+    document.getElementById(
+        "profileFormMessage"
+    );
+
+const saveButton =
+    document.getElementById(
+        "saveProfileButton"
+    );
+
+
+if (!nameInput || !emailInput) {
     return;
 }
 
 
-ordersContent.innerHTML = `
+const name =
+    nameInput.value.trim();
 
-    <div class="orders-empty-icon">
-        📦
-    </div>
+const email =
+    emailInput.value.trim().toLowerCase();
 
-    <h3>
-        Замовлень поки немає
-    </h3>
 
-    <p>
-        Тут з'являться ваші замовлення,
-        коли ви щось придбаєте.
-    </p>
+if (!name || !email) {
 
-    <a
-        href="/pults-shop.html"
-        class="cabinet-button">
+    if (message) {
+        message.textContent =
+            "Заповніть усі поля";
 
-        Перейти до магазину
+        message.className =
+            "profile-form-message error";
+    }
 
-    </a>
-
-`;
-
+    return;
 }
 
-// =========================================
-// ВІДОБРАЖЕННЯ ЗАМОВЛЕНЬ
-// =========================================
 
-function renderOrders(orders) {
+/*
+ * Блокируем кнопку во время запроса
+ */
 
-    const ordersContent =
-        document.getElementById("ordersContent");
+if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent =
+        "Збереження...";
+}
 
 
-    if (!ordersContent) {
-        return;
+if (message) {
+    message.textContent = "";
+    message.className =
+        "profile-form-message";
+}
+
+
+try {
+
+    const response = await fetch(
+        "/api/auth/profile",
+        {
+            method: "PUT",
+
+            credentials: "same-origin",
+
+            headers: {
+                "Content-Type":
+                    "application/json",
+
+                "Accept":
+                    "application/json"
+            },
+
+            body: JSON.stringify({
+                name: name,
+                email: email
+            })
+        }
+    );
+
+
+    const data =
+        await response.json();
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.message ||
+            "Не вдалося оновити профіль"
+        );
     }
 
 
-    ordersContent.innerHTML = "";
+    /*
+     * Обновляем данные на странице
+     */
+
+    setText(
+        "userName",
+        data.user.name
+    );
+
+    setText(
+        "userEmail",
+        data.user.email
+    );
+
+    setText(
+        "welcomeName",
+        data.user.name
+    );
 
 
-    orders.forEach(order => {
+    /*
+     * Показываем успешное сообщение
+     */
 
-        const orderElement =
-            document.createElement("div");
+    if (message) {
 
+        message.textContent =
+            "Профіль успішно оновлено";
 
-        orderElement.className =
-            "cabinet-order";
-
-
-        const orderNumber =
-            escapeHtml(
-                String(order.id ?? "—")
-            );
+        message.className =
+            "profile-form-message success";
+    }
 
 
-        const status =
-            escapeHtml(
-                String(order.status ?? "Створено")
-            );
+    /*
+     * Закрываем окно через небольшую паузу,
+     * чтобы пользователь увидел сообщение.
+     */
+
+    setTimeout(() => {
+        closeEditProfile();
+    }, 700);
 
 
-        const total =
-            escapeHtml(
-                String(order.total ?? "—")
-            );
+} catch (error) {
+
+    console.error(
+        "Profile update error:",
+        error
+    );
 
 
-        const createdAt =
-            order.createdAt
-                ? new Date(order.createdAt)
-                    .toLocaleString("uk-UA")
-                : "—";
+    if (message) {
 
+        message.textContent =
+            error.message ||
+            "Помилка оновлення профілю";
 
-        const safeCreatedAt =
-            escapeHtml(createdAt);
+        message.className =
+            "profile-form-message error";
+    }
 
+} finally {
 
-        // Товари замовлення
-        const items =
-            Array.isArray(order.items)
-                ? order.items
-                : [];
+    if (saveButton) {
 
+        saveButton.disabled = false;
 
-        const itemsHtml =
-            items.length > 0
+        saveButton.textContent =
+            "Зберегти зміни";
+    }
+}
 
-                ? items.map(item => {
-
-                    const itemName =
-                        escapeHtml(
-                            String(
-                                item.name ??
-                                item.title ??
-                                item.productName ??
-                                "Товар"
-                            )
-                        );
-
-
-                    const quantity =
-                        escapeHtml(
-                            String(
-                                item.quantity ??
-                                1
-                            )
-                        );
-
-
-                    const price =
-                        escapeHtml(
-                            String(
-                                item.price ??
-                                "—"
-                            )
-                        );
-
-
-                    return `
-                        <div class="cabinet-order-item">
-
-                            <div>
-                                <strong>
-                                    ${itemName}
-                                </strong>
-
-                                <span>
-                                    Кількість: ${quantity}
-                                </span>
-                            </div>
-
-                            <strong>
-                                ${price} грн
-                            </strong>
-
-                        </div>
-                    `;
-
-                }).join("")
-
-                : `
-                    <p>
-                        Товарів у замовленні немає.
-                    </p>
-                `;
-
-
-        orderElement.innerHTML = `
-
-            <div class="cabinet-order-info">
-
-                <div>
-
-                    <strong>
-                        Замовлення #${orderNumber}
-                    </strong>
-
-                    <span>
-                        Статус: ${status}
-                    </span>
-
-                    <span>
-                        Дата: ${safeCreatedAt}
-                    </span>
-
-                </div>
-
-                <strong>
-                    ${total} грн
-                </strong>
-
-            </div>
-
-
-            <div class="cabinet-order-items">
-
-                <h4>
-                    Товари
-                </h4>
-
-                ${itemsHtml}
-
-            </div>
-
-        `;
-
-
-        ordersContent.appendChild(
-            orderElement
-        );
-
-    });
 
 }
 
 
-// =========================================
-// ЗАХИСТ ВІД HTML-ІН'ЄКЦІЙ
-// =========================================
+/* =========================================================
+UNAUTHORIZED
+========================================================= */
+
+function handleUnauthorized() {
+    window.location.href = "/login.html";
+}
+
+/* =========================================================
+HELPERS
+========================================================= */
+
+function setText(id, value) {
+    const element = document.getElementById(id);
+
+    if (!element) return;
+
+    element.textContent = value;
+}
+
+function formatDate(value) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "—";
+    }
+
+    return date.toLocaleDateString("uk-UA", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+}
+
+function formatMoney(value) {
+    const number = Number(value);
+
+    if (!Number.isFinite(number)) {
+        return "0";
+    }
+
+    return number.toLocaleString("uk-UA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+function formatOrderStatus(status) {
+    const statuses = {
+        pending: "Очікує обробки",
+        processing: "В обробці",
+        shipping: "В дорозі",
+        delivered: "Доставлено",
+        canceled: "Скасовано",
+        cancelled: "Скасовано"
+    };
+
+    return escapeHtml(statuses[status] || status || "Невідомий статус");
+}
 
 function escapeHtml(value) {
-
-const div =
-    document.createElement("div");
-
-div.textContent =
-    value ?? "";
-
-return div.innerHTML;
-
+    const div = document.createElement("div");
+    div.textContent = String(value ?? "");
+    return div.innerHTML;
 }
