@@ -1,23 +1,17 @@
 <!DOCTYPE html>
 <html lang="uk">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Ремонт телевізорів | PULT+</title>
 
     <link rel="stylesheet" href="css/style.css">
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/cart-modal.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="css/cart-modal.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -26,553 +20,233 @@
 
 <main>
 
-<section class="hero">
+    <section class="hero">
+        <div class="container hero-container">
 
-    <div class="container hero-container">
+            <div class="hero-text">
+                <div class="hero-icon">📺</div>
 
-        <div class="hero-text">
+                <h1>Ремонт телевізорів</h1>
 
-            <span class="hero-icon">
-
-                📺
-
-            </span>
-
-            <h1>
-
-                Ремонт телевізорів
-
-            </h1>
-
-            <p>
-
-                Виконуємо професійний ремонт телевізорів Samsung, LG,
-                Sony, Philips, TCL, Hisense та інших брендів.
-                Заміна підсвітки, ремонт материнських плат,
-                блоків живлення та Smart TV.
-
-            </p>
-
-            <a href="#repairForm" class="hero-button">
-
-                Оформити заявку
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section class="tv-section">
-
-<div class="container tv-layout">
-
-<div class="tv-preview">
-
-<div class="preview-card">
-
-<img
-id="tvImage"
-src="png/Samsung.webp"
-alt="Телевізор">
-
-</div>
-
-<h2 id="brandTitle">
-
-Samsung
-
-</h2>
-
-<div class="brand-selector">
-
-<button
-class="brand active"
-data-brand="Samsung"
-data-image="png/Samsung.webp">
-
-Samsung
-
-</button>
-
-<button
-    class="brand"
-    data-brand="LG"
-    data-image="png/LG.jpg">
-    LG
-</button>
-
-<button
-class="brand"
-data-brand="Sony"
-data-image="png/Sony.webp">
-
-Sony
-
-</button>
-
-<button
-class="brand"
-data-brand="Philips"
-data-image="png/Philips.webp">
-
-Philips
-
-</button>
-
-<button
-class="brand"
-data-brand="TCL"
-data-image="png/TCL.webp">
-
-TCL
-
-</button>
-
-<button
-class="brand"
-data-brand="Hisense"
-data-image="png/Hisense.webp">
-
-Hisense
-
-</button>
-
-<button
-class="brand"
-data-brand="Інший"
-data-image="https://cdn-icons-png.flaticon.com/512/1041/1041916.png">
-
-Інший
-
-</button>
-
-</div>
-
-</div>
-
-<div class="repair-form-card" id="repairForm">
-
-<h2>
-
-Анкета ремонту
-
-</h2>
-
-<form id="tvRepairForm">
-
-<div class="input-group">
-
-<label>
-
-Ваше ім'я
-
-</label>
-
-<input
-type="text"
-name="name"
-placeholder="Введіть ім'я"
-required>
-
-</div>
-
-<div class="input-group">
-
-<label>
-
-Телефон
-
-</label>
-
-<input
-type="tel"
-name="phone"
-placeholder="+380..."
-required>
-
-</div>
-
-<div class="input-group">
-
-<label>
-
-Email
-
-</label>
-
-<input
-type="email"
-name="email"
-placeholder="mail@example.com">
-
-</div>
-
-<div class="input-group">
-
-<label>
-
-Бренд телевізора
-
-</label>
-
-<input
-id="selectedBrand"
-type="text"
-value="Samsung"
-readonly>
-
-</div>
-
-<div class="input-group">
-
-<label>
-
-Модель телевізора
-
-</label>
-
-<input
-type="text"
-name="model"
-placeholder="UE55DU7100">
-
-</div>
-
-<div class="input-group">
-
-<label>
-
-Комплектація
-
-</label>
-
-<select name="equipment">
-
-<option>Лише телевізор</option>
-<option>Телевізор + пульт</option>
-<option>Телевізор + кабелі</option>
-<option>Повний комплект</option>
-
-</select>
-
-</div>
-
-<div class="input-group">
-
-<label>
-
-Тип ремонту
-
-</label>
-
-<select name="repair">
-
-<option>
-
-Максимально бюджетний
-
-</option>
-
-<option>
-
-Оригінальні комплектуючі
-
-</option>
-
-<option>
-
-Порадьте найкращий варіант
-
-</option>
-
-</select>
-
-</div>
-
-<div class="input-group">
-
-<label>
-
-Тип телевізора
-
-</label>
-
-<select name="type">
-
-<option>LED</option>
-<option>QLED</option>
-<option>OLED</option>
-<option>NanoCell</option>
-<option>Mini LED</option>
-<option>Smart TV</option>
-<option>Не знаю</option>
-
-</select>
-
-</div>
-
-<div class="input-group">
-
-<label>
-
-Як виникла несправність?
-
-</label>
-
-<textarea
-rows="4"
-name="history"
-placeholder="Після перепаду напруги, удару, транспортування, потрапляння води або без видимої причини..."></textarea>
-
-</div>
-
-
-
-<div class="input-group">
-
-<label>
-
-Яка несправність?
-
-</label>
-
-<textarea
-rows="4"
-name="problem"
-placeholder="Не вмикається, немає зображення, звук є, екран чорний..."></textarea>
-
-</div>
-
-<button
-type="submit"
-class="submit-button">
-
-Надіслати заявку
-
-</button>
-
-</main>
-</body>
-</html>
-
-
-
-</form>
-
-</div>
-
-</div>
-
-</section>
-
-        <!-- ========================= -->
-<!-- HOW IT WORKS -->
-<!-- ========================= -->
-
-<section class="max-w-7xl mx-auto px-6 py-24">
-
-    <div class="text-center mb-16">
-
-        <span class="text-sm uppercase tracking-[0.3em] text-gray-400">
-
-            Як це працює
-
-        </span>
-
-        <h2 class="text-4xl font-bold mt-4">
-
-            Всього 4 простих кроки
-
-        </h2>
-
-    </div>
-
-    <div class="grid md:grid-cols-4 gap-8">
-
-        <div class="bg-white rounded-3xl p-8 shadow-sm">
-
-            <div class="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center text-xl font-bold mb-6">
-
-                1
-
-            </div>
-
-            <h3 class="text-xl font-semibold mb-3">
-
-                Залишаєте заявку
-
-            </h3>
-
-            <p class="text-gray-500 leading-7">
-
-                Заповнюєте форму або телефонуєте нам.
-
-            </p>
-
-        </div>
-
-        <div class="bg-white rounded-3xl p-8 shadow-sm">
-
-            <div class="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center text-xl font-bold mb-6">
-
-                2
-
-            </div>
-
-            <h3 class="text-xl font-semibold mb-3">
-
-                Діагностика
-
-            </h3>
-
-            <p class="text-gray-500 leading-7">
-
-                Перевіряємо пульт та повідомляємо вартість ремонту.
-
-            </p>
-
-        </div>
-
-        <div class="bg-white rounded-3xl p-8 shadow-sm">
-
-            <div class="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center text-xl font-bold mb-6">
-
-                3
-
-            </div>
-
-            <h3 class="text-xl font-semibold mb-3">
-
-                Ремонт
-
-            </h3>
-
-            <p class="text-gray-500 leading-7">
-
-                Виконуємо ремонт після вашого погодження.
-
-            </p>
-
-        </div>
-
-        <div class="bg-white rounded-3xl p-8 shadow-sm">
-
-            <div class="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center text-xl font-bold mb-6">
-
-                4
-
-            </div>
-
-            <h3 class="text-xl font-semibold mb-3">
-
-                Готово
-
-            </h3>
-
-            <p class="text-gray-500 leading-7">
-
-                Ви отримуєте повністю перевірений пульт із гарантією.
-
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ========================= -->
-<!-- WHY US -->
-<!-- ========================= -->
-
-<section class="bg-black text-white py-24">
-
-    <div class="max-w-7xl mx-auto px-6">
-
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-
-            <div>
-
-                <h2 class="text-5xl font-bold leading-tight mb-8">
-
-                    Чому обирають саме PULT+?
-
-                </h2>
-
-                <p class="text-gray-300 text-lg leading-8">
-
-                    Ми спеціалізуємося саме на ремонті електроніки та пультів.
-                    Маємо власний склад комплектуючих та сучасне обладнання.
-
+                <p>
+                    Професійний ремонт телевізорів будь-яких брендів.
+                    Діагностика, заміна комплектуючих та усунення несправностей.
                 </p>
 
+                <a href="#repairForm" class="hero-button">
+                    Оформити заявку
+                </a>
             </div>
 
-            <div class="grid grid-cols-2 gap-6">
+        </div>
+    </section>
 
-                <div class="bg-white/10 rounded-3xl p-8">
 
-                    <div class="text-4xl font-bold">
+    <section class="phone-section">
+        <div class="container phone-layout">
 
-                        1000+
+            <div class="phone-preview">
+
+                <div class="preview-card">
+
+                    <div class="preview-image">
+                        <img
+                            id="tvImage"
+                            src="png/LG.png"
+                            alt="Телевізор"
+                        >
+                    </div>
+
+                    <h2 id="tvBrandTitle">Телевізор</h2>
+
+                    <p>
+                        Оберіть бренд вашого телевізора
+                    </p>
+
+                    <div class="brand-selector">
+
+                        <button type="button" class="brand-button active" data-brand="Samsung">
+                            Samsung
+                        </button>
+
+                        <button type="button" class="brand-button" data-brand="LG">
+                            LG
+                        </button>
+
+                        <button type="button" class="brand-button" data-brand="Sony">
+                            Sony
+                        </button>
+
+                        <button type="button" class="brand-button" data-brand="Philips">
+                            Philips
+                        </button>
+
+                        <button type="button" class="brand-button" data-brand="Xiaomi">
+                            Xiaomi
+                        </button>
+
+                        <button type="button" class="brand-button" data-brand="TCL">
+                            TCL
+                        </button>
+
+                        <button type="button" class="brand-button" data-brand="Hisense">
+                            Hisense
+                        </button>
+
+                        <button type="button" class="brand-button" data-brand="Інший">
+                            Інший
+                        </button>
 
                     </div>
 
-                    <p class="mt-3 text-gray-300">
+                </div>
 
-                        Відремонтованих пультів
+            </div>
 
+
+            <div class="repair-form-card" id="repairForm">
+
+                <div class="form-header">
+                    <span>01</span>
+
+                    <div>
+                        <h2>Заявка на ремонт</h2>
+
+                        <p>
+                            Заповніть форму і ми зв'яжемося з вами
+                        </p>
+                    </div>
+                </div>
+                <form id="tvRepairForm" class="repair-form">
+                    <input type="hidden" id="selectedBrand" name="brand" value="Samsung">
+
+                    <div class="form-group">
+                        <label for="name">Ваше ім'я *</label>
+                        <input type="text" id="name" name="name" placeholder="Введіть ім'я" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Телефон *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+380 XX XXX XX XX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="example@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model">Модель телевізора</label>
+                        <input type="text" id="model" name="model" placeholder="Наприклад: UE55AU7100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repair_type">Тип ремонту</label>
+                        <select id="repair_type" name="repair_type">
+                            <option value="">Оберіть тип ремонту</option>
+                            <option value="Діагностика">Діагностика</option>
+                            <option value="Ремонт плати">Ремонт плати</option>
+                            <option value="Заміна підсвітки">Заміна підсвітки</option>
+                            <option value="Заміна матриці">Заміна матриці</option>
+                            <option value="Ремонт живлення">Ремонт живлення</option>
+                            <option value="Ремонт HDMI">Ремонт HDMI</option>
+                            <option value="Інше">Інше</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="problem">Опис несправності *</label>
+                        <textarea id="problem" name="problem" placeholder="Опишіть, що сталося з телевізором" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="history">Історія ремонту</label>
+                        <textarea id="history" name="history" placeholder="Чи ремонтували телевізор раніше?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Відправити заявку</button>
+                </form>
+                </div>
+
+        </div>
+    </section>
+
+
+    <section class="phone-section">
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>02</span>
+
+                <div>
+                    <h2>Як проходить ремонт</h2>
+
+                    <p>
+                        Простий процес від заявки до готового телевізора
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="steps-grid">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <h3>Заявка</h3>
+
+                    <p>
+                        Ви залишаєте заявку через сайт або зв'язуєтесь з нами телефоном.
                     </p>
 
                 </div>
 
-                <div class="bg-white/10 rounded-3xl p-8">
 
-                    <div class="text-4xl font-bold">
+                <div class="step-card">
 
-                        95%
-
+                    <div class="step-number">
+                        02
                     </div>
 
-                    <p class="mt-3 text-gray-300">
+                    <h3>Діагностика</h3>
 
-                        Успішних ремонтів
-
+                    <p>
+                        Майстер перевіряє телевізор та визначає причину несправності.
                     </p>
 
                 </div>
 
-                <div class="bg-white/10 rounded-3xl p-8">
 
-                    <div class="text-4xl font-bold">
+                <div class="step-card">
 
-                        1 день
-
+                    <div class="step-number">
+                        03
                     </div>
 
-                    <p class="mt-3 text-gray-300">
+                    <h3>Ремонт</h3>
 
-                        Середній час ремонту
-
+                    <p>
+                        Після погодження виконуємо необхідний ремонт або заміну комплектуючих.
                     </p>
 
                 </div>
 
-                <div class="bg-white/10 rounded-3xl p-8">
 
-                    <div class="text-4xl font-bold">
+                <div class="step-card">
 
-                        ✔
-
+                    <div class="step-number">
+                        04
                     </div>
 
-                    <p class="mt-3 text-gray-300">
+                    <h3>Перевірка</h3>
 
-                        Гарантія на роботи
-
+                    <p>
+                        Перевіряємо роботу телевізора та передаємо його вам.
                     </p>
 
                 </div>
@@ -580,23 +254,136 @@ class="submit-button">
             </div>
 
         </div>
+    </section>
 
-    </div>
 
-</section>
+    <section class="dark-section">
+
+        <div class="container">
+
+            <div class="section-title light">
+
+                <span>03</span>
+
+                <div>
+                    <h2>Чому PULT+</h2>
+
+                    <p>
+                        Надійний ремонт електроніки з увагою до деталей
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <strong>10+</strong>
+
+                    <span>
+                        років досвіду
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <strong>1000+</strong>
+
+                    <span>
+                        виконаних ремонтів
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <strong>7</strong>
+
+                    <span>
+                        основних брендів
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <strong>100%</strong>
+
+                    <span>
+                        перевірка після ремонту
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
 
 
 <div id="footer"></div>
 
-</main>
 
-<!-- Модули -->
 <script src="js/dropdown.js"></script>
 <script src="js/burger.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/cart.js"></script>
-<!-- Основной -->
 <script src="js/main.js"></script>
+<script src="js/tv.js"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const buttons = document.querySelectorAll(".brand-button");
+    const image = document.getElementById("tvImage");
+    const title = document.getElementById("tvBrandTitle");
+    const selectedBrand = document.getElementById("selectedBrand");
+
+    const images = {
+        Samsung: "png/samsung-tv.png",
+        LG: "png/lg-tv.png",
+        Sony: "png/sony-tv.png",
+        Philips: "png/philips-tv.png",
+        Xiaomi: "png/xiaomi-tv.png",
+        TCL: "png/tcl-tv.png",
+        Hisense: "png/hisense-tv.png",
+        "Інший": "png/tv.png"
+    };
+
+    buttons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const brand = button.dataset.brand;
+
+            buttons.forEach(item => {
+                item.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            selectedBrand.value = brand;
+            title.textContent = brand === "Інший"
+                ? "Телевізор"
+                : brand;
+
+            image.src = images[brand] || "png/tv.png";
+        });
+
+    });
+
+});
+</script>
 
 </body>
 </html>

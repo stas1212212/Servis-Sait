@@ -1,0 +1,132 @@
+const express = require("express");
+const pool = require("../db");
+
+const router = express.Router();
+
+router.post("/", async (req, res) => {
+    try {
+        const {
+            name,
+            phone,
+            email,
+            device_type,
+            brand,
+            model,
+            issue,
+            issue_cause,
+            repair_type
+        } = req.body;
+
+        if (!name || !phone || !device_type || !issue) {
+            return res.status(400).json({
+                message: "Заповніть обов'язкові поля"
+            });
+        }
+
+        const cleanName = name.trim();
+        const cleanPhone = phone.trim();
+        const cleanEmail = email
+            ? email.trim().toLowerCase()
+            : null;
+
+        const cleanDeviceType = device_type.trim();
+        const cleanBrand = brand ? brand.trim() : null;
+        const cleanModel = model ? model.trim() : null;
+        const cleanIssue = issue.trim();
+        const cleanIssueCause = issue_cause
+            ? issue_cause.trim()
+            : null;
+        const cleanRepairType = repair_type
+            ? repair_type.trim()
+            : null;
+
+        if (cleanName.length < 2) {
+            return res.status(400).json({
+                message: "Введіть коректне ім'я"
+            });
+        }
+
+        if (cleanPhone.length < 5) {
+            return res.status(400).json({
+                message: "Введіть коректний номер телефону"
+            });
+        }
+
+        const userId =
+            req.session &&
+            req.session.user
+                ? req.session.user.id
+                : null;
+
+        const result = await pool.query(
+            `INSERT INTO service_requests
+            (
+                name,
+                phone,
+                email,
+                device_type,
+                brand,
+                model,
+                issue,
+                issue_cause,
+                repair_type,
+                status,
+                user_id
+            )
+            VALUES
+            (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8,
+                $9,
+                'pending',
+                $10
+            )
+            RETURNING
+                id,
+                name,
+                phone,
+                email,
+                device_type,
+                brand,
+                model,
+                issue,
+                issue_cause,
+                repair_type,
+                status,
+                user_id,
+                created_at`,
+            [
+                cleanName,
+                cleanPhone,
+                cleanEmail,
+                cleanDeviceType,
+                cleanBrand,
+                cleanModel,
+                cleanIssue,
+                cleanIssueCause,
+                cleanRepairType,
+                userId
+            ]
+        );
+
+        res.status(201).json({
+            message: "Заявку успішно створено",
+            request: result.rows[0]
+        });
+
+    } catch (error) {
+        console.error("POST /api/repairs error:", error);
+
+        res.status(500).json({
+            message: "Помилка сервера"
+        });
+    }
+});
+
+module.exports = router;
