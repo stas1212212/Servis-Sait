@@ -12,16 +12,19 @@
 <div id="header"></div>
 <main class="admin-page">
 <div class="admin-container">
-<header class="admin-heading"><div><p>PULT+ SERVICE CENTER</p><h1>Панель адміністратора</h1><span>Керування заявками на ремонт</span></div><a href="/cabinet.html">Особистий кабінет →</a></header>
+<header class="admin-heading"><div><p>PULT+ SERVICE CENTER</p><h1>Панель адміністратора</h1><span>Керування ремонтом і замовленнями магазину</span></div><a href="/cabinet.html">Особистий кабінет →</a></header>
 <div id="adminMessage" role="status" aria-live="polite">Перевіряємо доступ...</div>
 <section id="adminWorkspace" hidden>
 <div class="admin-summary"><article><span>Усього заявок</span><strong id="adminTotal">0</strong></article><article><span>Нові</span><strong id="adminPending">0</strong></article><article><span>У роботі</span><strong id="adminProgress">0</strong></article><article><span>Завершені</span><strong id="adminDone">0</strong></article></div>
-<div class="admin-toolbar"><label for="adminSearch">Пошук заявки</label><input id="adminSearch" type="search" placeholder="Номер, клієнт, телефон або пристрій"><button id="adminRefresh" type="button">Оновити</button></div>
-<div id="adminRequests" class="admin-requests"></div>
+<nav class="admin-tabs" aria-label="Розділи адміністратора"><button type="button" id="adminRepairsTab" class="active" aria-pressed="true">Заявки на ремонт</button><button type="button" id="adminOrdersTab" aria-pressed="false">Замовлення товарів</button></nav>
+<div id="adminRepairsPanel"><div class="admin-toolbar"><label for="adminSearch">Пошук заявки</label><input id="adminSearch" type="search" placeholder="Номер, клієнт, телефон або пристрій"><button id="adminRefresh" type="button">Оновити</button></div>
+<div id="adminRequests" class="admin-requests"></div></div>
+<div id="adminOrdersPanel" hidden><div class="admin-toolbar"><label for="adminOrdersSearch">Пошук замовлення</label><input id="adminOrdersSearch" type="search" placeholder="Номер, клієнт або товар"><button id="adminOrdersRefresh" type="button">Оновити</button></div><div id="adminOrdersList" class="admin-requests"></div></div>
 </section>
 </div>
 </main>
 <div id="footer"></div>
 <script src="js/dropdown.js"></script><script src="js/burger.js"></script><script src="js/theme.js"></script><script src="js/cart.js"></script><script src="js/main.js"></script>
 <script src="js/admin.js"></script>
+<script src="js/admin-orders.js"></script>
 </body></html>
