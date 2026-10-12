@@ -5,20 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
 <title>Особистий кабінет | PULT+</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/cabinet.css">
-```
 
 </head>
 
 <body>
 
-```
 <!-- HEADER -->
 <div id="header"></div>
 
@@ -327,6 +324,10 @@
 
 
 
+<section class="cabinet-card repair-history" aria-labelledby="repairsTitle">
+<div class="cabinet-card-header"><div><span class="cabinet-label">СЕРВІС</span><h2 id="repairsTitle">Мої заявки на ремонт</h2></div><div class="cabinet-card-icon">🔧</div></div>
+<div id="repairsContent" aria-live="polite">Завантаження заявок...</div>
+</section>
         <!-- =================================================
              SETTINGS
              ================================================= -->
@@ -405,7 +406,6 @@
 
 <div class="profile-modal" id="profileModal">
 
-```
 <div class="profile-modal-overlay" id="profileModalOverlay"></div>
 
 <div class="profile-modal-window">
@@ -488,7 +488,6 @@
     </form>
 
 </div>
-```
 
 </div>
 
@@ -501,8 +500,8 @@
 <script src="/js/main.js"></script>
 
 <script src="/js/cabinet.js"></script>
-
-```
+<script src="/js/cabinet-repairs.js"></script>
+<link rel="stylesheet" href="/css/cabinet-repairs.css">
 
 </body>
 
