@@ -1,391 +1,44 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Ремонт телевізорів | PULT+</title>
-
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/cart-modal.css">
-    <link rel="stylesheet" href="css/tv.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ремонт телевізорів | PULT+</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/cart-modal.css">
+<link rel="stylesheet" href="css/service-pages.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
-
 <div id="header"></div>
-
-<main>
-
-    <section class="hero">
-        <div class="container hero-container">
-
-            <div class="hero-text">
-                <div class="hero-icon">📺</div>
-
-                <h1>Ремонт телевізорів</h1>
-
-                <p>
-                    Професійний ремонт телевізорів будь-яких брендів.
-                    Діагностика, заміна комплектуючих та усунення несправностей.
-                </p>
-
-                <a href="#repairForm" class="hero-button">
-                    Оформити заявку
-                </a>
-            </div>
-
-        </div>
-    </section>
-
-
-    <section class="phone-section">
-        <div class="container phone-layout">
-
-            <div class="phone-preview">
-
-                <div class="preview-card">
-
-                    <div class="preview-image">
-                        <img
-                            id="tvImage"
-                            src="png/Samsung.jpg"
-                            alt="Телевізор"
-                        >
-                    </div>
-
-                    <h2 id="tvBrandTitle">Samsung</h2>
-
-                    <p>
-                        Оберіть бренд вашого телевізора
-                    </p>
-
-                    <div class="brand-selector">
-
-                        <button type="button" class="brand-button active" data-brand="Samsung">
-                            Samsung
-                        </button>
-
-                        <button type="button" class="brand-button" data-brand="LG">
-                            LG
-                        </button>
-
-                        <button type="button" class="brand-button" data-brand="Sony">
-                            Sony
-                        </button>
-
-                        <button type="button" class="brand-button" data-brand="Philips">
-                            Philips
-                        </button>
-
-                        <button type="button" class="brand-button" data-brand="Xiaomi">
-                            Xiaomi
-                        </button>
-
-                        <button type="button" class="brand-button" data-brand="TCL">
-                            TCL
-                        </button>
-
-                        <button type="button" class="brand-button" data-brand="Hisense">
-                            Hisense
-                        </button>
-
-                        <button type="button" class="brand-button" data-brand="Інший">
-                            Інший
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="repair-form-card" id="repairForm">
-
-                <div class="form-header">
-                    <span>01</span>
-
-                    <div>
-                        <h2>Заявка на ремонт</h2>
-
-                        <p>
-                            Заповніть форму і ми зв'яжемося з вами
-                        </p>
-                    </div>
-                </div>
-                <form id="tvRepairForm" class="repair-form">
-                    <input type="hidden" id="selectedBrand" name="brand" value="Samsung">
-
-                    <div class="input-group">
-                        <label for="name">Ваше ім'я *</label>
-                        <input type="text" id="name" name="name" placeholder="Введіть ім'я" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="phone">Телефон *</label>
-                        <input type="tel" id="phone" name="phone" placeholder="+380 XX XXX XX XX" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="example@email.com">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="model">Модель телевізора</label>
-                        <input type="text" id="model" name="model" placeholder="Наприклад: UE55AU7100">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="repair_type">Тип ремонту</label>
-                        <select id="repair_type" name="repair_type">
-                            <option value="">Оберіть тип ремонту</option>
-                            <option value="Діагностика">Діагностика</option>
-                            <option value="Ремонт плати">Ремонт плати</option>
-                            <option value="Заміна підсвітки">Заміна підсвітки</option>
-                            <option value="Заміна матриці">Заміна матриці</option>
-                            <option value="Ремонт живлення">Ремонт живлення</option>
-                            <option value="Ремонт HDMI">Ремонт HDMI</option>
-                            <option value="Інше">Інше</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="problem">Опис несправності *</label>
-                        <textarea id="problem" name="problem" placeholder="Опишіть, що сталося з телевізором" required></textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="history">Історія ремонту</label>
-                        <textarea id="history" name="history" placeholder="Чи ремонтували телевізор раніше?"></textarea>
-                    </div>
-
-                    <button type="submit" class="submit-button">Відправити заявку</button>
-                </form>
-                </div>
-
-        </div>
-    </section>
-
-
-    <section class="phone-section">
-        <div class="container">
-
-            <div class="section-title">
-
-                <span>02</span>
-
-                <div>
-                    <h2>Як проходить ремонт</h2>
-
-                    <p>
-                        Простий процес від заявки до готового телевізора
-                    </p>
-                </div>
-
-            </div>
-
-
-            <div class="steps-grid">
-
-                <div class="step-card">
-
-                    <div class="step-number">
-                        01
-                    </div>
-
-                    <h3>Заявка</h3>
-
-                    <p>
-                        Ви залишаєте заявку через сайт або зв'язуєтесь з нами телефоном.
-                    </p>
-
-                </div>
-
-
-                <div class="step-card">
-
-                    <div class="step-number">
-                        02
-                    </div>
-
-                    <h3>Діагностика</h3>
-
-                    <p>
-                        Майстер перевіряє телевізор та визначає причину несправності.
-                    </p>
-
-                </div>
-
-
-                <div class="step-card">
-
-                    <div class="step-number">
-                        03
-                    </div>
-
-                    <h3>Ремонт</h3>
-
-                    <p>
-                        Після погодження виконуємо необхідний ремонт або заміну комплектуючих.
-                    </p>
-
-                </div>
-
-
-                <div class="step-card">
-
-                    <div class="step-number">
-                        04
-                    </div>
-
-                    <h3>Перевірка</h3>
-
-                    <p>
-                        Перевіряємо роботу телевізора та передаємо його вам.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-
-    <section class="dark-section">
-
-        <div class="container">
-
-            <div class="section-title light">
-
-                <span>03</span>
-
-                <div>
-                    <h2>Чому PULT+</h2>
-
-                    <p>
-                        Надійний ремонт електроніки з увагою до деталей
-                    </p>
-                </div>
-
-            </div>
-
-
-            <div class="stats-grid">
-
-                <div class="stat-card">
-
-                    <strong>10+</strong>
-
-                    <span>
-                        років досвіду
-                    </span>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <strong>1000+</strong>
-
-                    <span>
-                        виконаних ремонтів
-                    </span>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <strong>7</strong>
-
-                    <span>
-                        основних брендів
-                    </span>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <strong>100%</strong>
-
-                    <span>
-                        перевірка після ремонту
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-<div id="footer"></div>
-
-
-<script src="js/dropdown.js"></script>
-<script src="js/burger.js"></script>
-<script src="js/theme.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/main.js"></script>
-<script src="js/tv.js"></script>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-    const buttons = document.querySelectorAll(".brand-button");
-    const image = document.getElementById("tvImage");
-    const title = document.getElementById("tvBrandTitle");
-    const selectedBrand = document.getElementById("selectedBrand");
-
-    const images = {
-        Samsung: "png/Samsung.jpg",
-        LG: "png/LG.jpg",
-        Sony: "png/Sony.webp",
-        Philips: "png/Philips.webp",
-        Xiaomi: "png/Xiaomi.jpg",
-        TCL: "png/TCL.jpg",
-        Hisense: "png/Hisense.webp",
-        "Інший": "png/TV.webp"
-    };
-
-    buttons.forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            const brand = button.dataset.brand;
-
-            buttons.forEach(item => {
-                item.classList.remove("active");
-            });
-
-            button.classList.add("active");
-
-            selectedBrand.value = brand;
-            title.textContent = brand === "Інший"
-                ? "Телевізор"
-                : brand;
-
-            image.src = images[brand] || "png/TV.webp";
-        });
-
-    });
-
-});
-</script>
-
-</body>
-</html>
+<main class="service-page">
+<section class="service-hero"><div class="service-container service-hero-inner"><div class="service-hero-icon" aria-hidden="true">📺</div><div><p class="service-eyebrow">PULT+ Service Center</p><h1>Ремонт телевізорів</h1><p>Діагностика та ремонт телевізорів. Допоможемо визначити несправність і запропонуємо варіанти ремонту.</p><a class="service-cta" href="#repairForm">Оформити заявку</a></div></div></section>
+<section class="service-container service-main">
+<div class="service-device-card"><h2>Оберіть бренд</h2><p>Вкажіть виробника вашого пристрою</p><div class="service-brands"><button type="button" class="service-brand active" data-brand="Samsung" data-image="png/Samsung.jpg" aria-pressed="true">Samsung</button>
+<button type="button" class="service-brand" data-brand="LG" data-image="png/LG.jpg" aria-pressed="false">LG</button>
+<button type="button" class="service-brand" data-brand="Sony" data-image="png/Sony.webp" aria-pressed="false">Sony</button>
+<button type="button" class="service-brand" data-brand="Philips" data-image="png/Philips.webp" aria-pressed="false">Philips</button>
+<button type="button" class="service-brand" data-brand="Xiaomi" data-image="png/Xiaomi.jpg" aria-pressed="false">Xiaomi</button>
+<button type="button" class="service-brand" data-brand="TCL" data-image="png/TCL.jpg" aria-pressed="false">TCL</button>
+<button type="button" class="service-brand" data-brand="Hisense" data-image="png/Hisense.webp" aria-pressed="false">Hisense</button>
+<button type="button" class="service-brand" data-brand="Інший" data-image="png/TV.webp" aria-pressed="false">Інший</button></div><div class="service-preview"><img id="serviceImage" src="png/Samsung.jpg" alt="Телевізор Samsung"><h3 id="serviceBrandTitle">Samsung</h3></div></div>
+<div class="service-form-card" id="repairForm"><div class="service-form-heading"><span>01</span><div><h2>Заявка на ремонт</h2><p>Заповніть форму, і ми зв'яжемося з вами</p></div></div>
+<form id="serviceRepairForm" data-device-type="Телевізор">
+<input type="hidden" name="brand" id="selectedBrand" value="Samsung">
+<div class="service-field"><label for="serviceName">Ваше ім'я *</label><input id="serviceName" name="name" required maxlength="100" autocomplete="name" placeholder="Введіть ім'я"></div>
+<div class="service-field"><label for="servicePhone">Телефон *</label><input id="servicePhone" type="tel" name="phone" required maxlength="30" autocomplete="tel" placeholder="+380 XX XXX XX XX"></div>
+<div class="service-field"><label for="serviceEmail">Email</label><input id="serviceEmail" type="email" name="email" autocomplete="email" placeholder="example@email.com"></div>
+<div class="service-field"><label for="serviceModel">Модель пристрою</label><input id="serviceModel" name="model" maxlength="150" placeholder="Вкажіть модель"></div>
+<div class="service-field"><label for="serviceType">Тип ремонту</label><select id="serviceType" name="repair_type"><option value="">Оберіть тип ремонту</option><option>Діагностика</option><option>Ремонт електроніки</option><option>Заміна комплектуючих</option><option>Чищення</option><option>Інше</option></select></div>
+<div class="service-field"><label for="serviceIssue">Опис несправності *</label><textarea id="serviceIssue" name="problem" required rows="3" placeholder="Що сталося з пристроєм?"></textarea></div>
+<div class="service-field"><label for="serviceHistory">Історія ремонту</label><textarea id="serviceHistory" name="history" rows="2" placeholder="Чи ремонтували пристрій раніше?"></textarea></div>
+<p class="service-feedback" id="serviceFeedback" role="status" aria-live="polite"></p><button class="service-submit" type="submit">Надіслати заявку</button>
+</form></div></section>
+<section class="service-process"><div class="service-container"><h2>Як проходить ремонт</h2><div class="service-steps"><article><strong>01</strong><h3>Заявка</h3><p>Розкажіть про проблему через форму.</p></article><article><strong>02</strong><h3>Діагностика</h3><p>Майстер визначає причину несправності.</p></article><article><strong>03</strong><h3>Узгодження</h3><p>Обговорюємо вартість і терміни.</p></article><article><strong>04</strong><h3>Ремонт</h3><p>Виконуємо роботу та перевіряємо пристрій.</p></article></div></div></section>
+<section class="service-bottom"><div class="service-container"><h2>Чому обирають PULT+</h2><p>Зручна заявка онлайн, діагностика та зв'язок із майстром.</p></div></section>
+</main><div id="footer"></div>
+<script src="js/dropdown.js"></script><script src="js/burger.js"></script><script src="js/theme.js"></script><script src="js/cart.js"></script><script src="js/main.js"></script><script src="js/service-pages.js"></script>
+</body></html>
