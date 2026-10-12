@@ -129,4 +129,24 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.get("/mine", async (req, res) => {
+    const userId = req.session?.user?.id;
+    if (!userId) {
+        return res.status(401).json({ message: "Потрібна авторизація" });
+    }
+    try {
+        const result = await pool.query(
+            `SELECT id, device_type, brand, model, issue, repair_type, status, created_at
+             FROM service_requests
+             WHERE user_id = $1
+             ORDER BY created_at DESC, id DESC`,
+            [userId]
+        );
+        return res.json({ requests: result.rows });
+    } catch (error) {
+        console.error("GET /api/repairs/mine error:", error);
+        return res.status(500).json({ message: "Помилка сервера" });
+    }
+});
+
 module.exports = router;
