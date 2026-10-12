@@ -95,9 +95,10 @@ function renderProducts(products) {
                 <button
                     type="button"
                     class="buy-product-btn"
-                    data-id="${p.id}">
+                    data-id="${p.id}"
+                    ${p.stock <= 0 ? "disabled aria-disabled=\"true\"" : ""}>
 
-                    Купити
+                    ${p.stock <= 0 ? "Немає в наявності" : "Купити"}
 
                 </button>
 
@@ -146,6 +147,8 @@ function renderProducts(products) {
                 console.error("Товар не знайдено:", id);
                 return;
             }
+
+            if (product.stock <= 0) return;
 
             const image =
                 product.image ||
