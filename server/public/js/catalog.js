@@ -163,23 +163,38 @@ async function loadCatalog() {
 
     try {
 
-        const response =
-            await fetch("data/pults.json");
+        // Категорії та їх іконки поки залишаються в старому JSON.
+        // Товари, ціни й залишки тепер надходять тільки з PostgreSQL.
+        const [productsResponse, categoriesResponse] = await Promise.all([
+            fetch("/api/products"),
+            fetch("data/pults.json")
+        ]);
 
-        if (!response.ok) {
-            throw new Error(
-                "HTTP " + response.status
-            );
+        if (!productsResponse.ok || !categoriesResponse.ok) {
+            throw new Error("Не вдалося завантажити каталог");
         }
 
-        const data =
-            await response.json();
+        const productsData = await productsResponse.json();
+        const categoriesData = await categoriesResponse.json();
 
-        allProducts =
-            data.products || [];
+        allProducts = (productsData.products || []).map((product) => ({
+            id: product.sku,
+            databaseId: product.id,
+            title: product.name,
+            brand: product.brand,
+            description: product.description || "",
+            price: Number(product.price),
+            oldPrice: product.old_price == null ? null : Number(product.old_price),
+            rating: Number(product.rating) || 0,
+            stock: Number(product.stock),
+            category: product.category || "tv",
+            image: product.image_url || "",
+            features: product.features || [],
+            compatible: product.compatible || []
+        }));
 
         renderCategories(
-            data.categories || []
+            categoriesData.categories || []
         );
 
         renderProducts(
@@ -191,7 +206,7 @@ async function loadCatalog() {
     } catch (error) {
 
         console.error(
-            "Не вдалося завантажити pults.json:",
+            "Не вдалося завантажити каталог:",
             error
         );
 
