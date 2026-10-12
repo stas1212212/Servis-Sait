@@ -408,3 +408,7 @@
 
 }
 .product-image-placeholder{height:260px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;color:#64748b;font-weight:700;font-size:18px}
+
+/* Товар відсутній: кнопку неможливо натиснути. */
+.product-body .buy-product-btn:disabled{background:#cbd5e1;color:#475569;cursor:not-allowed;opacity:1}
+.product-body .buy-product-btn:disabled:hover{background:#cbd5e1}
