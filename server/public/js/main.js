@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function initFormHandler() {
 
-    const form = document.getElementById("startForm") || document.querySelector("form");
+    const form = document.getElementById("startForm");
 
     if (!form) return;
 
