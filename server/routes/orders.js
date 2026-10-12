@@ -150,55 +150,83 @@ router.get('/:id', requireAuthMiddleware, async (req, res) => {
 // -------------------------------------------------
 router.post('/', requireAuthMiddleware, async (req, res) => {
     const userId = req.session.user.id;
-
-    console.log("ORDER SESSION:", req.session);
-    console.log("ORDER USER:", req.session.user);
-    console.log("ORDER USER ID:", req.session.user.id);
-    
-    const { items } = req.body;
-
-    if (!Array.isArray(items) || items.length === 0) {
-        return res.status(400).json({ message: 'Замовлення не може бути порожнім' });
+    const origin = req.get('origin');
+    if (origin && origin !== `${req.protocol}://${req.get('host')}`) {
+        return res.status(403).json({ message: 'Недозволене джерело запиту' });
     }
 
-    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const items = req.body?.items;
+    if (!Array.isArray(items) || items.length === 0 || items.length > 50) {
+        return res.status(400).json({ message: 'Некоректний кошик' });
+    }
+
+    const quantities = new Map();
+    for (const item of items) {
+        const sku = item?.sku;
+        const quantity = item?.quantity;
+        if (typeof sku !== 'string' || !sku || sku.length > 80 ||
+            !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 100) {
+            return res.status(400).json({ message: 'Некоректний товар або кількість' });
+        }
+        const sum = (quantities.get(sku) || 0) + quantity;
+        if (sum > 100) return res.status(400).json({ message: 'Завелика кількість товару' });
+        quantities.set(sku, sum);
+    }
 
     const client = await pool.connect();
-
     try {
         await client.query('BEGIN');
+        const requested = [...quantities.entries()].sort(([a], [b]) => a.localeCompare(b));
+        const confirmed = [];
+        let totalCents = 0;
 
-        const orderResult = await client.query(
-            `INSERT INTO orders (user_id, status, total)
-             VALUES ($1, 'pending', $2)
-             RETURNING id, status, total, created_at`,
-            [userId, total]
-        );
-
-        const order = orderResult.rows[0];
-
-        for (const item of items) {
-            await client.query(
-                `INSERT INTO order_items (order_id, product_name, quantity, price)
-                 VALUES ($1, $2, $3, $4)`,
-                [order.id, item.productName, item.quantity, item.price]
+        for (const [sku, quantity] of requested) {
+            const found = await client.query(
+                'SELECT id, name, price, stock, is_active FROM products WHERE sku = $1 FOR UPDATE',
+                [sku]
             );
+            const product = found.rows[0];
+            if (!product || !product.is_active) {
+                const error = new Error('Товар більше не продається: ' + sku);
+                error.status = 409;
+                throw error;
+            }
+            if (product.stock < quantity) {
+                const error = new Error('Недостатньо товару на складі: ' + product.name);
+                error.status = 409;
+                throw error;
+            }
+            const cents = Math.round(Number(product.price) * 100);
+            if (!Number.isSafeInteger(cents) || cents < 0) throw new Error('Некоректна ціна в базі');
+            totalCents += cents * quantity;
+            if (!Number.isSafeInteger(totalCents)) throw new Error('Завелика сума замовлення');
+            confirmed.push({ id: product.id, name: product.name, price: (cents / 100).toFixed(2), quantity });
         }
 
+        const total = (totalCents / 100).toFixed(2);
+        const inserted = await client.query(
+            "INSERT INTO orders (user_id, status, total) VALUES ($1, 'pending', $2) RETURNING id, status, total, created_at",
+            [userId, total]
+        );
+        const order = inserted.rows[0];
+        for (const item of confirmed) {
+            await client.query(
+                'INSERT INTO order_items (order_id, product_name, quantity, price) VALUES ($1, $2, $3, $4)',
+                [order.id, item.name, item.quantity, item.price]
+            );
+            await client.query('UPDATE products SET stock = stock - $1, updated_at = NOW() WHERE id = $2',
+                [item.quantity, item.id]);
+        }
         await client.query('COMMIT');
-
         res.status(201).json({
-            id: order.id,
-            status: order.status,
-            total: order.total,
+            id: order.id, status: order.status, total: order.total,
             createdAt: order.created_at,
-            items
+            items: confirmed.map(item => ({ productName: item.name, quantity: item.quantity, price: item.price }))
         });
-
     } catch (error) {
         await client.query('ROLLBACK');
         console.error('POST /api/orders error:', error);
-        res.status(500).json({ message: 'Помилка сервера' });
+        res.status(error.status || 500).json({ message: error.status ? error.message : 'Помилка оформлення замовлення' });
     } finally {
         client.release();
     }
