@@ -52,12 +52,12 @@
                     <div class="preview-image">
                         <img
                             id="tvImage"
-                            src="png/LG.png"
+                            src="png/Samsung.jpg"
                             alt="Телевізор"
                         >
                     </div>
 
-                    <h2 id="tvBrandTitle">Телевізор</h2>
+                    <h2 id="tvBrandTitle">Samsung</h2>
 
                     <p>
                         Оберіть бренд вашого телевізора
@@ -120,27 +120,27 @@
                 <form id="tvRepairForm" class="repair-form">
                     <input type="hidden" id="selectedBrand" name="brand" value="Samsung">
 
-                    <div class="form-group">
+                    <div class="input-group">
                         <label for="name">Ваше ім'я *</label>
                         <input type="text" id="name" name="name" placeholder="Введіть ім'я" required>
                     </div>
 
-                    <div class="form-group">
+                    <div class="input-group">
                         <label for="phone">Телефон *</label>
                         <input type="tel" id="phone" name="phone" placeholder="+380 XX XXX XX XX" required>
                     </div>
 
-                    <div class="form-group">
+                    <div class="input-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="example@email.com">
                     </div>
 
-                    <div class="form-group">
+                    <div class="input-group">
                         <label for="model">Модель телевізора</label>
                         <input type="text" id="model" name="model" placeholder="Наприклад: UE55AU7100">
                     </div>
 
-                    <div class="form-group">
+                    <div class="input-group">
                         <label for="repair_type">Тип ремонту</label>
                         <select id="repair_type" name="repair_type">
                             <option value="">Оберіть тип ремонту</option>
@@ -154,17 +154,17 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    <div class="input-group">
                         <label for="problem">Опис несправності *</label>
                         <textarea id="problem" name="problem" placeholder="Опишіть, що сталося з телевізором" required></textarea>
                     </div>
 
-                    <div class="form-group">
+                    <div class="input-group">
                         <label for="history">Історія ремонту</label>
                         <textarea id="history" name="history" placeholder="Чи ремонтували телевізор раніше?"></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Відправити заявку</button>
+                    <button type="submit" class="submit-button">Відправити заявку</button>
                 </form>
                 </div>
 
@@ -350,14 +350,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedBrand = document.getElementById("selectedBrand");
 
     const images = {
-        Samsung: "png/samsung-tv.png",
-        LG: "png/lg-tv.png",
-        Sony: "png/sony-tv.png",
-        Philips: "png/philips-tv.png",
-        Xiaomi: "png/xiaomi-tv.png",
-        TCL: "png/tcl-tv.png",
-        Hisense: "png/hisense-tv.png",
-        "Інший": "png/tv.png"
+        Samsung: "png/Samsung.jpg",
+        LG: "png/LG.jpg",
+        Sony: "png/Sony.webp",
+        Philips: "png/Philips.webp",
+        Xiaomi: "png/Xiaomi.jpg",
+        TCL: "png/TCL.jpg",
+        Hisense: "png/Hisense.webp",
+        "Інший": "png/TV.webp"
     };
 
     buttons.forEach(button => {
@@ -377,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ? "Телевізор"
                 : brand;
 
-            image.src = images[brand] || "png/tv.png";
+            image.src = images[brand] || "png/TV.webp";
         });
 
     });
