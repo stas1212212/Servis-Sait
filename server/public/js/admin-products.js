@@ -29,7 +29,29 @@ document.addEventListener("DOMContentLoaded", () => {
       edit.className = "admin-save";
       edit.textContent = "Редагувати";
       edit.addEventListener("click", () => openEditor(p));
-      card.append(heading, info, edit);
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "admin-product-toggle";
+      toggle.textContent = p.is_active ? "Приховати товар" : "Показати товар";
+      toggle.addEventListener("click", async () => {
+        toggle.disabled = true;
+        try {
+          const response = await fetch("/api/admin/products/" + p.id, {
+            method: "PUT",
+            credentials: "same-origin",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...p, is_active: !p.is_active })
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.message || "Помилка зміни видимості");
+          show(p.is_active ? "Товар приховано." : "Товар знову показується.");
+          await load();
+        } catch (error) {
+          show(error.message, true);
+          toggle.disabled = false;
+        }
+      });
+      card.append(heading, info, edit, toggle);
       list.append(card);
     }
     if (!list.children.length) list.textContent = "Товарів не знайдено.";
