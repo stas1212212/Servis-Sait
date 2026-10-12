@@ -88,9 +88,8 @@ async function submitOrder(e) {
     }
 
     const items = cart.map(product => ({
-        productName: product.title,
-        quantity: product.quantity,
-        price: Number(product.price)
+        sku: String(product.id),
+        quantity: product.quantity
     }));
 
     try {
