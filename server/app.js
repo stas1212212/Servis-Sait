@@ -10,6 +10,7 @@ const servicesRoutes = require('./routes/services');
 const productsRoutes = require('./routes/products');
 const authRoutes = require('./routes/auth');
 const repairsRoutes = require('./routes/repairs');
+const adminRoutes = require('./routes/admin');
 const uiRoutes = require('./routes/ui');
 
 app.use(express.json());
@@ -33,6 +34,7 @@ app.use('/api/services', servicesRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/repairs', repairsRoutes);
+app.use('/api/admin', adminRoutes);
 // Dynamic UI fragments (header)
 app.use('/_header', uiRoutes);
 
