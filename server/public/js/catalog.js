@@ -111,6 +111,20 @@ function renderProducts(products) {
         count.textContent = `${products.length} товарів`;
     }
 
+    // Замість зламаних фото показуємо нейтральну заглушку.
+    root.querySelectorAll(".product-card img").forEach(img => {
+        img.addEventListener("error", () => {
+            img.style.display = "none";
+            const placeholder = document.createElement("div");
+            placeholder.className = "product-image-placeholder";
+            placeholder.textContent = "📦 Фото незабаром";
+            img.parentNode.insertBefore(placeholder, img);
+        }, { once: true });
+        if (!img.getAttribute("src") || (img.complete && img.naturalWidth === 0)) {
+            img.dispatchEvent(new Event("error"));
+        }
+    });
+
     // =========================
     // BUY BUTTON
     // =========================
