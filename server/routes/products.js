@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, sku, name, brand, model, description, price,
-              stock, image_url
+              stock, image_url, category, old_price, rating, features, compatible
        FROM products
        WHERE is_active = TRUE
        ORDER BY name ASC, id ASC
@@ -30,7 +30,7 @@ router.get("/:id", async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, sku, name, brand, model, description, price,
-              stock, image_url
+              stock, image_url, category, old_price, rating, features, compatible
        FROM products WHERE id = $1 AND is_active = TRUE`,
       [id]
     );
