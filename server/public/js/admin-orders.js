@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const ordersTab = document.getElementById("adminOrdersTab");
   const repairsPanel = document.getElementById("adminRepairsPanel");
   const ordersPanel = document.getElementById("adminOrdersPanel");
+  const productsPanel = document.getElementById("adminProductsPanel");
+  const productsTab = document.getElementById("adminProductsTab");
   const list = document.getElementById("adminOrdersList");
   const search = document.getElementById("adminOrdersSearch");
   const message = document.getElementById("adminMessage");
@@ -60,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }catch(error){list.replaceChildren();showError(error.message)}
   }
   repairsTab.addEventListener("click",()=>{
-    repairsPanel.hidden=false;ordersPanel.hidden=true;repairsTab.classList.add("active");ordersTab.classList.remove("active");repairsTab.setAttribute("aria-pressed","true");ordersTab.setAttribute("aria-pressed","false");
+    repairsPanel.hidden=false;ordersPanel.hidden=true;productsPanel.hidden=true;productsTab.classList.remove("active");productsTab.setAttribute("aria-pressed","false");repairsTab.classList.add("active");ordersTab.classList.remove("active");repairsTab.setAttribute("aria-pressed","true");ordersTab.setAttribute("aria-pressed","false");
   });
   ordersTab.addEventListener("click",()=>{
-    repairsPanel.hidden=true;ordersPanel.hidden=false;ordersTab.classList.add("active");repairsTab.classList.remove("active");ordersTab.setAttribute("aria-pressed","true");repairsTab.setAttribute("aria-pressed","false");load();
+    repairsPanel.hidden=true;ordersPanel.hidden=false;productsPanel.hidden=true;productsTab.classList.remove("active");productsTab.setAttribute("aria-pressed","false");ordersTab.classList.add("active");repairsTab.classList.remove("active");ordersTab.setAttribute("aria-pressed","true");repairsTab.setAttribute("aria-pressed","false");load();
   });
   search.addEventListener("input",render);
   document.getElementById("adminOrdersRefresh").addEventListener("click",load);
