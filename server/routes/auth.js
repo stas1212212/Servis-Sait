@@ -51,7 +51,7 @@ router.post("/register", async (req, res) => {
         const result = await pool.query(
             `INSERT INTO users (name, email, password_hash)
              VALUES ($1, $2, $3)
-             RETURNING id, name, email, created_at`,
+             RETURNING id, name, email, created_at, auth_version`,
             [name, email, passwordHash]
         );
 
@@ -61,7 +61,8 @@ router.post("/register", async (req, res) => {
         req.session.user = {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            auth_version: user.auth_version
         };
 
         res.status(201).json({
@@ -96,7 +97,7 @@ router.post("/login", async (req, res) => {
         }
 
         const result = await pool.query(
-            `SELECT id, name, email, password_hash
+            `SELECT id, name, email, password_hash, auth_version
              FROM users
              WHERE email = $1`,
             [email]
@@ -126,7 +127,8 @@ router.post("/login", async (req, res) => {
         req.session.user = {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            auth_version: user.auth_version
         };
 
         res.json({
