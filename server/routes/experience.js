@@ -40,7 +40,7 @@ async function sendResetEmail(address, token) {
     console.warn("Password reset mail delivery is not configured (RESEND_API_KEY / MAIL_FROM / PUBLIC_BASE_URL).");
     return false;
   }
-  const link=base.replace(/\/$/,"")+"/reset-password.html?token="+encodeURIComponent(token);
+  const link=base.replace(/\/$/,"")+"/reset-password.html#token="+encodeURIComponent(token);
   const response=await fetch("https://api.resend.com/emails", {
     method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},
     body:JSON.stringify({from,to:[address],subject:"PULT+ — відновлення пароля",
