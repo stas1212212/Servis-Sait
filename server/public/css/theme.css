@@ -1,0 +1,34 @@
+/* PULT+ global dark appearance, loaded after page styles. */
+:root { color-scheme: light; }
+html.dark { color-scheme: dark; --pult-bg:#0b1220; --pult-panel:#172235; --pult-panel2:#202e43; --pult-text:#e8edf6; --pult-muted:#aab8cc; --pult-border:#35445a; --pult-accent:#82b1ff; }
+html.dark body, html.dark body.bg-\\[\\#f5f7fb\\], html.dark .service-page, html.dark .cabinet-page, html.dark .admin-page { background:var(--pult-bg)!important; color:var(--pult-text)!important; }
+html.dark .bg-white, html.dark .bg-white\\/90, html.dark .bg-gray-50, html.dark .bg-gray-100, html.dark .bg-gray-200, html.dark .bg-slate-50, html.dark .bg-slate-100,
+html.dark .dropdown-menu, html.dark #burgerMenu, html.dark .service-device-card, html.dark .service-form-card, html.dark .service-preview, html.dark .service-steps article,
+html.dark .preview-card, html.dark .repair-form-card, html.dark .advantage-card, html.dark .step, html.dark .product-image, html.dark .cabinet-card,
+html.dark .cart-item, html.dark .checkout-card, html.dark .admin-card, html.dark .admin-panel, html.dark .modal-content,
+html.dark [class*="cabinet-"][class*="card"], html.dark [class*="admin-"][class*="card"] {
+ background-color:var(--pult-panel)!important; color:var(--pult-text)!important; border-color:var(--pult-border)!important;
+}
+html.dark .bg-gray-200, html.dark .bg-slate-100, html.dark .service-preview { background-color:var(--pult-panel2)!important; }
+html.dark header, html.dark .header { background:rgba(18,28,44,.96)!important; border-color:var(--pult-border)!important; color:var(--pult-text)!important; }
+html.dark .service-hero, html.dark .hero { background:linear-gradient(145deg,#111e31,#192b45)!important; color:var(--pult-text)!important; }
+html.dark .service-process, html.dark .service-bottom, html.dark .advantages, html.dark .steps, html.dark .phone-section { background:var(--pult-bg)!important; color:var(--pult-text)!important; }
+html.dark .text-gray-900, html.dark .text-gray-800, html.dark .text-gray-700, html.dark .text-gray-600, html.dark .text-slate-900, html.dark .text-slate-800, html.dark .text-slate-700, html.dark .service-page h1, html.dark .service-page h2, html.dark .service-page h3 { color:var(--pult-text)!important; }
+html.dark .text-gray-500, html.dark .text-gray-400, html.dark .text-slate-500, html.dark .text-slate-600, html.dark .service-page p, html.dark .service-hero p { color:var(--pult-muted)!important; }
+html.dark .border-gray-200, html.dark .border-gray-100, html.dark .border-slate-200, html.dark .border-b, html.dark .border-t { border-color:var(--pult-border)!important; }
+html.dark .hover\\:bg-gray-100:hover, html.dark .hover\\:bg-gray-200:hover, html.dark .hover\\:bg-slate-100:hover { background-color:var(--pult-panel2)!important; }
+html.dark input:not([type="checkbox"]):not([type="radio"]), html.dark textarea, html.dark select { background:#101a2b!important; color:var(--pult-text)!important; border-color:var(--pult-border)!important; }
+html.dark input::placeholder, html.dark textarea::placeholder { color:#91a0b5!important; }
+html.dark input:focus-visible, html.dark textarea:focus-visible, html.dark select:focus-visible { outline:2px solid var(--pult-accent); outline-offset:1px; }
+html.dark .bg-black, html.dark .bg-gray-900, html.dark .bg-slate-900 { background-color:#080e19!important; color:#fff!important; }
+html.dark .bg-blue-600, html.dark .bg-blue-700, html.dark .service-cta, html.dark .service-submit, html.dark .submit-button { color:#fff!important; }
+html.dark .bg-white\\/10 { background:rgba(255,255,255,.1)!important; }
+html.dark .shadow-sm, html.dark .shadow-xl, html.dark .shadow-lg { box-shadow:0 8px 26px rgba(0,0,0,.28)!important; }
+html.dark .service-brand, html.dark .brand, html.dark .brand-button { background:var(--pult-panel2); color:var(--pult-text); border-color:var(--pult-border); }
+html.dark .service-brand.active, html.dark .brand.active, html.dark .brand-button.active { background:#2563eb; color:#fff; }
+html.dark a:not([class*="bg-blue"]):focus-visible, html.dark button:focus-visible { outline:2px solid var(--pult-accent); outline-offset:2px; }
+.theme-mode-picker { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; margin-top:9px; }
+.theme-mode-picker button { padding:8px 3px; font-size:12px; border:1px solid #cbd5e1; border-radius:9px; background:#f1f5f9; color:#1f2937; cursor:pointer; }
+.theme-mode-picker button.theme-active { background:#2563eb!important; color:#fff!important; border-color:#2563eb!important; }
+html.dark .theme-mode-picker button { background:var(--pult-panel2); color:var(--pult-text); border-color:var(--pult-border); }
+@media (prefers-reduced-motion:reduce) { html.dark *, html.dark *::before, html.dark *::after { transition-duration:0.01ms!important; } }
