@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return `<article class="repair-history-item">
         <div class="repair-history-top"><strong>Заявка №${escapeHtml(item.id)}</strong><span>${escapeHtml(statuses[item.status] || item.status)}</span></div>
         <p><b>Пристрій:</b> ${escapeHtml(device)}</p>
+        ${item.tracking_code ? `<p><b>Код відстеження:</b> <a href="/track.html?code=${encodeURIComponent(item.tracking_code)}">${escapeHtml(item.tracking_code)}</a></p>` : ""}
         <p><b>Проблема:</b> ${escapeHtml(item.issue)}</p>
         <small>${escapeHtml(date)}</small>
       </article>`;
