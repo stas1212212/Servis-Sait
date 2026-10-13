@@ -1,5 +1,6 @@
 const express = require("express");
 const pool = require("../db");
+const crypto = require("node:crypto");
 
 const router = express.Router();
 
@@ -58,6 +59,7 @@ router.post("/", async (req, res) => {
                 ? req.session.user.id
                 : null;
 
+        const trackingCode = "RP-" + crypto.randomBytes(12).toString("hex").toUpperCase();
         const result = await pool.query(
             `INSERT INTO service_requests
             (
@@ -71,7 +73,8 @@ router.post("/", async (req, res) => {
                 issue_cause,
                 repair_type,
                 status,
-                user_id
+                user_id,
+                tracking_code
             )
             VALUES
             (
@@ -85,7 +88,8 @@ router.post("/", async (req, res) => {
                 $8,
                 $9,
                 'pending',
-                $10
+                $10,
+                $11
             )
             RETURNING
                 id,
@@ -100,6 +104,7 @@ router.post("/", async (req, res) => {
                 repair_type,
                 status,
                 user_id,
+                tracking_code,
                 created_at`,
             [
                 cleanName,
@@ -111,9 +116,18 @@ router.post("/", async (req, res) => {
                 cleanIssue,
                 cleanIssueCause,
                 cleanRepairType,
-                userId
+                userId,
+                trackingCode
             ]
         );
+
+        // An in-app notification; if unavailable, the saved repair must not be lost.
+        try {
+            await pool.query("INSERT INTO admin_notifications(kind,ref_id,message) VALUES($1,$2,$3)",
+                ["repair", result.rows[0].id, "Нова заявка на ремонт №" + result.rows[0].id]);
+        } catch (notificationError) {
+            console.error("Admin repair notification failed:", notificationError);
+        }
 
         res.status(201).json({
             message: "Заявку успішно створено",
@@ -136,7 +150,7 @@ router.get("/mine", async (req, res) => {
     }
     try {
         const result = await pool.query(
-            `SELECT id, device_type, brand, model, issue, repair_type, status, created_at
+            `SELECT id, tracking_code, device_type, brand, model, issue, repair_type, status, created_at
              FROM service_requests
              WHERE user_id = $1
              ORDER BY created_at DESC, id DESC`,
