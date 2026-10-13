@@ -249,6 +249,7 @@ function initSearch() {
       const el=document.getElementById(id);
       if(el)el.addEventListener(id==="catalogQuery"?"input":"change",applyCatalogFilters);
     });
+    document.getElementById("catalogSearchButton")?.addEventListener("click",applyCatalogFilters);
     applyCatalogFilters();
 }
 
