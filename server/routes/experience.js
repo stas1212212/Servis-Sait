@@ -83,7 +83,7 @@ router.post("/password/reset",mutationGuard,async(req,res)=>{
     const found=await client.query("SELECT user_id FROM password_reset_tokens WHERE token_hash=$1 AND expires_at>NOW() FOR UPDATE",[hashToken(token)]);
     if(!found.rowCount){await client.query("ROLLBACK");return res.status(400).json({message:"Посилання недійсне або термін дії минув"});}
     const hash=await bcrypt.hash(password,12);
-    await client.query("UPDATE users SET password_hash=$1 WHERE id=$2",[hash,found.rows[0].user_id]);
+    await client.query("UPDATE users SET password_hash=$1,auth_version=auth_version+1 WHERE id=$2",[hash,found.rows[0].user_id]);
     await client.query("DELETE FROM password_reset_tokens WHERE user_id=$1",[found.rows[0].user_id]);
     await client.query("COMMIT");
     if(req.session)req.session.destroy(()=>{});
