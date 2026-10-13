@@ -15,7 +15,7 @@ const fakePool = {
 };
 const originalLoad=Module._load;
 Module._load=function(request,parent,isMain) {
-  if(parent?.filename?.endsWith("/routes/experience.js") && request==="../db")return fakePool;
+  if(/[\\/]routes[\\/]experience\.js$/.test(parent?.filename||"") && request==="../db")return fakePool;
   if(parent?.filename?.endsWith("/routes/experience.js") && request==="../middleware/requireAdmin")return (req,res)=>res.status(403).json({message:"Access denied"});
   return originalLoad.call(this,request,parent,isMain);
 };
