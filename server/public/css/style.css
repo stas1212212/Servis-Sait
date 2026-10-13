@@ -635,3 +635,14 @@ html.dark .bg-gray-50,html.dark .bg-\\[\\#f5f7fb\\]{background-color:#0b1220!imp
 html.dark .text-gray-900,html.dark .text-gray-800{color:#f1f5f9!important}
 html.dark .text-gray-600,html.dark .text-gray-500{color:#cbd5e1!important}
 @media(max-width:650px){.pult-shop-link{padding:9px 10px;font-size:13px}.pult-theme-toggle{width:38px;height:38px}#header .max-w-7xl>.flex.items-center.gap-3{gap:6px}#header .logo-subtitle{display:none}}
+
+/* Homepage store promotion: preserves the existing repair-service layout. */
+.pult-store-promo{padding:72px 24px 28px;background:#f5f7fb}
+.pult-store-promo-inner{max-width:1180px;margin:0 auto;padding:clamp(32px,6vw,76px);border-radius:30px;background:linear-gradient(120deg,#0f172a 5%,#1e3a8a 100%);color:#fff;box-shadow:0 24px 55px rgba(15,23,42,.18)}
+.pult-store-eyebrow{display:inline-block;color:#bfdbfe;font-size:13px;font-weight:800;letter-spacing:.13em;margin-bottom:18px}
+.pult-store-promo h2{max-width:740px;font-size:clamp(30px,4.6vw,52px);line-height:1.15;font-weight:800;margin-bottom:20px}
+.pult-store-promo p{max-width:700px;color:#dbeafe;font-size:clamp(15px,1.8vw,19px);line-height:1.65;margin-bottom:30px}
+.pult-store-promo-button{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:15px 27px;border-radius:14px;background:#fff;color:#1e3a8a;font-weight:800;transition:transform .2s,background .2s}
+.pult-store-promo-button:hover{background:#dbeafe;transform:translateY(-2px)}
+html.dark .pult-store-promo{background:#0b1220}
+@media(max-width:600px){.pult-store-promo{padding:40px 14px 16px}.pult-store-promo-inner{border-radius:22px}.pult-store-promo-button{width:100%}}
