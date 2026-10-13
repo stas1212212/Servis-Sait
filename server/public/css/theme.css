@@ -32,3 +32,16 @@ html.dark a:not([class*="bg-blue"]):focus-visible, html.dark button:focus-visibl
 .theme-mode-picker button.theme-active { background:#2563eb!important; color:#fff!important; border-color:#2563eb!important; }
 html.dark .theme-mode-picker button { background:var(--pult-panel2); color:var(--pult-text); border-color:var(--pult-border); }
 @media (prefers-reduced-motion:reduce) { html.dark *, html.dark *::before, html.dark *::after { transition-duration:0.01ms!important; } }
+
+
+/* Page-specific surfaces: do not recolor text without its background. */
+html.dark .choice-card, html.dark .brand-card, html.dark .service-device-card, html.dark .service-form-card, html.dark .service-steps article {background:var(--pult-panel)!important;color:var(--pult-text)!important;border:1px solid var(--pult-border)!important;}
+html.dark .choice-card h2, html.dark .choice-card li, html.dark .brand-card, html.dark .service-device-card h2, html.dark .service-form-card h2, html.dark .service-field label, html.dark .service-preview h3 {color:var(--pult-text)!important;}
+html.dark .choice-card p, html.dark .pults-hero p, html.dark .section-subtitle, html.dark .advantage-card p, html.dark .cta p, html.dark .service-form-heading p, html.dark .service-device-card > p {color:var(--pult-muted)!important;}
+html.dark .service-page, html.dark .service-main, html.dark .pults-choice, html.dark .brands, html.dark .cta {background:var(--pult-bg)!important;color:var(--pult-text)!important;}
+html.dark .service-hero-icon {background:var(--pult-panel2)!important;}
+html.dark .service-brand {background:var(--pult-panel2)!important;color:var(--pult-text)!important;border-color:var(--pult-border)!important;}
+html.dark .service-brand.active, html.dark .service-brand:hover {background:#1d4ed8!important;color:#fff!important;border-color:#60a5fa!important;}
+html.dark .service-preview {background:var(--pult-panel2)!important;}
+html.dark .service-field input, html.dark .service-field textarea, html.dark .service-field select {background:#101a2b!important;color:var(--pult-text)!important;}
+html.dark .choice-button, html.dark .service-submit, html.dark .service-cta {color:#fff!important;}
