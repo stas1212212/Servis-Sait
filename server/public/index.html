@@ -1,358 +1,62 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <link rel="stylesheet" href="css/style.css">
-
-  <title>PULT+ Service</title>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- GOOGLE FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="css/cart-modal.css">
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-
-    .card-hover {
-      transition: 0.2s ease;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-4px);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PULT+ — магазин пультів та ремонт електроніки</title>
+<meta name="description" content="PULT+: магазин пультів дистанційного керування, ремонт телефонів, ноутбуків, телевізорів та іншої електроніки.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/cart-modal.css">
+<style>
+.home-hero{padding:160px 24px 95px;background:radial-gradient(circle at 85% 15%,#bfdbfe 0%,transparent 38%),linear-gradient(135deg,#f8fafc,#eaf2ff)}
+.home-inner{max-width:1180px;margin:auto}
+.home-eyebrow{display:inline-flex;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:8px 16px;font-size:13px;font-weight:800;letter-spacing:.05em}
+.home-hero h1{font-size:clamp(38px,5.8vw,74px);line-height:1.08;letter-spacing:-.05em;font-weight:850;max-width:900px;margin:25px 0}
+.home-hero p{font-size:clamp(17px,2vw,21px);color:#475569;max-width:650px;line-height:1.7}
+.home-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:35px}
+.home-action{display:inline-flex;align-items:center;justify-content:center;padding:16px 24px;border-radius:15px;background:#2563eb;color:white;font-weight:750}
+.home-action.secondary{background:white;color:#1e293b;border:1px solid #cbd5e1}
+.home-section{max-width:1180px;margin:auto;padding:75px 24px}
+.home-section h2{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.03em;margin-bottom:26px}
+.home-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.home-card{display:flex;flex-direction:column;background:white;border:1px solid #e2e8f0;border-radius:23px;padding:26px;box-shadow:0 12px 35px #0f172a0a;transition:transform .2s}
+.home-card:hover{transform:translateY(-4px)}
+.home-card-icon{font-size:42px;margin-bottom:16px}
+.home-card h3{font-size:22px;font-weight:750;margin-bottom:8px}
+.home-card p{color:#64748b;line-height:1.65}
+.home-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.home-step{background:#eaf2ff;border-radius:18px;padding:25px;font-weight:700}
+.home-step span{display:block;color:#2563eb;font-size:28px;margin-bottom:12px}
+html.dark .home-hero{background:radial-gradient(circle at 85% 15%,#1e3a8a 0%,transparent 40%),#0b1220}
+html.dark .home-hero p,html.dark .home-card p{color:#cbd5e1}
+html.dark .home-card{background:#172235;border-color:#334155}
+html.dark .home-step{background:#1d2d46}
+html.dark .home-action.secondary{background:#243248;color:#f1f5f9;border-color:#475569}
+@media(max-width:850px){.home-grid{grid-template-columns:repeat(2,1fr)}.home-steps{grid-template-columns:1fr}}
+@media(max-width:550px){.home-grid{grid-template-columns:1fr}.home-hero{padding-top:140px;padding-bottom:70px}}
+</style>
 </head>
-
-<body class="bg-[#f5f7fb] text-gray-800">
-
+<body>
 <div id="header"></div>
-
-</div>
-  </header>
-
-  <!-- MAIN -->
-  <main class="pt-32">
-
-    <!-- CATEGORY BAR -->
-    <section class="max-w-7xl mx-auto px-6 mb-8">
-
-      <div class="flex flex-wrap gap-4">
-
-        <nav class="navigation">
-
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="pults.html">Пульты</a>
-          
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="phone.html">Телефоны</a>
-        </button>
-
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="speakers.html">Акустика</a>
-        </button>
-
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="laptop.html">Ноутбуки</a>
-        </button>
-
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="tv.html">Телевизоры</a>
-        </button>
-
-         <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="tablet.html">Планшет</a>
-        </button>
-
-         <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="phone.html">Пульт</a>
-        </button>
-
-        </nav>
-
-      </div>
-
-    </section>
-
-    <!-- INFO TEXT -->
-    <section class="max-w-7xl mx-auto px-6 mb-12">
-
-      <div class="bg-white rounded-2xl shadow-sm p-5 text-center text-gray-600 text-sm">
-
-        Чтобы отремонтировать технику, не обязательно ехать к нам —
-        оформите заявку на сайте и отправьте устройство по почте.
-
-      </div>
-
-    </section>
-
-    <!-- PRODUCTS GRID -->
-    <section class="max-w-7xl mx-auto px-6 pb-20">
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        <!-- CARD -->
-        <a href="Pults.html"
-	 class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover block">
-
-          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
-
-            <img
-              src="png/Пульт.png"
-              class="w-45 opacity-90"
-              alt="Пульт">
-
-          </div>
-
-          <h3 class="text-xl font-semibold mb-2">
-            Пульты
-          </h3>
-
-          <p class="text-gray-500 text-sm">
-            Продажа и ремонт пультов дистанционного управления.
-          </p>
-
-        </a>
-
-        <!-- CARD -->
-		  <a href="laptop.html"
-	 class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover block">
-
-          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
-
-            <img
-              src="png/Nout.jpg"
-              class="w-60 opacity-90"
-              alt="Ноутбук">
-
-          </div>
-
-          <h3 class="text-xl font-semibold mb-2">
-            Ноутбуки
-          </h3>
-
-          <p class="text-gray-500 text-sm">
-            Ремонт, чистка и замена комплектующих.
-          </p>
-
-        </a>
-
-        <!-- CARD -->
-		  <a href="tv.html"
-	   class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover block">
-
-          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
-
-            <img
-              src="png/Televizor.jpg"
-              class="w-70 opacity-90"
-              alt="Телевизор">
-
-          </div>
-
-          <h3 class="text-xl font-semibold mb-2">
-            Телевизоры
-          </h3>
-
-          <p class="text-gray-500 text-sm">
-            Диагностика и восстановление телевизоров.
-          </p>
-
-        </a>
-
-        <!-- CARD -->
-		  <a href="phone.html"
-		class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover block">
-
-          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
-
-            <img
-              src="png/Telefon.jpg"
-              class="w-40 opacity-90"
-              alt="Телефон">
-
-          </div>
-
-          <h3 class="text-xl font-semibold mb-2">
-            Телефоны
-          </h3>
-
-          <p class="text-gray-500 text-sm">
-            Замена экранов, батарей и ремонт плат.
-          </p>
-
-        </a>
-
-        <!-- CARD -->
-		  <a href="tablet.html"
-		class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover block">
-
-          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
-
-            <img
-              src="png/Aipad.jpg"
-              class="w-40 opacity-90"
-              alt="Планшет">
-
-		</div>
-
-          <h3 class="text-xl font-semibold mb-2">
-            Планшеты
-          </h3>
-
-          <p class="text-gray-500 text-sm">
-            Ремонт дисплеев, зарядки и системных плат.
-          </p>
-
-        </a>
-
-        <!-- CARD -->
-		  <a href="speakers.html"
-		class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover block">
-
-          <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden gap-4"> 
-            <img
-              src="png/Kolonka2.webp"
-              class="w-60 opacity-90"
-              alt="Колонка">
-
-          </div>
-
-          <h3 class="text-xl font-semibold mb-2">
-            Акустика
-          </h3>
-
-          <p class="text-gray-500 text-sm">
-            Ремонт колонок
-          </p>
-
-        </div>
-
-      </a>
-
-    </section>
-
-
-<!-- ========================= -->
-<!-- WHY US -->
-<!-- ========================= -->
-
-<section class="bg-black text-white py-24">
-
-    <div class="max-w-7xl mx-auto px-6">
-
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-
-            <div>
-
-                <h2 class="text-5xl font-bold leading-tight mb-8">
-
-                    Чому обирають саме PULT+?
-
-                </h2>
-
-                <p class="text-gray-300 text-lg leading-8">
-
-                    Ми спеціалізуємося саме на ремонті електроніки та пультів.
-                    Маємо власний склад комплектуючих та сучасне обладнання.
-
-                </p>
-
-            </div>
-
-            <div class="grid grid-cols-2 gap-6">
-
-                <div class="bg-white/10 rounded-3xl p-8">
-
-                    <div class="text-4xl font-bold">
-
-                        1000+
-
-                    </div>
-
-                    <p class="mt-3 text-gray-300">
-
-                        Відремонтованих пультів
-
-                    </p>
-
-                </div>
-
-                <div class="bg-white/10 rounded-3xl p-8">
-
-                    <div class="text-4xl font-bold">
-
-                        95%
-
-                    </div>
-
-                    <p class="mt-3 text-gray-300">
-
-                        Успішних ремонтів
-
-                    </p>
-
-                </div>
-
-                <div class="bg-white/10 rounded-3xl p-8">
-
-                    <div class="text-4xl font-bold">
-
-                        1 день
-
-                    </div>
-
-                    <p class="mt-3 text-gray-300">
-
-                        Середній час ремонту
-
-                    </p>
-
-                </div>
-
-                <div class="bg-white/10 rounded-3xl p-8">
-
-                    <div class="text-4xl font-bold">
-
-                        ✔
-
-                    </div>
-
-                    <p class="mt-3 text-gray-300">
-
-                        Гарантія на роботи
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<div id="footer"></div>
-
+<main>
+<section class="home-hero"><div class="home-inner">
+<span class="home-eyebrow">PULT+ · SERVICE & STORE</span>
+<h1 data-i18n="home.title">Ремонт електроніки та магазин пультів</h1>
+<p data-i18n="home.subtitle">Зручний сервіс: обирайте пульти в каталозі або залишайте заявку на ремонт техніки.</p>
+<div class="home-actions"><a class="home-action" href="/pults-shop.html" data-i18n="home.shop">Перейти до магазину</a><a class="home-action secondary" href="/pults.html" data-i18n="home.repair">Замовити ремонт</a></div>
+</div></section>
+<section class="home-section" aria-labelledby="servicesTitle"><h2 id="servicesTitle" data-i18n="home.services">Наші послуги</h2>
+<div class="home-grid">
+<a class="home-card" href="/pults-shop.html"><span class="home-card-icon">🎮</span><h3 data-i18n="home.pults">Пульти</h3><p data-i18n="home.pultsText">Пульти для різних пристроїв та допомога з підбором.</p></a>
+<a class="home-card" href="/laptop.html"><span class="home-card-icon">💻</span><h3 data-i18n="home.laptop">Ноутбуки</h3><p data-i18n="home.laptopText">Діагностика, чистка та ремонт ноутбуків.</p></a>
+<a class="home-card" href="/tv.html"><span class="home-card-icon">📺</span><h3 data-i18n="home.tv">Телевізори</h3><p data-i18n="home.tvText">Діагностика та ремонт телевізорів.</p></a>
+<a class="home-card" href="/phone.html"><span class="home-card-icon">📱</span><h3 data-i18n="home.phone">Телефони</h3><p data-i18n="home.phoneText">Діагностика та ремонт смартфонів.</p></a>
+<a class="home-card" href="/tablet.html"><span class="home-card-icon">📟</span><h3 data-i18n="home.tablet">Планшети</h3><p data-i18n="home.tabletText">Ремонт планшетів.</p></a>
+<a class="home-card" href="/speakers.html"><span class="home-card-icon">🔊</span><h3 data-i18n="home.audio">Акустика</h3><p data-i18n="home.audioText">Діагностика та ремонт акустики.</p></a>
+</div></section>
+<section class="home-section" aria-labelledby="howTitle"><h2 id="howTitle" data-i18n="home.how">Як це працює</h2><div class="home-steps"><div class="home-step"><span>01</span><p data-i18n="home.step1">Оберіть товар або послугу</p></div><div class="home-step"><span>02</span><p data-i18n="home.step2">Оформіть замовлення чи заявку</p></div><div class="home-step"><span>03</span><p data-i18n="home.step3">Відстежуйте статус в кабінеті</p></div></div></section>
 </main>
-<!-- Модули -->
-<script src="js/header.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/burger.js"></script>
-<script src="js/theme.js"></script>
-<!-- Основной -->
-<script src="js/main.js"></script>
-
-</body>
-</html>
+<div id="footer"></div>
+<script src="/js/dropdown.js"></script><script src="/js/burger.js"></script><script src="/js/theme.js"></script><script src="/js/cart.js"></script><script src="/js/main.js"></script>
+</body></html>
