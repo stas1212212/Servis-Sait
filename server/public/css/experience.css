@@ -50,3 +50,12 @@ html.dark .exp-review strong { color:#a8caff; }
 html.dark .exp-admin-item small { color:#bac7db; }
 @media(max-width:800px){.exp-catalog-tools{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:500px){.exp-main{padding:105px 14px 50px}.exp-catalog-tools{grid-template-columns:1fr}.exp-catalog-tools .exp-check{padding-top:0}}
+
+/* Product category buttons inherit the original shop-card design. */
+#categories .category-card { appearance:none;display:flex;flex-direction:column;gap:7px;align-items:center;justify-content:center;padding:23px 12px;min-height:105px;border:1px solid #dce5f2;border-radius:17px;background:#fff;color:#1e293b;font-weight:700;cursor:pointer;transition:transform .18s,border-color .18s,background .18s;text-align:center; }
+#categories .category-card span:first-child { font-size:27px; }
+#categories .category-card:hover { transform:translateY(-3px);border-color:#93b4ed; }
+#categories .category-card.active { background:#eaf1ff;border-color:#2563eb;color:#1748a1;box-shadow:0 6px 20px rgba(37,99,235,.09); }
+html.dark #categories .category-card { background:#172235;color:#dae5f5;border-color:#35445a; }
+html.dark #categories .category-card.active { background:#1c3c70;color:#fff;border-color:#5e9bff; }
+#categories .category-card:focus-visible {outline:3px solid #60a5fa;outline-offset:2px;}
