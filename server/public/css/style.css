@@ -646,3 +646,27 @@ html.dark .text-gray-600,html.dark .text-gray-500{color:#cbd5e1!important}
 .pult-store-promo-button:hover{background:#dbeafe;transform:translateY(-2px)}
 html.dark .pult-store-promo{background:#0b1220}
 @media(max-width:600px){.pult-store-promo{padding:40px 14px 16px}.pult-store-promo-inner{border-radius:22px}.pult-store-promo-button{width:100%}}
+
+
+/* PULT+ refreshed shared header — restrained technical identity */
+#header .pult-site-header{background:rgba(255,255,255,.94)!important;border-bottom:1px solid #dce5f2!important;box-shadow:0 8px 28px rgba(15,23,42,.07)!important}
+#header .pult-header-inner{max-width:1360px;gap:20px}
+#header .pult-logo-mark{background:linear-gradient(145deg,#2563eb,#12317b)!important;border-radius:14px!important;box-shadow:0 5px 15px rgba(37,99,235,.24);font-size:26px}
+#header .pult-logo-title{font-size:24px;line-height:1.15;letter-spacing:-.06em}
+#header .pult-header-brand>a{gap:11px}
+#header .pult-header-nav{gap:3px}
+#header .pult-header-nav a{font-size:13px;font-weight:650;white-space:nowrap;padding:10px 12px;border-radius:11px;color:#475569;transition:background .2s,color .2s}
+#header .pult-header-nav a:hover,#header .pult-header-nav a[aria-current="page"]{background:#eaf1ff!important;color:#1d4ed8!important}
+#header .pult-header-actions{gap:8px}
+#header .pult-header-actions>a,#header .pult-header-actions .dropdown>button,#header #burgerButton{border:1px solid #e2e8f0;border-radius:13px;transition:background .2s,border-color .2s,transform .2s}
+#header .pult-header-actions>a:hover,#header .pult-header-actions .dropdown>button:hover,#header #burgerButton:hover{border-color:#93b4ed;transform:translateY(-1px)}
+#header .pult-header-actions>a[href="cabinet.html"]{background:#2563eb!important;border-color:#2563eb!important}
+#header .pult-header-actions>a[href="cabinet.html"]:hover{background:#1d4ed8!important}
+html.dark #header .pult-site-header{background:rgba(16,26,43,.96)!important;border-color:#2a3c57!important;box-shadow:0 8px 28px rgba(0,0,0,.2)!important}
+html.dark #header .pult-header-nav a{color:#c7d4e7!important}
+html.dark #header .pult-header-nav a:hover,html.dark #header .pult-header-nav a[aria-current="page"]{background:#243b61!important;color:#b9d5ff!important}
+html.dark #header .pult-header-actions>a,html.dark #header .pult-header-actions .dropdown>button,html.dark #header #burgerButton{border-color:#344761}
+html.dark #header .pult-header-actions>a[href="cabinet.html"]{background:#2563eb!important}
+@media(max-width:1150px){#header .pult-header-inner{padding-inline:16px;gap:10px}#header .pult-header-nav a{padding:9px 8px;font-size:12px}#header .pult-header-actions{gap:5px}}
+@media(max-width:1023px){#header .pult-header-nav{display:none!important}}
+@media(max-width:600px){#header .pult-header-inner{padding-inline:12px;height:70px}#header .pult-header-brand{gap:8px}#header .pult-header-actions{gap:5px}#header .pult-header-actions>a,#header .pult-header-actions .dropdown>button{width:35px;height:35px}#header .pult-logo-mark{width:36px;height:36px}#header .pult-logo-title{font-size:19px}#header .pult-header-brand>a .text-xs{display:none}#header #burgerButton{width:36px;height:36px}#header .pult-header-actions .dropdown{display:none}}
