@@ -1,6 +1,7 @@
 -- PULT+ customer-service suite. Run in PostgreSQL 13+ AFTER existing schema scripts.
 -- Safe to run repeatedly; existing repairs/orders are preserved.
 BEGIN;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS auth_version INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE service_requests ADD COLUMN IF NOT EXISTS tracking_code VARCHAR(40);
 UPDATE service_requests SET tracking_code = 'RP-' || UPPER(REPLACE(gen_random_uuid()::text, '-', '')) WHERE tracking_code IS NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS ux_service_requests_tracking ON service_requests (tracking_code);
