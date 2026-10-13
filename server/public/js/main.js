@@ -51,6 +51,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         script.onerror = resolve;
         document.head.append(script);
     });
+    try {
+        const response = await fetch("/api/experience/settings", {credentials:"same-origin"});
+        if (response.ok) {
+            const data = await response.json();
+            document.querySelectorAll("[data-site-setting]").forEach(node => {
+                const value = data.settings?.[node.dataset.siteSetting];
+                node.textContent = value || "Уточнюється";
+            });
+        }
+    } catch (error) { console.warn("Site contacts are unavailable", error); }
+
     initFormHandler();
 
 });
