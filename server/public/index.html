@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <link rel="stylesheet" href="css/style.css">
 
-  <title>PULT+ Service</title>
+  <title>PULT+ Service — ремонт техніки та пульти</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -36,9 +36,6 @@
 
 <div id="header"></div>
 
-</div>
-  </header>
-
   <!-- MAIN -->
   <main class="pt-32">
 
@@ -47,35 +44,14 @@
 
       <div class="flex flex-wrap gap-4">
 
-        <nav class="navigation">
-
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="pults.html">Пульты</a>
-          
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="phone.html">Телефоны</a>
-        </button>
-
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="speakers.html">Акустика</a>
-        </button>
-
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="laptop.html">Ноутбуки</a>
-        </button>
-
-        <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="tv.html">Телевизоры</a>
-        </button>
-
-         <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="tablet.html">Планшет</a>
-        </button>
-
-         <button class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium">
-          <a href="phone.html">Пульт</a>
-        </button>
-
+        <nav class="flex flex-wrap gap-4" aria-label="Категорії техніки">
+          <a class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium" href="pults-shop.html">Пульты</a>
+          <a class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium" href="Phone.html">Телефоны</a>
+          <a class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium" href="speakers.html">Акустика</a>
+          <a class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium" href="Laptop.html">Ноутбуки</a>
+          <a class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium" href="tv.html">Телевизоры</a>
+          <a class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium" href="tablet.html">Планшеты</a>
+          <a class="px-5 py-2 rounded-full bg-white shadow-sm hover:shadow-md transition font-medium" href="pults-repair.html">Ремонт пультов</a>
         </nav>
 
       </div>
@@ -100,14 +76,14 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
         <!-- CARD -->
-        <a href="Pults.html"
+        <a href="pults-shop.html"
 	 class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover block">
 
           <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
 
             <img
               src="png/Пульт.png"
-              class="w-45 opacity-90"
+              class="w-44 opacity-90"
               alt="Пульт">
 
           </div>
@@ -123,7 +99,7 @@
         </a>
 
         <!-- CARD -->
-		  <a href="laptop.html"
+		  <a href="Laptop.html"
 	 class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover block">
 
           <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
@@ -153,7 +129,7 @@
 
             <img
               src="png/Televizor.jpg"
-              class="w-70 opacity-90"
+              class="w-64 opacity-90"
               alt="Телевизор">
 
           </div>
@@ -169,7 +145,7 @@
         </a>
 
         <!-- CARD -->
-		  <a href="phone.html"
+		  <a href="Phone.html"
 		class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl card-hover block">
 
           <div class="bg-gray-100 rounded-2xl h-64 flex items-center justify-center mb-5 overflow-hidden">
@@ -234,10 +210,9 @@
             Ремонт колонок
           </p>
 
-        </div>
-
       </a>
 
+      </div>
     </section>
 
 
@@ -347,7 +322,7 @@
 
 </main>
 <!-- Модули -->
-<script src="js/header.js"></script>
+<script src="js/dropdown.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/burger.js"></script>
 <script src="js/theme.js"></script>
