@@ -173,7 +173,8 @@ router.get("/me", async (req, res) => {
         req.session.user = {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            auth_version: user.auth_version
         };
 
         res.json({
@@ -257,7 +258,8 @@ router.put("/profile", async (req, res) => {
         req.session.user = {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            auth_version: user.auth_version
         };
 
         res.json({
