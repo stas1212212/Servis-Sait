@@ -1085,3 +1085,5 @@ to {
 
 
 }
+
+.cabinet-quick-links{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 22px}.cabinet-quick-links a{display:inline-flex;align-items:center;padding:12px 16px;border:1px solid #dbe3f0;border-radius:12px;background:#fff;font-size:14px;font-weight:700;color:#334155}.cabinet-quick-links a:hover{border-color:#2563eb;color:#2563eb}html.dark .cabinet-quick-links a{background:#172235;color:#e2e8f0;border-color:#334155}html.dark .profile-modal-window{background:#172235;color:#f1f5f9;border-color:#334155}html.dark .profile-modal-header h2,html.dark .profile-form-group label{color:#f1f5f9}
