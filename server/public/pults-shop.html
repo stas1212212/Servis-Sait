@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/pults-shop.css">
     <link rel="stylesheet" href="css/cart-modal.css">
+    <link rel="stylesheet" href="css/experience.css">
 
   <script src="/js/theme.js"></script>
 </head>
@@ -132,7 +133,7 @@
 
             <div class="text-center">
 
-                <img src="img/pult-hero.png"
+                <img src="png/Пульт.png"
 
                      alt="Пульт"
 
@@ -182,7 +183,7 @@
 
             <input
 
-                type="text"
+                type="search" id="catalogQuery" aria-label="Пошук пультів"
 
                 placeholder="Пошук за моделлю пульта або телевізора...">
 
@@ -194,8 +195,13 @@
 
         </div>
 
+    <div class="exp-catalog-tools" role="group" aria-label="Фільтри товарів">
+      <label>Категорія<select id="catalogCategory"><option value="">Усі категорії</option></select></label>
+      <label>Бренд<select id="catalogBrand"><option value="">Усі бренди</option></select></label>
+      <label>Сортування<select id="catalogSort"><option value="name">За назвою</option><option value="price_asc">Ціна: зростання</option><option value="price_desc">Ціна: спадання</option><option value="stock">За наявністю</option></select></label>
+      <label class="exp-check"><input type="checkbox" id="catalogStock"> Лише в наявності</label>
     </div>
-
+  </div>
 </section>
 
 <!-- ========================= -->
