@@ -611,3 +611,27 @@ body.dark h6,
 body.dark span {
     color: inherit;
 }
+/* PULT+ shared navigation and dark palette */
+.pult-shop-link{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;padding:11px 17px;border-radius:14px;background:#2563eb;color:white!important;font-weight:750;box-shadow:0 5px 16px #2563eb35}
+.pult-shop-link:hover{background:#1d4ed8}
+.pult-theme-toggle{width:44px;height:44px;flex-shrink:0;border-radius:13px;background:#eef2ff;color:#1e293b;font-size:19px}
+.pult-theme-toggle:hover{background:#dbeafe}
+html.dark{color-scheme:dark}
+html.dark body{background:#0b1220!important;color:#e5e7eb!important}
+html.dark #header header,html.dark #header #burgerMenu,html.dark #footer footer{background:#111b2d!important;color:#f1f5f9!important;border-color:#334155!important}
+html.dark #header .bg-white,html.dark #header .dropdown-menu,html.dark #footer .bg-white{background:#172235!important;color:#f1f5f9!important;border-color:#334155!important}
+html.dark #header .text-gray-500,html.dark #footer .text-gray-500,html.dark #footer .text-gray-600{color:#cbd5e1!important}
+html.dark #header .bg-gray-100{background:#26354b!important;color:#f8fafc!important}
+html.dark #header .hover\\:bg-gray-100:hover{background:#334155!important}
+html.dark .cabinet-page,html.dark .admin-page,html.dark .shop-hero{background:#0b1220!important;color:#e5e7eb!important}
+html.dark .cabinet-card,html.dark .cabinet-loading,html.dark .admin-request,html.dark .admin-toolbar,html.dark .admin-summary article,html.dark .admin-product-form,html.dark .product-card,html.dark .category-card,html.dark .search-box,html.dark .advantage-card{background:#172235!important;color:#f1f5f9!important;border-color:#334155!important}
+html.dark .cabinet-card h2,html.dark .cabinet-card strong,html.dark .cabinet-card h3,html.dark .cabinet-card h4,html.dark .cabinet-info-row strong,html.dark .cabinet-order-info strong,html.dark .product-body h3,html.dark .product-body .price{color:#f1f5f9!important}
+html.dark .cabinet-order,html.dark .cabinet-card-icon,html.dark .admin-order-items,html.dark .product-image-placeholder{background:#243248!important;color:#e2e8f0!important;border-color:#334155!important}
+html.dark .cabinet-order:hover{background:#293b55!important}
+html.dark input,html.dark textarea,html.dark select{background:#1e293b!important;color:#f8fafc!important;border-color:#475569!important}
+html.dark input::placeholder,html.dark textarea::placeholder{color:#94a3b8!important}
+html.dark .bg-white{background-color:#172235!important}
+html.dark .bg-gray-50,html.dark .bg-\\[\\#f5f7fb\\]{background-color:#0b1220!important}
+html.dark .text-gray-900,html.dark .text-gray-800{color:#f1f5f9!important}
+html.dark .text-gray-600,html.dark .text-gray-500{color:#cbd5e1!important}
+@media(max-width:650px){.pult-shop-link{padding:9px 10px;font-size:13px}.pult-theme-toggle{width:38px;height:38px}#header .max-w-7xl>.flex.items-center.gap-3{gap:6px}#header .logo-subtitle{display:none}}
