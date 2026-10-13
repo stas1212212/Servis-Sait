@@ -72,10 +72,10 @@
 
         </a>
 
-        <a href="pults.html"
-           class="block px-4 py-3 rounded-xl hover:bg-gray-100">
+        <a href="pults-shop.html"
+           class="block px-4 py-3 rounded-xl hover:bg-gray-100" data-i18n="nav.shop">
 
-            🎮 Пульти
+            🛍 Магазин пультів
 
         </a>
 
@@ -211,14 +211,14 @@
 
             </a>
 
-            <a href="speaker.html"
+            <a href="speakers.html"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Колонки
 
             </a>
 
-            <a href="pults.html"
+            <a href="pults-shop.html"
                class="px-4 py-2 rounded-full bg-black text-white">
 
                 Пульти
@@ -231,7 +231,8 @@
 
         <div class="flex items-center gap-3">
 
-            <!-- PHONE -->
+            <a href="pults-shop.html" class="pult-shop-link" data-i18n="nav.shop">🛍 Магазин</a>
+            <button type="button" data-theme-toggle class="pult-theme-toggle" aria-label="Увімкнути темну тему">🌙</button>
 
             <!-- CART -->
 
@@ -317,6 +318,7 @@
                 class="relative dropdown">
 
                 <button
+                    aria-label="Мова сайту"
                     class="w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
 
                     🌐
@@ -325,19 +327,19 @@
 
                 <div class="dropdown-menu absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 w-44 p-3">
 
-                    <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+                    <button data-lang="uk" class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
 
                         🇺🇦 Українська
 
                     </button>
 
-                    <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+                    <button data-lang="ru" class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
 
                         🇷🇺 Русский
 
                     </button>
 
-                    <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+                    <button data-lang="en" class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
 
                         🇬🇧 English
 
