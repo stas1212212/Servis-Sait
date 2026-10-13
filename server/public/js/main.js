@@ -3,6 +3,8 @@
 // =========================
 
 document.addEventListener("DOMContentLoaded", async () => {
+    document.documentElement.classList.toggle("dark", localStorage.getItem("theme") === "dark");
+    document.body.classList.toggle("dark", localStorage.getItem("theme") === "dark");
 
     // HEADER
     const header = document.getElementById("header");
@@ -12,11 +14,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await fetch("/_header");
         header.innerHTML = await response.text();
 
-        initLanguageDropdown();
-        initContactsDropdown();
-        initBurgerMenu();
-        initTheme();
-        updateCartCounter();
+        if (typeof initLanguageDropdown === "function") initLanguageDropdown();
+        if (typeof initContactsDropdown === "function") initContactsDropdown();
+        if (typeof initBurgerMenu === "function") initBurgerMenu();
+        if (typeof initTheme === "function") initTheme();
+        if (typeof updateCartCounter === "function") updateCartCounter();
 
         
     }
@@ -31,6 +33,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
+    await new Promise(resolve => {
+        const script = document.createElement("script");
+        script.src = "/js/i18n.js";
+        script.onload = () => { if (typeof applySiteLanguage === "function") applySiteLanguage(); resolve(); };
+        script.onerror = resolve;
+        document.head.append(script);
+    });
     initFormHandler();
 
 });
