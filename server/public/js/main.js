@@ -6,6 +6,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.documentElement.classList.toggle("dark", localStorage.getItem("theme") === "dark");
     document.body.classList.toggle("dark", localStorage.getItem("theme") === "dark");
 
+    // Pages such as cabinet.html do not load every shared script themselves.
+    for (const [check, src] of [["initLanguageDropdown","/js/dropdown.js"],["initBurgerMenu","/js/burger.js"],["initTheme","/js/theme.js"]]) {
+        if (typeof window[check] !== "function") {
+            await new Promise(resolve => {
+                const script = document.createElement("script");
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = resolve;
+                document.head.append(script);
+            });
+        }
+    }
     // HEADER
     const header = document.getElementById("header");
 
