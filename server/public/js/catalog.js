@@ -4,6 +4,10 @@
 
 let allProducts = [];
 
+function safeText(value) {
+    return String(value ?? "").replace(/[&<>"\x27]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "\x27": "&#39;" }[char]));
+}
+
 function star(n) {
     return "⭐".repeat(n) + "☆".repeat(5 - n);
 }
@@ -19,8 +23,8 @@ function renderCategories(categories) {
     if (!root) return;
 
     root.innerHTML = categories.map((c) => `
-        <div class="category-card" data-cat="${c.label}">
-            <div>${c.icon}</div>
+        <div class="category-card" data-cat="${safeText(c.label)}">
+            <div>${safeText(c.icon)}</div>
             <span>${c.label}</span>
         </div>
     `).join("");
@@ -70,8 +74,8 @@ function renderProducts(products) {
         <div class="product-card">
 
             <img
-                src="${p.image || (p.images && p.images[0]) || ""}"
-                alt="${p.title}"
+                src="${safeText(p.image || (p.images && p.images[0]) || "")}"
+                alt="${safeText(p.title)}"
             >
 
             <div class="product-body">
@@ -81,7 +85,7 @@ function renderProducts(products) {
                 </h3>
 
                 <p>
-                    ${p.description || ""}
+                    ${safeText(p.description || "")}
                 </p>
 
                 <div class="rating">
@@ -89,13 +93,13 @@ function renderProducts(products) {
                 </div>
 
                 <div class="price">
-                    ${p.price}₴
+                    ${safeText(p.price)}₴
                 </div>
 
                 <button
                     type="button"
                     class="buy-product-btn"
-                    data-id="${p.id}"
+                    data-id="${safeText(p.id)}"
                     ${p.stock <= 0 ? "disabled aria-disabled=\"true\"" : ""}>
 
                     ${p.stock <= 0 ? "Немає в наявності" : "Купити"}
