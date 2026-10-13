@@ -5,6 +5,8 @@ const localEnv = path.join(__dirname, '.env');
 if (fs.existsSync(localEnv) && typeof process.loadEnvFile === 'function') process.loadEnvFile(localEnv);
 const session = require('express-session');
 const app = express();
+if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) throw new Error('Set SESSION_SECRET before production startup');
+if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
 
 const port = Number(process.env.PORT || 3000);
 
