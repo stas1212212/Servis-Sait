@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       target.innerHTML = '<p class="repair-history-empty">У вас поки немає заявок на ремонт.</p>';
       return;
     }
-    const statuses = {pending:"Очікує розгляду",in_progress:"У роботі",completed:"Завершено",cancelled:"Скасовано"};
+    const statuses = {pending:"Очікує розгляду",in_progress:"У роботі",waiting_parts:"Очікує запчастини",completed:"Завершено",cancelled:"Скасовано"};
     target.innerHTML = requests.map(item => {
       const date = item.created_at ? new Date(item.created_at).toLocaleDateString("uk-UA") : "—";
       const device = [item.device_type, item.brand, item.model].filter(Boolean).join(" · ");
@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ${item.tracking_code ? `<p><b>Код відстеження:</b> <a href="/track.html?code=${encodeURIComponent(item.tracking_code)}">${escapeHtml(item.tracking_code)}</a></p>` : ""}
         <p><b>Проблема:</b> ${escapeHtml(item.issue)}</p>
         <small>${escapeHtml(date)}</small>
+        ${item.status === "completed" ? `<p><a href="/reviews.html">Залишити відгук про завершений ремонт →</a></p>` : ""}
       </article>`;
     }).join("");
   } catch (error) {
