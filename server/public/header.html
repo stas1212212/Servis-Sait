@@ -25,6 +25,7 @@
 
         <button
             id="closeBurger"
+            aria-label="Закрити меню"
             class="text-3xl hover:text-red-500 transition">
 
             ✕
@@ -44,14 +45,14 @@
 
         </a>
 
-        <a href="phone.html"
+        <a href="Phone.html"
            class="block px-4 py-3 rounded-xl hover:bg-gray-100">
 
             📱 Телефони
 
         </a>
 
-        <a href="laptop.html"
+        <a href="Laptop.html"
            class="block px-4 py-3 rounded-xl hover:bg-gray-100">
 
             💻 Ноутбуки
@@ -72,7 +73,7 @@
 
         </a>
 
-        <a href="pults.html"
+        <a href="Pults.html"
            class="block px-4 py-3 rounded-xl hover:bg-gray-100">
 
             🎮 Пульти
@@ -119,18 +120,21 @@
 <!-- HEADER -->
 <!-- ========================= -->
 
-<header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm z-30">
+<header class="pult-site-header fixed top-0 left-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm z-30">
 
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <div class="pult-header-inner max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
         <!-- LEFT -->
 
-        <div class="flex items-center gap-5">
+        <div class="pult-header-brand flex items-center gap-5">
 
             <!-- BURGER -->
 
             <button
                 id="burgerButton"
+                aria-label="Відкрити меню"
+                aria-controls="burgerMenu"
+                aria-expanded="false"
                 class="w-11 h-11 rounded-xl flex items-center justify-center hover:bg-gray-100 transition">
 
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +157,7 @@
             <a href="index.html"
                class="flex items-center gap-3">
 
-                <div class="w-11 h-11 rounded-2xl bg-black text-white flex items-center justify-center text-xl font-bold">
+                <div class="pult-logo-mark w-11 h-11 rounded-2xl bg-black text-white flex items-center justify-center text-xl font-bold">
 
                     +
 
@@ -161,7 +165,7 @@
 
                 <div>
 
-                    <div class="text-2xl font-bold tracking-tight">
+                    <div class="pult-logo-title text-2xl font-bold tracking-tight">
 
                         PULT+
 
@@ -181,7 +185,7 @@
 
         <!-- CENTER -->
 
-        <nav class="hidden lg:flex items-center gap-2">
+        <nav aria-label="Основна навігація" class="pult-header-nav hidden lg:flex items-center gap-2">
 
             <a href="index.html"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
@@ -190,14 +194,14 @@
 
             </a>
 
-            <a href="phone.html"
+            <a href="Phone.html"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Телефони
 
             </a>
 
-            <a href="laptop.html"
+            <a href="Laptop.html"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Ноутбуки
@@ -211,15 +215,15 @@
 
             </a>
 
-            <a href="speaker.html"
+            <a href="speakers.html"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Колонки
 
             </a>
 
-            <a href="pults.html"
-               class="px-4 py-2 rounded-full bg-black text-white">
+            <a href="Pults.html"
+               class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Пульти
 
@@ -229,14 +233,14 @@
 
         <!-- RIGHT -->
 
-        <div class="flex items-center gap-3">
+        <div class="pult-header-actions flex items-center gap-3">
 
             <!-- PHONE -->
 
             <!-- CART -->
 
             <a href="cart.html"
-              class="relative w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
+              aria-label="Кошик" class="relative w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
 
                  🛒
 
@@ -256,7 +260,7 @@
                 class="relative dropdown">
 
                 <button
-                    class="w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
+                    aria-label="Контакти" class="w-11 h-11 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
 
                     📞
 
@@ -350,6 +354,7 @@
             <!-- ACCOUNT -->
 
             <a href="cabinet.html"
+               aria-label="Особистий кабінет"
                class="w-11 h-11 rounded-xl bg-black text-white hover:bg-gray-800 flex items-center justify-center transition">
 
                 👤
