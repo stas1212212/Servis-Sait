@@ -27,6 +27,7 @@ app.use(session({
     }
 }));
 
+app.use('/api', require('./middleware/sessionVersion'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Маршруты
