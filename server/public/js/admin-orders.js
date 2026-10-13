@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ordersTab.addEventListener("click",()=>{
     repairsPanel.hidden=true;ordersPanel.hidden=false;productsPanel.hidden=true;productsTab.classList.remove("active");productsTab.setAttribute("aria-pressed","false");ordersTab.classList.add("active");repairsTab.classList.remove("active");ordersTab.setAttribute("aria-pressed","true");repairsTab.setAttribute("aria-pressed","false");load();
   });
+  if (location.hash === "#orders") ordersTab.click();
   search.addEventListener("input",render);
   document.getElementById("adminOrdersRefresh").addEventListener("click",load);
 });
