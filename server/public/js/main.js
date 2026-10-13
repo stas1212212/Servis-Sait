@@ -3,8 +3,7 @@
 // =========================
 
 document.addEventListener("DOMContentLoaded", async () => {
-    document.documentElement.classList.toggle("dark", localStorage.getItem("theme") === "dark");
-    document.body.classList.toggle("dark", localStorage.getItem("theme") === "dark");
+    if (window.PultTheme) window.PultTheme.apply();
 
     // Pages such as cabinet.html do not load every shared script themselves.
     for (const [check, src] of [["initLanguageDropdown","/js/dropdown.js"],["initBurgerMenu","/js/burger.js"],["initTheme","/js/theme.js"]]) {
