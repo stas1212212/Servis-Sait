@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="uk">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Відгуки | PULT+</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/experience.css">
+<script src="/js/theme.js"></script></head>
+<body><div id="header"></div>
+<main class="exp-main"><div class="exp-container">
+<section class="exp-hero"><h1>Відгуки про PULT+</h1><p>Реальні відгуки користувачів після завершеного ремонту. Нові відгуки з’являються після перевірки.</p></section>
+<section class="exp-grid"><div class="exp-card"><h2>Залишити відгук</h2><form id="reviewForm"><label>Завершений ремонт<select name="request_id" required><option value="">Завантаження…</option></select></label><label>Оцінка<select name="rating" required><option value="5">★★★★★ — 5</option><option value="4">★★★★ — 4</option><option value="3">★★★ — 3</option><option value="2">★★ — 2</option><option value="1">★ — 1</option></select></label><label>Ваш відгук<textarea name="comment" rows="5" minlength="20" maxlength="1200" required placeholder="Поділіться враженнями від ремонту"></textarea></label><button type="submit">Надіслати на перевірку</button><p id="reviewResult" role="status" aria-live="polite"></p></form></div><div class="exp-card"><h2>Опубліковані відгуки</h2><div id="publicReviews">Завантаження…</div></div></section>
+</div></main><div id="footer"></div>
+<script src="/js/dropdown.js"></script><script src="/js/burger.js"></script>
+<script src="/js/cart.js"></script><script src="/js/main.js"></script>
+<script src="/js/experience-pages.js"></script>
+</body></html>
