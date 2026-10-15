@@ -9,53 +9,34 @@ function safeText(value) {
 }
 
 function star(n) {
-    return "⭐".repeat(n) + "☆".repeat(5 - n);
+    const rating = Math.max(0, Math.min(5, Number(n) || 0));
+    return "⭐".repeat(Math.floor(rating)) + "☆".repeat(5 - Math.floor(rating));
 }
 
 // =========================
 // Categories
 // =========================
 
+let activeCategory = "";
 function renderCategories(categories) {
-
     const root = document.getElementById("categories");
-
     if (!root) return;
-
-    root.innerHTML = categories.map((c) => `
-        <div class="category-card" data-cat="${safeText(c.label)}">
-            <div>${safeText(c.icon)}</div>
-            <span>${c.label}</span>
-        </div>
-    `).join("");
-
-    const first = root.querySelector(".category-card");
-
-    if (first) {
-        first.classList.add("active");
-    }
-
-    root.querySelectorAll(".category-card").forEach((card) => {
-
+    const items = [{id:"",icon:"🔎",label:"Усі пульти"},...categories];
+    root.innerHTML = items.map(c => '<button type="button" class="category-card" data-cat="' + safeText(c.id) + '"><span>' + safeText(c.icon) + '</span><span>' + safeText(c.label) + '</span></button>').join("");
+    root.querySelectorAll(".category-card").forEach(card => {
+        card.classList.toggle("active",card.dataset.cat === activeCategory);
         card.addEventListener("click", () => {
-
-            root.querySelectorAll(".category-card")
-                .forEach((c) => c.classList.remove("active"));
-
-            card.classList.add("active");
-
-            const category = card.dataset.cat;
-
-            renderProducts(
-                allProducts.filter(
-                    (product) => product.category === category
-                )
-            );
-
+            activeCategory = card.dataset.cat;
+            const categoryControl=document.getElementById("catalogCategory");
+            if(categoryControl)categoryControl.value=activeCategory;
+            applyCatalogFilters();
         });
-
     });
-
+    const categoryControl=document.getElementById("catalogCategory");
+    if(categoryControl) {
+        categoryControl.replaceChildren(new Option("Усі категорії",""));
+        categories.forEach(c=>categoryControl.add(new Option(c.label,c.id)));
+    }
 }
 
 // =========================
@@ -81,7 +62,7 @@ function renderProducts(products) {
             <div class="product-body">
 
                 <h3>
-                    ${p.title}
+                    ${safeText(p.title)}
                 </h3>
 
                 <p>
@@ -203,6 +184,7 @@ async function loadCatalog() {
             databaseId: product.id,
             title: product.name,
             brand: product.brand,
+            model: product.model || "",
             description: product.description || "",
             price: Number(product.price),
             oldPrice: product.old_price == null ? null : Number(product.old_price),
@@ -239,39 +221,36 @@ async function loadCatalog() {
 // Search
 // =========================
 
-function initSearch() {
-
-    const input =
-        document.querySelector(".search-box input");
-
-    if (!input) return;
-
-    input.addEventListener("input", () => {
-
-        const query =
-            input.value.toLowerCase().trim();
-
-        const filtered =
-            allProducts.filter((product) => {
-
-                return (
-                    product.title
-                        .toLowerCase()
-                        .includes(query)
-
-                    ||
-
-                    (product.description || "")
-                        .toLowerCase()
-                        .includes(query)
-                );
-
-            });
-
-        renderProducts(filtered);
-
+function applyCatalogFilters() {
+    const query=(document.getElementById("catalogQuery")?.value||"").trim().toLocaleLowerCase();
+    const brand=document.getElementById("catalogBrand")?.value||"";
+    const inStock=Boolean(document.getElementById("catalogStock")?.checked);
+    const sort=document.getElementById("catalogSort")?.value||"name";
+    const category=document.getElementById("catalogCategory")?.value??activeCategory;
+    activeCategory=category;
+    document.querySelectorAll("#categories .category-card").forEach(card=>card.classList.toggle("active",card.dataset.cat===category));
+    const filtered=allProducts.filter(p=>{
+      const haystack=[p.title,p.brand,p.model,p.description,...(Array.isArray(p.compatible)?p.compatible:[])].join(" ").toLocaleLowerCase();
+      return (!query||haystack.includes(query)) && (!category||p.category===category) &&
+             (!brand||p.brand===brand) && (!inStock||p.stock>0);
     });
-
+    filtered.sort((a,b)=>sort==="price_asc"?a.price-b.price:sort==="price_desc"?b.price-a.price:
+      sort==="stock"?b.stock-a.stock:String(a.title).localeCompare(String(b.title),"uk"));
+    renderProducts(filtered);
+}
+function initSearch() {
+    const brand=document.getElementById("catalogBrand");
+    if(brand){
+      const brands=[...new Set(allProducts.map(p=>p.brand).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"uk"));
+      brand.replaceChildren(new Option("Усі бренди",""));
+      brands.forEach(value=>brand.add(new Option(value,value)));
+    }
+    ["catalogQuery","catalogBrand","catalogCategory","catalogStock","catalogSort"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el)el.addEventListener(id==="catalogQuery"?"input":"change",applyCatalogFilters);
+    });
+    document.getElementById("catalogSearchButton")?.addEventListener("click",applyCatalogFilters);
+    applyCatalogFilters();
 }
 
 // =========================

@@ -8,7 +8,7 @@ router.use(requireAdmin);
 router.get("/repairs", async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT id, name, phone, email, device_type, brand, model, issue,
+      `SELECT id, tracking_code, name, phone, email, device_type, brand, model, issue,
               issue_cause, repair_type, status, user_id, created_at
        FROM service_requests ORDER BY created_at DESC, id DESC LIMIT 300`
     );

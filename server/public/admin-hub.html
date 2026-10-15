@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Центр керування | PULT+</title><script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="/css/experience.css"><script src="/js/theme.js"></script></head>
+<body><div id="header"></div><main class="exp-main"><div class="exp-container">
+<section class="exp-hero"><h1>Центр керування PULT+</h1><p>Повідомлення адміністратора, контактні дані та модерація відгуків.</p></section>
+<p id="hubStatus" role="status" aria-live="polite">Перевіряємо доступ…</p>
+<div id="hubWorkspace" hidden>
+<section class="exp-card" style="margin-bottom:24px"><h2>🔔 Нові заявки й замовлення (<span id="adminUnreadCount">0</span>)</h2><p class="exp-muted">Список оновлюється автоматично кожні 30 секунд.</p><div id="adminNotificationList" class="exp-admin-list"></div></section>
+<section class="exp-card" style="margin-bottom:24px"><h2>⚙️ Контакти та налаштування сайту</h2>
+<form id="settingsForm"><div class="exp-admin-grid">
+<label>Телефон<input id="setting_phone" name="phone" maxlength="35" placeholder="+380…"></label>
+<label>Email<input id="setting_email" type="email" name="email" maxlength="254" placeholder="support@example.ua"></label>
+<label>Telegram<input id="setting_telegram" name="telegram" maxlength="100" placeholder="@username"></label>
+<label>Адреса<input id="setting_address" name="address" maxlength="200"></label>
+<label>Години роботи<input id="setting_business_hours" name="business_hours" maxlength="150"></label>
+</div><p style="margin-top:18px"><button type="submit" id="settingsSave" class="exp-button">Зберегти контакти</button></p></form>
+<p class="exp-muted">Контакти оновляться на сторінці контактів, у хедері та футері.</p></section>
+<section class="exp-card"><h2>⭐ Модерація відгуків</h2><p class="exp-muted">Публікуйте лише коректні відгуки про завершені ремонти.</p><div id="adminReviewList" class="exp-admin-list"></div></section>
+<p style="margin-top:24px"><a class="exp-button" href="/admin.html">← До заявок і товарів</a></p></div>
+</div></main><div id="footer"></div>
+<script src="/js/dropdown.js"></script><script src="/js/burger.js"></script><script src="/js/cart.js"></script><script src="/js/main.js"></script><script src="/js/admin-hub.js"></script></body></html>

@@ -2,7 +2,7 @@ const pool = require("../db");
 
 async function getUserById(id) {
     const result = await pool.query(
-        `SELECT id, name, email, created_at
+        `SELECT id, name, email, created_at, auth_version
          FROM users
          WHERE id = $1`,
         [id]
@@ -17,7 +17,7 @@ async function updateUser(id, name, email) {
          SET name = $1,
              email = $2
          WHERE id = $3
-         RETURNING id, name, email, created_at`,
+         RETURNING id, name, email, created_at, auth_version`,
         [name, email, id]
     );
 

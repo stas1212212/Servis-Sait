@@ -218,6 +218,12 @@ router.post('/', requireAuthMiddleware, async (req, res) => {
                 [item.quantity, item.id]);
         }
         await client.query('COMMIT');
+        try {
+            await pool.query('INSERT INTO admin_notifications(kind,ref_id,message) VALUES($1,$2,$3)',
+                ['order', order.id, 'Нове замовлення №' + order.id]);
+        } catch (notificationError) {
+            console.error('Admin order notification failed:', notificationError);
+        }
         res.status(201).json({
             id: order.id, status: order.status, total: order.total,
             createdAt: order.created_at,
