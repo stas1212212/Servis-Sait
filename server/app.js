@@ -47,6 +47,52 @@ app.use('/api/experience', experienceRoutes);
 // Dynamic UI fragments (header)
 app.use('/_header', uiRoutes);
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+// Verify the existing database was migrated before accepting customers.
+// This is read-only: no tables or user records are changed automatically.
+async function startServer() {
+  const pool = require('./db');
+  try {
+    const result = await pool.query(`
+      SELECT current_database() AS db_name,
+             to_regclass('users') IS NOT NULL AS has_users,
+             to_regclass('service_requests') IS NOT NULL AS has_repairs,
+             to_regclass('site_settings') IS NOT NULL AS has_settings,
+             to_regclass('password_reset_tokens') IS NOT NULL AS has_resets,
+             to_regclass('admin_notifications') IS NOT NULL AS has_notifications,
+             to_regclass('repair_reviews') IS NOT NULL AS has_reviews,
+             EXISTS (SELECT 1 FROM information_schema.columns
+                     WHERE table_schema = current_schema()
+                       AND table_name = 'users' AND column_name = 'auth_version') AS has_auth_version,
+             EXISTS (SELECT 1 FROM information_schema.columns
+                     WHERE table_schema = current_schema()
+                       AND table_name = 'service_requests' AND column_name = 'tracking_code') AS has_tracking_code
+    `);
+    const row = result.rows[0];
+    const required = [
+      ['has_users', 'users'], ['has_repairs', 'service_requests'],
+      ['has_settings', 'site_settings'], ['has_resets', 'password_reset_tokens'],
+      ['has_notifications', 'admin_notifications'], ['has_reviews', 'repair_reviews'],
+      ['has_auth_version', 'users.auth_version'], ['has_tracking_code', 'service_requests.tracking_code']
+    ];
+    const missing = required.filter(([key]) => !row[key]).map(([, label]) => label);
+    if (missing.length) {
+      console.error('\nPULT+ database migration required; connected database: ' + row.db_name);
+      console.error('Missing: ' + missing.join(', '));
+      console.error('Back up PostgreSQL, then open the correct database in pgAdmin and run:');
+      console.error('  server/sql/customer-service-suite.sql');
+      console.error('Existing accounts and orders should NOT be deleted.\n');
+      process.exitCode = 1;
+      await pool.end();
+      return;
+    }
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('PULT+ database connection / schema verification failed:', error.message);
+    console.error('Check server/.env and PostgreSQL; do not recreate the database.');
+    process.exitCode = 1;
+    await pool.end().catch(() => {});
+  }
+}
+startServer();
