@@ -14,7 +14,7 @@ function fakeWidget() {
     ["[data-location-hours]", { textContent: "" }],
     ["[data-location-phone]", { textContent: "" }],
     ["[data-location-directions]", { hidden: true, href: "", rel: "", target: "" }],
-    ["[data-location-map]", { nodes: [], replaceChildren(...nodes) { this.nodes = nodes; } }]
+    ["[data-location-map]", { nodes: [], replaceChildren(...nodes) { this.nodes = nodes; }, append(...nodes) { this.nodes.push(...nodes); } }]
   ]);
   return { querySelector: key => cells.get(key), cells };
 }
