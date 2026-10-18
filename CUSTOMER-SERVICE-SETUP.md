@@ -46,3 +46,21 @@ Until **all three** are configured and email sending works, the forgot-password 
 - Only logged-in customers whose repair is `completed` can submit a review, once per repair. Admin approval is required before public display.
 - FAQ/delivery pages intentionally avoid stating unverified prices, deadlines or binding warranty periods. Confirm business policies before publication.
 - The site still requires live PostgreSQL/browser testing, HTTPS and a persistent session store before production.
+
+
+## Google Maps service center location (location feature branch)
+
+The home page (`/index.html`), store (`/pults-shop.html`) and contacts page (`/contacts.html`) include the location section.
+
+**Set up the location without new SQL migrations:**
+1. Log in as an admin and open `http://localhost:3000/admin-hub.html`.
+2. Under **Контакти та налаштування сайту**, fill in **Адреса** with a precise, public business address (country, city, street and building number). Optionally provide `Телефон` and `Години роботи`.
+3. Click **Зберегти контакти** and reload one of the three pages.
+4. Check that the Google Maps pin matches your actual service center. If Google picks the wrong location, correct or clarify the address before making the site public.
+5. Confirm that **Прокласти маршрут** opens Google Maps with the correct destination.
+
+No Google Maps API key is required for the basic iframe/map search URL. The iframe is lazy-loaded to reduce initial page load. Visitors may send network data to Google when the map loads. This feature does not use geolocation permissions or track site visitors.
+
+**If address is blank or site settings cannot be loaded**, the map stays hidden and the page remains functional. Do not claim a physical location until the business address is confirmed.
+
+Only the location component, shared styles and static tests are changed on this feature branch; no database schema changes are required.
