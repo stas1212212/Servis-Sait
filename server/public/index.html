@@ -30,7 +30,8 @@
       transform: translateY(-4px);
     }
   </style>
-  <script src="/js/theme.js"></script>
+  <link rel="stylesheet" href="/css/location.css">
+<script src="/js/theme.js"></script>
 </head>
 
 <body class="bg-[#f5f7fb] text-gray-800">
@@ -318,6 +319,45 @@
 </section>
 
 
+<!-- PULT+ LOCATION: address comes from Admin → Contacts, not a hard-coded pin -->
+<section class="pult-location-section" data-location-widget aria-labelledby="pult-location-heading">
+  <div class="pult-location-shell">
+    <div class="pult-location-eyebrow">PULT+ SERVICE CENTER · КОНТАКТИ</div>
+    <h2 class="pult-location-heading" id="pult-location-heading">Як нас знайти</h2>
+    <p class="pult-location-lead">Дізнайтеся, де розташований сервісний центр, та побудуйте зручний маршрут. Якщо вам зручніше, можете оформити заявку на ремонт онлайн.</p>
+    <div class="pult-location-grid">
+      <div class="pult-location-details">
+        <h3>Наш сервісний центр</h3>
+        <div class="pult-location-detail">
+          <span class="pult-location-icon" aria-hidden="true">⌖</span>
+          <div><span class="pult-location-label">Адреса</span><span class="pult-location-value" data-location-address>Адреса уточнюється</span></div>
+        </div>
+        <div class="pult-location-detail">
+          <span class="pult-location-icon" aria-hidden="true">◷</span>
+          <div><span class="pult-location-label">Години роботи</span><span class="pult-location-value" data-location-hours>Графік роботи уточнюється</span></div>
+        </div>
+        <div class="pult-location-detail">
+          <span class="pult-location-icon" aria-hidden="true">✆</span>
+          <div><span class="pult-location-label">Телефон</span><span class="pult-location-value" data-location-phone>Номер телефону уточнюється</span></div>
+        </div>
+        <div class="pult-location-actions">
+          <a class="pult-location-directions" data-location-directions href="#" hidden>↗ Прокласти маршрут</a>
+          <a class="pult-location-secondary" href="/contacts.html">Усі контакти</a>
+        </div>
+      </div>
+      <div class="pult-location-map-panel">
+        <div class="pult-location-map" data-location-map>
+          <div class="pult-location-empty">
+            <span class="pult-location-empty-icon" aria-hidden="true">⌖</span>
+            <p>Карта з’явиться після уточнення адреси сервісного центру.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="pult-location-privacy">Карту надає Google Maps. Під час її завантаження браузер може передавати дані сервісу Google.</p>
+  </div>
+</section>
+
 <div id="footer"></div>
 
 </main>
@@ -329,5 +369,6 @@
 <!-- Основной -->
 <script src="js/main.js"></script>
 
+<script src="/js/location.js"></script>
 </body>
 </html>
