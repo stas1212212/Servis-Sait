@@ -64,3 +64,21 @@ No Google Maps API key is required for the basic iframe/map search URL. The ifra
 **If address is blank or site settings cannot be loaded**, the map stays hidden and the page remains functional. Do not claim a physical location until the business address is confirmed.
 
 Only the location component, shared styles and static tests are changed on this feature branch; no database schema changes are required.
+
+
+## Manual Nova Poshta repair logistics (feature branch)
+
+This feature is independent of the main authentication schema. **Do not run `database.sql` again.**
+
+1. Back up the working `service_shop` database with pgAdmin Backup.
+2. In pgAdmin select the database configured by `server/.env` (`DB_NAME`), open Query Tool and run **`server/sql/shipping-setup.sql`** once (safe to repeat). Do not run against a different database. It adds three tables: `repair_shipments`, `repair_intakes`, `shipping_recipient_settings`; it does not drop or rewrite users, logins or existing repairs.
+3. Start server using `node --env-file=server/.env server/app.js`.
+4. Sign in as an admin and open **`/admin-shipping.html`**, enter the exact recipient **physical person's full name, phone number, city and Nova Poshta branch**. This private configuration is **not** published through `/api/experience/settings`, Google Maps or the unauthenticated repair tracking endpoint. Share with individual customers only after accepting their application.
+5. Client submits a repair request and optionally selects Nova Poshta with a return city/branch. Repair and shipment rows are written in one transaction; if the shipping schema is missing the delivery-enabled request fails with an explicit 503 instead of leaving a partial request. The old repair form still works without shipping enabled.
+6. After sending, authenticated clients who filed their repair under the same account open **`/shipping.html`** to record the 14-digit incoming TTN. Guests must give their TTN to the admin manually; guessing the public RP code must never grant shipment-edit permissions.
+7. Admin records inbound tracking status manually, checks actual contents and fills the acceptance report (condition, accessories, optional serial number), then updates the repair status in `/admin.html`.
+8. After the repair is completed, admin manually creates the outbound shipping label **outside PULT+**, records the 14-digit outbound TTN, return branch and client recipient contacts, and updates progress manually. Each leg has a separate tracking number. No payment or shipping-order API is integrated.
+
+**Privacy/safety:** physical recipient contacts are admin-only; customer's contacts and delivery status are accessible only to the account owning the repair or an admin. Public `RP-` tracking remains status-only. Delivery events are entered manually; never pretend to have real-time status from Nova Poshta.
+
+**Verification:** `node --check server/routes/shipping.js`, `node --test tests/shipping.test.js`, run all test files, then exercise a full trial shipment in a test/staging database. GitHub tests use mock persistence and do not constitute an actual PostgreSQL/Nova Poshta integration test.
