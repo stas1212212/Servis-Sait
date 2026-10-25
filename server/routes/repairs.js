@@ -1,10 +1,12 @@
 const express = require("express");
 const pool = require("../db");
 const crypto = require("node:crypto");
+const {parseReturnPreference} = require("../shipping-utils");
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
+    let shippingClient = null;
     try {
         const {
             name,
@@ -60,7 +62,18 @@ router.post("/", async (req, res) => {
                 : null;
 
         const trackingCode = "RP-" + crypto.randomBytes(12).toString("hex").toUpperCase();
-        const result = await pool.query(
+        // Legacy repair forms continue working without a shipping migration.
+        // When Nova Poshta is selected, save the repair + two delivery legs atomically.
+        const deliveryChosen = Object.prototype.hasOwnProperty.call(req.body, "shipping");
+        const preference = deliveryChosen ? parseReturnPreference(req.body.shipping) : null;
+        if (deliveryChosen && !preference) {
+            return res.status(400).json({message:"Вкажіть місто та відділення Нової пошти для повернення"});
+        }
+        if (deliveryChosen) {
+            shippingClient = await pool.connect();
+            await shippingClient.query("BEGIN");
+        }
+        const result = await (shippingClient || pool).query(
             `INSERT INTO service_requests
             (
                 name,
@@ -121,6 +134,20 @@ router.post("/", async (req, res) => {
             ]
         );
 
+        if (shippingClient) {
+            await shippingClient.query(
+                "INSERT INTO repair_shipments(service_request_id,direction) VALUES($1,'incoming')",
+                [result.rows[0].id]
+            );
+            await shippingClient.query(
+                "INSERT INTO repair_shipments(service_request_id,direction,city,warehouse,recipient_name,recipient_phone) VALUES($1,'outgoing',$2,$3,$4,$5)",
+                [result.rows[0].id,preference.return_city,preference.return_warehouse,cleanName,cleanPhone]
+            );
+            await shippingClient.query("COMMIT");
+            shippingClient.release();
+            shippingClient = null;
+        }
+
         // An in-app notification; if unavailable, the saved repair must not be lost.
         try {
             await pool.query("INSERT INTO admin_notifications(kind,ref_id,message) VALUES($1,$2,$3)",
@@ -135,7 +162,14 @@ router.post("/", async (req, res) => {
         });
 
     } catch (error) {
+        if (shippingClient) {
+            await shippingClient.query("ROLLBACK").catch(() => {});
+            shippingClient.release();
+        }
         console.error("POST /api/repairs error:", error);
+        if (error.code === "42P01" || error.code === "42703") {
+            return res.status(503).json({message:"Доставка ще не налаштована. Адміністратор має виконати server/sql/shipping-setup.sql. Заявку не створено."});
+        }
 
         res.status(500).json({
             message: "Помилка сервера"
