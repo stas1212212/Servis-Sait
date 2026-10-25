@@ -1,0 +1,31 @@
+.ship-eyebrow{color:#2563eb;font-weight:800;letter-spacing:.14em;font-size:12px;margin-bottom:12px}
+.ship-intro{border:1px solid #bfdbfe;background:#eef5ff;color:#285087;padding:17px 22px;border-radius:16px;line-height:1.7;margin:26px 0}
+.ship-list{display:grid;gap:24px;margin-top:24px}
+.ship-card{background:#fff;border:1px solid #dbe4f2;padding:28px;border-radius:22px;box-shadow:0 10px 36px #1e293b0c}
+.ship-card h2{font-weight:800;font-size:23px;margin:0 0 12px}
+.ship-card h3{font-weight:800;font-size:17px;margin-bottom:12px}
+.ship-card h4{font-weight:750;font-size:16px;margin-bottom:12px}
+.ship-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;margin-top:18px}
+.ship-leg,.ship-edit-form{background:#f8fbff;border:1px solid #dfe8f5;border-radius:16px;padding:20px;min-width:0}
+.ship-meta{margin:9px 0;overflow-wrap:anywhere;line-height:1.5;font-size:14px}
+.ship-meta strong{color:#285087}
+.ship-leg>a{display:inline-block;color:#1d4ed8!important;margin-top:14px;font-weight:650;text-decoration:underline}
+.ship-field{display:grid;gap:6px;margin-top:12px;font-weight:650;font-size:13px}
+.ship-field input,.ship-field textarea,.ship-field select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid #b9cce5;background:#fff;color:#1e293b;min-width:0}
+.ship-button{margin-top:16px;background:#2563eb;color:#fff;padding:11px 18px;border-radius:10px;font-weight:750;cursor:pointer}
+.ship-button:hover{background:#1d4ed8}
+.ship-button:disabled{opacity:.55;cursor:wait}
+.ship-result{margin-top:10px;font-size:14px;overflow-wrap:anywhere}
+.ship-result[data-ok=false]{color:#b91c1c}
+.ship-result[data-ok=true]{color:#15803d}
+.ship-edit-form textarea{resize:vertical;min-height:75px}
+.ship-save-status{color:#285087}
+html.dark .ship-intro{border-color:#334b70;background:#132b50;color:#c1d8fc}
+html.dark .ship-card{background:#172235;color:#e4eaf6;border-color:#35445a}
+html.dark .ship-leg,html.dark .ship-edit-form{background:#111d30;color:#e4eaf6;border-color:#35445a}
+html.dark .ship-meta strong{color:#a8caff}
+html.dark .ship-field input,html.dark .ship-field textarea,html.dark .ship-field select{background:#101d30;color:#e4eaf6;border-color:#466081}
+html.dark .ship-result[data-ok=true]{color:#9bffc0}
+html.dark .ship-result[data-ok=false]{color:#ffb4ad}
+html.dark .ship-leg>a{color:#a8caff!important}
+@media(max-width:760px){.ship-columns{grid-template-columns:1fr}.ship-card{padding:20px}}
