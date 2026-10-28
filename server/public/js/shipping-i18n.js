@@ -110,7 +110,13 @@
     "form.returnBranch":["Відділення Нової пошти для повернення","Nova Poshta return branch","Отделение Новой почты для возврата"],
     "form.note":["Після відправлення введіть ТТН у кабінеті. Якщо подаєте заявку без акаунта — отримайте адресу й передайте ТТН менеджеру особисто.","After shipping, enter your tracking number in your account. For guest requests, obtain the address and share your tracking number directly with the manager.","После отправки введите ТТН в кабинете. Если подали заявку без аккаунта — получите адрес и передайте ТТН менеджеру лично."],
     "form.returnCityPlaceholder":["Наприклад, Київ","e.g. Kyiv","Например, Киев"],
-    "form.returnBranchPlaceholder":["Номер або адреса відділення","Branch number or address","Номер или адрес отделения"]
+    "form.returnBranchPlaceholder":["Номер або адреса відділення","Branch number or address","Номер или адрес отделения"],
+    "form.submitting":["Надсилання…","Submitting…","Отправка…"],
+    "form.error":["Не вдалося надіслати заявку","Could not submit the repair request","Не удалось отправить заявку"],
+    "form.checkCabinet":["уточніть у кабінеті","check your account","уточните в кабинете"],
+    "form.success":["Заявку створено! Код відстеження:","Request submitted! Tracking code:","Заявка создана! Код отслеживания:"],
+    "form.statusLink":["Збережіть код. Статус ремонту: /track.html.","Save the code. Repair status: /track.html.","Сохраните код. Статус ремонта: /track.html."],
+    "form.successExtra":[" Реквізити для відправки з'являться після підтвердження в /shipping.html (або у менеджера для гостей). НЕ надсилайте пристрій раніше."," Confirmed shipping details will appear at /shipping.html (or through the manager for guests). DO NOT ship before approval."," Подтверждённые реквизиты появятся в /shipping.html (или у менеджера для гостей). НЕ отправляйте устройство раньше."]
   };
   const codes={uk:0,en:1,ru:2};
   function language(){
