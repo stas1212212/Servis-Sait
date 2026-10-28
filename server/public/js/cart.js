@@ -32,7 +32,12 @@ function saveCart(cart) {
 
 function addToCart(product) {
     
-    showCartModal(product);
+    // Detail pages and mobile views may not include the cart modal markup.
+    if(typeof showCartModal==="function" && document.getElementById("cartOverlay") && document.getElementById("cartModalProduct")){
+        showCartModal(product);
+    }else if(typeof showCartToast==="function" && document.getElementById("cartToast")){
+        showCartToast();
+    }
 
     const cart = getCart();
 
