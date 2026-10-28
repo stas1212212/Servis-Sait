@@ -1,0 +1,45 @@
+
+.store-taxonomy-admin{margin:26px 0 30px;padding:26px;border:1px solid #d8e5f6;border-radius:24px;background:#eef5ff}
+.store-taxonomy-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:20px}
+.store-taxonomy-heading h2{font-size:24px;font-weight:800;color:#173d80}
+.store-taxonomy-heading p{font-size:14px;color:#4b6686;line-height:1.6;margin-top:7px;max-width:830px}
+.store-taxonomy-help{white-space:nowrap;font-size:12px;color:#2563eb;font-weight:700}
+.store-taxonomy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.store-taxonomy-card{background:#fff;border:1px solid #d5e3f4;border-radius:18px;padding:20px;min-width:0}
+.store-taxonomy-card h3{font-size:19px;font-weight:800;margin-bottom:18px}
+.store-taxonomy-list{display:grid;gap:8px;max-height:420px;overflow-y:auto;padding:2px;margin-bottom:20px}
+.store-taxonomy-row{display:flex;align-items:center;justify-content:space-between;gap:9px;padding:11px;border-radius:12px;background:#f4f7fc;border:1px solid #e0e9f4}
+.store-taxonomy-row>span{min-width:0;overflow-wrap:anywhere;font-size:14px;font-weight:700}
+.store-taxonomy-row small{font-size:11px;color:#7187a3;display:block;font-weight:500;margin-top:2px}
+.store-taxonomy-row-actions{display:flex;gap:7px;flex:0 0 auto}
+.store-taxonomy-row button{border:1px solid #c9d9f1;padding:8px 10px;border-radius:9px;color:#1d4ed8;font-weight:700;font-size:12px;cursor:pointer;background:#fff}
+.store-taxonomy-row button:hover{background:#dbeafe}
+.store-taxonomy-row button:disabled{opacity:.55}
+.store-taxonomy-disabled{opacity:.7}
+.store-taxonomy-disabled>span{text-decoration:line-through;text-decoration-color:#94a3b8}
+.store-taxonomy-form{border-top:1px solid #e2e8f0;padding-top:18px;display:grid;gap:12px}
+.store-taxonomy-form h4{font-size:17px;font-weight:800}
+.store-taxonomy-form label{font-size:13px;color:#334155;font-weight:650;display:grid;gap:7px}
+.store-taxonomy-form input:not([type=checkbox]){width:100%;min-width:0;padding:10px 12px;border-radius:10px;border:1px solid #c4d4e8;background:#fff;color:#1e293b}
+.store-taxonomy-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.store-taxonomy-form label.store-taxonomy-check{display:flex;align-items:center;gap:9px}
+.store-taxonomy-check input{width:17px;height:17px;accent-color:#2563eb}
+.store-taxonomy-buttons{display:flex;flex-wrap:wrap;gap:10px}
+.store-taxonomy-buttons button{cursor:pointer}
+#storeTaxonomyStatus{font-size:14px;margin-bottom:14px}
+#storeTaxonomyStatus[data-state=error]{color:#b91c1c}
+#storeTaxonomyStatus[data-state=ok]{color:#15803d}
+html.dark .store-taxonomy-admin{background:#101e34;border-color:#2e4665}
+html.dark .store-taxonomy-heading h2,html.dark .store-taxonomy-card h3,html.dark .store-taxonomy-form h4{color:#dceaff}
+html.dark .store-taxonomy-heading p,html.dark .store-taxonomy-help{color:#b4c8e8}
+html.dark .store-taxonomy-card{background:#182a43;border-color:#344d6e}
+html.dark .store-taxonomy-row{background:#13243b;border-color:#304a6a;color:#e5effd}
+html.dark .store-taxonomy-row button{background:#213b5e;border-color:#466a9b;color:#bfdbfe}
+html.dark .store-taxonomy-row button:hover{background:#315788}
+html.dark .store-taxonomy-form{border-color:#36506e}
+html.dark .store-taxonomy-form label{color:#e5effd}
+html.dark .store-taxonomy-form input:not([type=checkbox]){background:#101e34;border-color:#466281;color:#f0f7ff}
+html.dark #storeTaxonomyStatus[data-state=ok]{color:#9af3bd}
+html.dark #storeTaxonomyStatus[data-state=error]{color:#ffb4ad}
+@media(max-width:950px){.store-taxonomy-grid{grid-template-columns:1fr}.store-taxonomy-heading{align-items:flex-start;flex-direction:column}}
+@media(max-width:520px){.store-taxonomy-admin{padding:15px}.store-taxonomy-card{padding:15px}.store-taxonomy-row{align-items:flex-start;flex-direction:column}.store-taxonomy-row-actions{width:100%}.store-taxonomy-row button{flex:1}}
