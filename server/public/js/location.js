@@ -4,6 +4,15 @@
 
   const SETTINGS_ENDPOINT = "/api/experience/settings";
   const WIDGET_SELECTOR = "[data-location-widget]";
+  let lastSettings = null;
+  function translated(key, fallback) {
+    if (typeof PULT_I18N !== "undefined") {
+      const lang = document.documentElement?.lang || "uk";
+      return PULT_I18N[lang]?.[key] || fallback;
+    }
+    return fallback;
+  }
+
 
   function clean(value, maxLength) {
     return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
@@ -29,9 +38,9 @@
     const hours = clean(settings.business_hours, 150);
 
     const textValues = {
-      "[data-location-address]": address || "Адреса уточнюється",
-      "[data-location-hours]": hours || "Графік роботи уточнюється",
-      "[data-location-phone]": phone || "Номер телефону уточнюється"
+      "[data-location-address]": address || translated("location.addressEmpty","Адреса уточнюється"),
+      "[data-location-hours]": hours || translated("location.hoursEmpty","Графік роботи уточнюється"),
+      "[data-location-phone]": phone || translated("location.phoneEmpty","Номер телефону уточнюється")
     };
 
     for (const [selector, value] of Object.entries(textValues)) {
@@ -53,7 +62,7 @@
       icon.setAttribute("aria-hidden", "true");
       icon.textContent = "⌖";
       const label = document.createElement("p");
-      label.textContent = "Карта з’явиться, щойно ми уточнимо адресу сервісного центру.";
+      label.textContent = translated("location.empty","Карта з’явиться після уточнення адреси сервісного центру.");
       placeholder.append(icon, label);
       mapContainer.append(placeholder);
       if (directions) directions.hidden = true;
@@ -91,13 +100,20 @@
       const data = await response.json();
       const settings = data && typeof data.settings === "object" && data.settings
         ? data.settings : {};
+      lastSettings = settings;
       widgets.forEach(widget => mountWidget(widget, settings));
     } catch (error) {
       // A database outage should not block browsing the homepage or shop.
       console.warn("PULT+ location is temporarily unavailable:", error.message);
+      lastSettings = {};
       widgets.forEach(widget => mountWidget(widget, {}));
     }
   }
+
+  if (typeof window !== "undefined") window.addEventListener("pult:language-changed",()=>{
+    if(lastSettings!==null)document.querySelectorAll(WIDGET_SELECTOR)
+      .forEach(widget=>mountWidget(widget,lastSettings));
+  });
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initLocationWidgets, { once: true });
