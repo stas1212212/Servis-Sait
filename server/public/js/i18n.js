@@ -21,4 +21,5 @@ function applySiteLanguage() {
      });
    }
  });
+ if(typeof window!=="undefined")window.dispatchEvent(new Event("pult:language-changed"));
 }
