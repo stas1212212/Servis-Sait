@@ -151,3 +151,17 @@ test("repeatable database migration adds the instructions table without destruct
   assert.ok(routes.includes('router.put("/admin/repairs/:id/instructions"'));
   assert.ok(!routes.includes("router.get(\"/track/:code\"")); 
 });
+
+
+test("global language dictionary covers localized home, contact, delivery and footer elements",()=>{
+  const pub=path.resolve(__dirname,"../server/public");
+  const i18nCode=fs.readFileSync(path.join(pub,"js/i18n.js"),"utf8");
+  const dictionary=new Function(i18nCode+";return PULT_I18N;")();
+  const files=["header.html","footer.html","index.html","contacts.html","delivery.html"];
+  for(const file of files){
+    const html=fs.readFileSync(path.join(pub,file),"utf8");
+    for(const match of html.matchAll(/data-i18n="([^"]+)"/g))
+      for(const lang of ["uk","en","ru"])
+        assert.ok(dictionary[lang][match[1]],file+" "+lang+" "+match[1]);
+  }
+});
