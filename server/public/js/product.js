@@ -19,7 +19,12 @@ document.addEventListener("DOMContentLoaded",async()=>{
       const item=document.createElement("li");item.textContent=v;node.append(item);
     }
   }
-  let product=null;
+  let product=null,categoryLabels=[];
+  function categoryName(slug){
+    const entry=categoryLabels.find(x=>x.slug===slug);
+    const language=window.PultCatalogI18n?.lang()||"uk";
+    return entry?.["name_"+language]||entry?.name_uk||slug||t("common.unknown");
+  }
   function render(){
     if(!product)return;
     const name=product.name||product.sku;
@@ -31,7 +36,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
     write("productDescription",product.description||"");
     write("productDescriptionLong",product.description||"");
     write("productRating",Number(product.rating)>0?"★".repeat(Math.min(5,Math.floor(Number(product.rating)))):"");
-    write("productCategory",product.category||"");
+    write("productCategory",categoryName(product.category));
     write("productStock",(Number(product.stock)>0?t("product.stock")+": "+product.stock:t("product.out")));
     list("productFeatures",product.features);
     list("productCompatible",product.compatible);
@@ -87,6 +92,15 @@ document.addEventListener("DOMContentLoaded",async()=>{
     if(!response.ok)throw Error(data.message||t("product.notFound"));
     product=data.product;
     render();
+    // Optional bilingual taxonomy; legacy product details still load before migration.
+    try{
+      const metaResponse=await fetch("/api/store-taxonomy/options",{credentials:"same-origin"});
+      if(metaResponse.ok){
+        const meta=await metaResponse.json();
+        categoryLabels=Array.isArray(meta.categories)?meta.categories:[];
+        render();
+      }
+    }catch(error){/* legacy fallback: display stored category slug */}
     if(errorArea)errorArea.textContent="";
   }catch(error){
     if(errorArea)errorArea.textContent=error.message||t("product.error");
