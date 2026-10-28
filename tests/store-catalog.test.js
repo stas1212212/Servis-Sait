@@ -239,7 +239,7 @@ test("storefront is dynamic and has Ukrainian and English translations",()=>{
   assert.ok(html.includes('id="catalogBrand"'));
   assert.ok(html.includes('id="catalogCategory"'));
   const source=fs.readFileSync(path.join(dir,"js/catalog-i18n.js"),"utf8");
-  const dictionary=new Function("const window={};const document={readyState:'loading',addEventListener(){}};const localStorage={getItem(){return 'en';}};"+
+  const dictionary=new Function("const window={addEventListener(){}};const document={readyState:'loading',addEventListener(){}};const localStorage={getItem(){return 'en';}};"+
     source+";return window.PultCatalogI18n.translations;")();
   for(const key of Object.keys(dictionary.uk)){
     assert.ok(dictionary.en[key],key+" en");
