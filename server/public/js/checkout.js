@@ -28,33 +28,35 @@ function renderCheckout() {
 
     if (!items) return;
 
-    items.innerHTML = cart.map(product => `
-
-        <div class="checkout-product">
-
-            <img
-                src="${product.image}"
-                alt="${product.title}">
-
-            <div>
-
-                <h3>
-
-                    ${product.title}
-
-                </h3>
-
-                <p>
-
-                    ${product.quantity} × ${product.price}₴
-
-                </p>
-
-            </div>
-
-        </div>
-
-    `).join("");
+    // All product types use the same SKU cart. Never interpolate admin product names
+    // directly into HTML; customer/local storage can contain arbitrary text.
+    items.replaceChildren();
+    for(const product of cart){
+        const card=document.createElement("article");
+        card.className="checkout-product";
+        const image=typeof product.image==="string"&&
+          /^\/?(?:img|png)\/[a-zA-Z0-9/_-]+\.(webp|png|jpe?g|avif)$/i.test(product.image)
+          ?product.image:"";
+        if(image){
+            const img=document.createElement("img");
+            img.src=image;
+            img.alt=String(product.title||"Товар");
+            card.append(img);
+        }else{
+            const placeholder=document.createElement("div");
+            placeholder.className="store-cart-photo-placeholder";
+            placeholder.textContent="📦";
+            card.append(placeholder);
+        }
+        const details=document.createElement("div");
+        const name=document.createElement("h3");
+        name.textContent=String(product.title||product.id||"Товар");
+        const quantity=document.createElement("p");
+        quantity.textContent=Number(product.quantity)+" × "+Number(product.price).toFixed(2)+" ₴";
+        details.append(name,quantity);
+        card.append(details);
+        items.append(card);
+    }
 
     const count = cart.reduce((sum, item) => sum + item.quantity, 0);
 
