@@ -7,6 +7,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="/css/store-admin.css">
   <script src="/js/theme.js"></script>
 </head>
 <body>
@@ -23,12 +24,48 @@
 <div id="adminRepairsPanel"><div class="admin-toolbar"><label for="adminSearch">Пошук заявки</label><input id="adminSearch" type="search" placeholder="Номер, клієнт, телефон або пристрій"><button id="adminRefresh" type="button">Оновити</button></div>
 <div id="adminRequests" class="admin-requests"></div></div>
 <div id="adminOrdersPanel" hidden><div class="admin-toolbar"><label for="adminOrdersSearch">Пошук замовлення</label><input id="adminOrdersSearch" type="search" placeholder="Номер, клієнт або товар"><button id="adminOrdersRefresh" type="button">Оновити</button></div><div id="adminOrdersList" class="admin-requests"></div></div>
-<div id="adminProductsPanel" hidden><div class="admin-toolbar"><label for="adminProductsSearch">Пошук товару</label><input id="adminProductsSearch" type="search" placeholder="Назва, бренд, SKU"><button type="button" id="adminProductsNew">+ Додати товар</button></div><div id="adminProductsList" class="admin-requests"></div><form id="adminProductForm" class="admin-product-form" hidden><h2 id="adminProductFormTitle">Редагувати товар</h2><div class="admin-product-fields"><label>SKU<input name="sku" maxlength="80" required></label><label>Назва<input name="name" maxlength="200" required></label><label>Бренд<input name="brand" maxlength="100"></label><label>Модель<input name="model" maxlength="150"></label><label>Ціна (грн)<input name="price" type="number" min="0" max="10000000" step="0.01" required></label><label>На складі<input name="stock" type="number" min="0" max="1000000" step="1" required></label><label>Категорія<select name="category" required><option value="tv">Телевізори</option><option value="universal">Універсальні</option><option value="receiver">Ресивери</option><option value="tvbox">TV Box</option><option value="ac">Кондиціонери</option><option value="audio">Аудіо</option><option value="parts">Запчастини</option></select></label><label>Шлях до фото (необов’язково)<input name="image_url" placeholder="/img/products/example.webp"></label><label class="admin-product-wide">Опис<textarea name="description" rows="3"></textarea></label><label class="admin-product-checkbox"><input name="is_active" type="checkbox" checked> Показувати в магазині</label></div><div class="admin-request-actions"><button class="admin-save" type="submit">Зберегти товар</button><button type="button" id="adminProductCancel">Скасувати</button></div></form></div></section>
+<div id="adminProductsPanel" hidden><div class="admin-toolbar"><label for="adminProductsSearch">Пошук товару</label><input id="adminProductsSearch" type="search" placeholder="Назва, бренд, SKU"><button type="button" id="adminProductsNew">+ Додати товар</button></div><div class="store-taxonomy-admin" id="storeTaxonomyAdmin">
+  <div class="store-taxonomy-heading">
+    <div><h2>Категорії та бренди</h2><p>Додавайте типи товарів і бренди без редагування SQL. Вимкнені категорії та бренди приховують пов’язані товари в магазині, але не видаляють їх.</p></div>
+    <span class="store-taxonomy-help">🔐 Доступно лише адміністратору</span>
+  </div>
+  <p id="storeTaxonomyStatus" role="status" aria-live="polite"></p>
+  <div class="store-taxonomy-grid">
+    <section class="store-taxonomy-card">
+      <h3>📦 Типи товарів / категорії</h3>
+      <div id="storeCategoryList" class="store-taxonomy-list"></div>
+      <form id="storeCategoryForm" class="store-taxonomy-form">
+        <h4 id="storeCategoryFormTitle">Нова категорія</h4>
+        <label>Код категорії (латиниця, незмінний)<input name="slug" required minlength="2" maxlength="40" pattern="[a-z0-9][a-z0-9_-]{1,39}" placeholder="batteries"></label>
+        <label>Назва українською<input name="name_uk" maxlength="100" required placeholder="Батарейки"></label>
+        <label>Назва англійською<input name="name_en" maxlength="100" placeholder="Batteries"></label>
+        <label>Назва російською<input name="name_ru" maxlength="100" placeholder="Батарейки"></label>
+        <div class="store-taxonomy-pair"><label>Іконка<input name="icon" maxlength="16" value="📦" required placeholder="🔋"></label>
+        <label>Порядок<input name="sort_order" type="number" min="0" max="99999" value="100" required></label></div>
+        <label class="store-taxonomy-check"><input name="is_active" type="checkbox" checked> Показувати категорію та її товари</label>
+        <div class="store-taxonomy-buttons"><button class="admin-save" type="submit">Зберегти категорію</button><button type="button" id="storeCategoryCancel" class="admin-product-toggle">Нова категорія</button></div>
+      </form>
+    </section>
+    <section class="store-taxonomy-card">
+      <h3>🏷️ Бренди</h3>
+      <div id="storeBrandList" class="store-taxonomy-list"></div>
+      <form id="storeBrandForm" class="store-taxonomy-form">
+        <h4 id="storeBrandFormTitle">Новий бренд</h4>
+        <label>Назва бренду<input name="name" maxlength="100" required placeholder="Panasonic"></label>
+        <label class="store-taxonomy-check"><input name="is_active" type="checkbox" checked> Показувати бренд та його товари</label>
+        <div class="store-taxonomy-buttons"><button class="admin-save" type="submit">Зберегти бренд</button><button type="button" id="storeBrandCancel" class="admin-product-toggle">Новий бренд</button></div>
+      </form>
+    </section>
+  </div>
+</div>
+
+<div id="adminProductsList" class="admin-requests"></div><form id="adminProductForm" class="admin-product-form" hidden><h2 id="adminProductFormTitle">Редагувати товар</h2><div class="admin-product-fields"><label>SKU<input name="sku" maxlength="80" required></label><label>Назва<input name="name" maxlength="200" required></label><label>Бренд<select name="brand" id="adminProductBrand"><option value="">Без бренду</option></select></label><label>Модель<input name="model" maxlength="150"></label><label>Ціна (грн)<input name="price" type="number" min="0" max="10000000" step="0.01" required></label><label>На складі<input name="stock" type="number" min="0" max="1000000" step="1" required></label><label>Тип товару / категорія<select name="category" required id="adminProductCategory"><option value="">Спочатку завантажте категорії</option></select></label><label>Шлях до фото (необов’язково)<input name="image_url" placeholder="/img/products/example.webp"></label><label class="admin-product-wide">Опис<textarea name="description" rows="3"></textarea></label><label class="admin-product-checkbox"><input name="is_active" type="checkbox" checked> Показувати в магазині</label></div><div class="admin-request-actions"><button class="admin-save" type="submit">Зберегти товар</button><button type="button" id="adminProductCancel">Скасувати</button></div></form></div></section>
 </div>
 </main>
 <div id="footer"></div>
 <script src="js/dropdown.js"></script><script src="js/burger.js"></script><script src="js/cart.js"></script><script src="js/main.js"></script>
 <script src="js/admin.js"></script>
 <script src="js/admin-orders.js"></script>
+<script src="js/admin-taxonomy.js"></script>
 <script src="js/admin-products.js"></script>
 </body></html>
