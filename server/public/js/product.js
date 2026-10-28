@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
     if(!node)return;
     node.replaceChildren();
     const items=Array.isArray(values)?values.filter(v=>typeof v==="string"&&v.trim()):[];
-    if(!items.length)node.append(document.createElement("li")).textContent=t(id==="productCompatible"?"product.noCompatible":"product.noDetails");
+    if(!items.length){const empty=document.createElement("li");empty.textContent=t(id==="productCompatible"?"product.noCompatible":"product.noDetails");node.append(empty);}
     else for(const v of items){
       const item=document.createElement("li");item.textContent=v;node.append(item);
     }
