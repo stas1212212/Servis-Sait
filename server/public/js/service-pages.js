@@ -1,5 +1,6 @@
 "use strict";
 document.addEventListener("DOMContentLoaded", () => {
+  const t=key=>window.PultShippingI18n?.t(key)||key;
   const form=document.getElementById("serviceRepairForm");
   if(!form)return;
   const buttons=Array.from(document.querySelectorAll(".service-brand"));
@@ -18,17 +19,18 @@ document.addEventListener("DOMContentLoaded", () => {
   section.className="service-shipping";
   section.hidden=true;
   section.innerHTML=[
-    '<legend>Доставка Новою поштою</legend>',
-    '<label class="service-shipping-option"><input type="checkbox" name="shipping_enabled" id="shippingEnabled"> Надіслати пристрій у PULT+ через відділення Нової пошти</label>',
+    '<legend data-shipping-i18n="form.legend">Доставка Новою поштою</legend>',
+    '<label class="service-shipping-option"><input type="checkbox" name="shipping_enabled" id="shippingEnabled"> <span data-shipping-i18n="form.enable">Надіслати пристрій у PULT+ через відділення Нової пошти</span></label>',
     '<div class="service-shipping-fields" id="shippingDetails" hidden>',
-    '<p>Перед відправленням менеджер повідомить реквізити фізичної особи-одержувача. Не надсилайте пристрій до підтвердження.</p>',
-    '<label>Місто для зворотної доставки<input name="return_city" maxlength="120" autocomplete="address-level2" placeholder="Наприклад, Київ"></label>',
-    '<label>Відділення Нової пошти для повернення<input name="return_warehouse" maxlength="180" placeholder="Номер або адреса відділення"></label>',
-    '<p class="service-shipping-note">Після відправлення введіть ТТН у кабінеті. Якщо подаєте заявку без акаунта — передайте ТТН менеджеру.</p>',
+    '<p data-shipping-i18n="form.warning">До підтвердження реквізитів не відправляйте пристрій.</p>',
+    '<label><span data-shipping-i18n="form.returnCity">Місто для зворотної доставки</span><input name="return_city" maxlength="120" autocomplete="address-level2" data-shipping-placeholder="form.returnCityPlaceholder" placeholder="Наприклад, Київ"></label>',
+    '<label><span data-shipping-i18n="form.returnBranch">Відділення Нової пошти для повернення</span><input name="return_warehouse" maxlength="180" data-shipping-placeholder="form.returnBranchPlaceholder" placeholder="Номер або адреса відділення"></label>',
+    '<p class="service-shipping-note" data-shipping-i18n="form.note">Після відправлення введіть ТТН у кабінеті.</p>',
     '</div>'
   ].join("");
   const before=feedback||form.querySelector('button[type="submit"]');
   if(before)form.insertBefore(section,before);
+  window.PultShippingI18n?.apply();
   const shippingCheckbox=section.querySelector("#shippingEnabled");
   const shippingDetails=section.querySelector("#shippingDetails");
   const returnCity=section.querySelector('[name="return_city"]');
@@ -60,22 +62,21 @@ document.addEventListener("DOMContentLoaded", () => {
       return_city:String(data.get("return_city")||"").trim(),
       return_warehouse:String(data.get("return_warehouse")||"").trim()
     };
-    submit.disabled=true;submit.textContent="Відправлення...";feedback.textContent="";
+    submit.disabled=true;submit.textContent=t("form.submitting");feedback.textContent="";
     try{
       const response=await fetch("/api/repairs",{
         method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},
         body:JSON.stringify(payload)
       });
       const result=await response.json();
-      if(!response.ok)throw new Error(result.message||result.error||"Не вдалося відправити заявку");
-      const code=result.request?.tracking_code||"уточніть у кабінеті";
-      const extra=payload.shipping?" Менеджер узгодить реквізити отримувача. Після відправлення внесіть ТТН на сторінці /shipping.html.":"";
+      if(!response.ok)throw new Error(result.message||result.error||t("form.error"));
+      const code=result.request?.tracking_code||t("form.checkCabinet");
+      const extra=payload.shipping?t("form.successExtra"):"";
       feedback.dataset.error="false";
-      feedback.textContent="Заявку успішно надіслано! Код відстеження: "+code+
-        ". Збережіть його. Статус ремонту: /track.html."+extra;
+      feedback.textContent=t("form.success")+" "+code+" "+t("form.statusLink")+extra;
       form.reset();if(brandInput)brandInput.value=buttons.find(b=>b.classList.contains("active"))?.dataset.brand||"";
       showShipping();
-    }catch(error){feedback.dataset.error="true";feedback.textContent=error.message||"Помилка відправлення заявки";}
+    }catch(error){feedback.dataset.error="true";feedback.textContent=error.message||t("form.error");}
     finally{submit.disabled=false;submit.textContent=original;}
   });
 });
