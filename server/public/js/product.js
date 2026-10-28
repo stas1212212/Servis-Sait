@@ -1,201 +1,95 @@
-// =========================
-// Product Page
-// =========================
-
-document.addEventListener("DOMContentLoaded", loadProduct);
-
-async function loadProduct() {
-
-    // Отримуємо ID з URL
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-
-    if (!id) {
-        console.error("ID товару не знайдено");
-        return;
+"use strict";
+document.addEventListener("DOMContentLoaded",async()=>{
+  const params=new URLSearchParams(location.search);
+  const value=params.get("sku")||params.get("id");
+  const t=key=>window.PultCatalogI18n?.t(key)||key;
+  const $=id=>document.getElementById(id);
+  const errorArea=$("productError");
+  const buy=document.querySelector(".buy-btn");
+  const photos=$("productImage");
+  const safeImage=value=>typeof value==="string"&&/^\/?(?:img|png)\/[a-zA-Z0-9/_-]+\.(webp|png|jpe?g|avif)$/i.test(value)?value:"";
+  const write=(id,value)=>{const node=$(id);if(node)node.textContent=String(value??"");};
+  function list(id,values){
+    const node=$(id);
+    if(!node)return;
+    node.replaceChildren();
+    const items=Array.isArray(values)?values.filter(v=>typeof v==="string"&&v.trim()):[];
+    if(!items.length)node.append(document.createElement("li")).textContent=t(id==="productCompatible"?"product.noCompatible":"product.noDetails");
+    else for(const v of items){
+      const item=document.createElement("li");item.textContent=v;node.append(item);
     }
-
-    try {
-
-        // Завантажуємо JSON
-        const response = await fetch("data/pults.json");
-        const data = await response.json();
-
-        // Шукаємо товар
-        const product = data.products.find(p => p.id === id);
-
-        if (!product) {
-            document.querySelector("main").innerHTML = `
-                <section class="pt-40 pb-24 text-center">
-                    <h1 class="text-5xl font-black mb-6">
-                        Товар не знайдено
-                    </h1>
-
-                    <a href="pults-shop.html"
-                       class="inline-block mt-6 px-8 py-4 rounded-2xl bg-black text-white">
-
-                        ← Назад до магазину
-
-                    </a>
-                </section>
-            `;
-            return;
+  }
+  let product=null;
+  function render(){
+    if(!product)return;
+    const name=product.name||product.sku;
+    document.title=name+" | PULT+";
+    write("productBrand",product.brand||t("product.unbranded"));
+    write("productTitle",name);
+    const price=Number(product.price)||0;
+    write("productPrice",price.toLocaleString(window.PultCatalogI18n?.lang()==="en"?"en-GB":"uk-UA",{minimumFractionDigits:2,maximumFractionDigits:2})+" ₴");
+    write("productDescription",product.description||"");
+    write("productDescriptionLong",product.description||"");
+    write("productRating",Number(product.rating)>0?"★".repeat(Math.min(5,Math.floor(Number(product.rating)))):"");
+    write("productCategory",product.category||"");
+    write("productStock",(Number(product.stock)>0?t("product.stock")+": "+product.stock:t("product.out")));
+    list("productFeatures",product.features);
+    list("productCompatible",product.compatible);
+    const imageUrl=safeImage(product.image_url);
+    if(photos){
+      if(imageUrl){
+        photos.src=imageUrl;
+        photos.alt=name;
+        photos.hidden=false;
+        photos.onerror=()=>{
+          photos.hidden=true;
+          const container=photos.parentElement;
+          if(container&&!container.querySelector(".store-product-photo-fallback")){
+            const fallback=document.createElement("div");
+            fallback.className="store-product-photo-fallback";
+            fallback.textContent="📦 "+t("product.photo");
+            container.append(fallback);
+          }
+        };
+      }else{
+        photos.hidden=true;
+        const container=photos.parentElement;
+        if(container&&!container.querySelector(".store-product-photo-fallback")){
+          const fallback=document.createElement("div");
+          fallback.className="store-product-photo-fallback";
+          fallback.textContent="📦 "+t("product.photo");
+          container.append(fallback);
         }
-
-        // =========================
-        // Basic Info
-        // =========================
-
-        document.title = `${product.title} | PULT+`;
-
-        const productBrand = document.getElementById("productBrand");
-        if (productBrand) {
-            productBrand.textContent = product.brand;
-        }
-
-        const productTitle = document.getElementById("productTitle");
-        if (productTitle) {
-            productTitle.textContent = product.title;
-        }
-
-        const productPrice = document.getElementById("productPrice");
-        if (productPrice) {
-            productPrice.textContent = `${product.price}₴`;
-        }
-
-        const productImage = document.getElementById("productImage");
-        const imageUrl = product.images?.[0] || product.image || "";
-
-        if (productImage) {
-            productImage.src = imageUrl;
-            productImage.alt = product.title;
-        }
-
-        const productDescription = document.getElementById("productDescription");
-        if (productDescription) {
-            productDescription.textContent = product.description;
-        }
-
-        // =========================
-        // Rating
-        // =========================
-
-        const rating = document.getElementById("productRating");
-
-        if (rating) {
-
-            rating.textContent =
-                "⭐".repeat(product.rating) +
-                "☆".repeat(5 - product.rating);
-
-        }
-
-        // =========================
-        // Features
-        // =========================
-
-        const features = document.getElementById("productFeatures");
-
-        if (features) {
-
-            features.innerHTML = (product.features || [])
-                .map(item => `<li>✔ ${item}</li>`)
-                .join("");
-        }
-
-        // =========================
-        // Compatible
-        // =========================
-
-        const compatible = document.getElementById("productCompatible");
-
-        if (compatible) {
-
-            compatible.innerHTML = product.compatible
-                .map(item => `<li>${item}</li>`)
-                .join("");
-
-        }
-
-        // =========================
-        // Buy Button
-        // =========================
-
-        const buyButton = document.querySelector(".buy-btn");
-
-        if (buyButton) {
-
-            buyButton.addEventListener("click", () => {
-
-                addToCart({
-
-                    id: product.id,
-                    title: product.title,
-                    price: product.price,
-                    image: imageUrl
-
-                });
-
-                buyButton.textContent = "✓ Додано";
-                buyButton.disabled = true;
-                buyButton.style.opacity = ".8";
-
-            });
-
-        }
-
-        // =========================
-        // Telegram Button
-        // =========================
-
-        const telegramButton = document.querySelector(".telegram-btn");
-
-        if (telegramButton) {
-
-            telegramButton.addEventListener("mouseenter", () => {
-
-                telegramButton.style.transform =
-                    "translateY(-3px) scale(1.02)";
-
-            });
-
-            telegramButton.addEventListener("mouseleave", () => {
-
-                telegramButton.style.transform = "";
-
-            });
-
-        }
-
-        // =========================
-        // Image Hover
-        // =========================
-
-        const image = document.getElementById("productImage");
-
-        if (image) {
-
-            image.addEventListener("mouseenter", () => {
-
-                image.style.transform = "scale(1.08)";
-                image.style.transition = ".35s";
-
-            });
-
-            image.addEventListener("mouseleave", () => {
-
-                image.style.transform = "scale(1)";
-
-            });
-
-        }
-
+      }
     }
-
-    catch (err) {
-
-        console.error(err);
-
+    if(buy){
+      buy.disabled=Number(product.stock)<=0;
+      buy.textContent=buy.disabled?t("product.out"):t("product.buy");
     }
-
-}
+  }
+  if(buy)buy.addEventListener("click",()=>{
+    if(!product||Number(product.stock)<=0||typeof addToCart!=="function")return;
+    const photo=safeImage(product.image_url);
+    addToCart({id:product.sku,sku:product.sku,title:product.name,price:Number(product.price),image:photo});
+    buy.textContent=t("product.added");
+    buy.disabled=true;
+  });
+  window.addEventListener("pult:language-changed",render);
+  if(!value){
+    if(errorArea)errorArea.textContent=t("product.notFound");
+    if(buy)buy.disabled=true;
+    return;
+  }
+  try{
+    const endpoint=/^[0-9]+$/.test(value)?"/api/products/"+encodeURIComponent(value):"/api/products/sku/"+encodeURIComponent(value);
+    const response=await fetch(endpoint,{credentials:"same-origin"});
+    const data=await response.json();
+    if(!response.ok)throw Error(data.message||t("product.notFound"));
+    product=data.product;
+    render();
+    if(errorArea)errorArea.textContent="";
+  }catch(error){
+    if(errorArea)errorArea.textContent=error.message||t("product.error");
+    if(buy)buy.disabled=true;
+  }
+});
