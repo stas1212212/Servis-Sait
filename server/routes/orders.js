@@ -176,13 +176,17 @@ router.post('/', requireAuthMiddleware, async (req, res) => {
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
+        // When taxonomy is configured, hidden categories/brands are not purchasable
+        // even from an older basket or a manually crafted checkout request.
+        const taxonomyCheck = await client.query("SELECT to_regclass('product_categories') IS NOT NULL AS categories, to_regclass('product_brands') IS NOT NULL AS brands");
+        const taxonomyReady=taxonomyCheck.rows[0]?.categories===true&&taxonomyCheck.rows[0]?.brands===true;
         const requested = [...quantities.entries()].sort(([a], [b]) => a.localeCompare(b));
         const confirmed = [];
         let totalCents = 0;
 
         for (const [sku, quantity] of requested) {
             const found = await client.query(
-                'SELECT id, name, price, stock, is_active FROM products WHERE sku = $1 FOR UPDATE',
+                'SELECT id, name, price, stock, is_active, category, brand FROM products WHERE sku = $1 FOR UPDATE',
                 [sku]
             );
             const product = found.rows[0];
@@ -190,6 +194,17 @@ router.post('/', requireAuthMiddleware, async (req, res) => {
                 const error = new Error('Товар більше не продається: ' + sku);
                 error.status = 409;
                 throw error;
+            }
+            if(taxonomyReady) {
+                const blocked=await client.query(
+                    "SELECT EXISTS(SELECT 1 FROM product_categories WHERE slug=$1 AND is_active=FALSE) AS category_hidden, EXISTS(SELECT 1 FROM product_brands WHERE lower(name)=lower($2) AND is_active=FALSE) AS brand_hidden",
+                    [product.category,product.brand||""]
+                );
+                if(blocked.rows[0]?.category_hidden || blocked.rows[0]?.brand_hidden){
+                    const error=new Error("Цей товар тимчасово недоступний для замовлення: "+product.name);
+                    error.status=409;
+                    throw error;
+                }
             }
             if (product.stock < quantity) {
                 const error = new Error('Недостатньо товару на складі: ' + product.name);
