@@ -18,6 +18,7 @@
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/product.css">
+<link rel="stylesheet" href="/css/store-product.css">
     <link rel="stylesheet" href="css/cart-modal.css">
 
   <script src="/js/theme.js"></script>
@@ -36,6 +37,7 @@
 <!-- ========================= -->
 
 <section class="pt-40 pb-24">
+    <div class="max-w-7xl mx-auto px-6 store-product-page-toolbar"><a href="/pults-shop.html" data-store-i18n="product.back">← До каталогу</a><p id="productError" role="status" aria-live="polite"></p></div>
 
     <div class="max-w-7xl mx-auto px-6">
 
@@ -86,21 +88,17 @@
 
                 </p>
 
+                <p id="productStock" class="store-detail-stock" role="status"></p>
+                <p id="productCategory" class="store-detail-category"></p>
                 <div class="flex flex-wrap gap-5">
 
-                    <button class="buy-btn">
+                    <button class="buy-btn" type="button" disabled data-store-i18n="product.buy">
 
                         Купити
 
                     </button>
 
-                    <a
-                        href="https://t.me/"
-                        class="telegram-btn">
-
-                        Telegram
-
-                    </a>
+                    <a href="/contacts.html" class="telegram-btn" data-store-i18n="product.contactLink">Контакти</a>
 
                 </div>
 
@@ -124,11 +122,7 @@
 
             <div class="info-card">
 
-                <h2>
-
-                    Характеристики
-
-                </h2>
+                <h2 data-store-i18n="product.features">Характеристики</h2>
 
                 <ul id="productFeatures">
 
@@ -138,11 +132,7 @@
 
             <div class="info-card">
 
-                <h2>
-
-                    Сумісність
-
-                </h2>
+                <h2 data-store-i18n="product.compatible">Сумісність / призначення</h2>
 
                 <ul id="productCompatible">
 
@@ -165,11 +155,7 @@
 
         <div class="description-card">
 
-            <h2>
-
-                Опис
-
-            </h2>
+            <h2 data-store-i18n="product.description">Опис</h2>
 
             <p id="productDescriptionLong">
 
@@ -192,26 +178,9 @@
 
     <div class="max-w-5xl mx-auto px-6">
 
-        <div class="cta-product">
-
-            <h2>
-
-                Не впевнені, що це саме ваш пульт?
-
-            </h2>
-
-            <p>
-
-                Надішліть модель телевізора або іншої техніки —
-                ми швидко підберемо потрібний варіант.
-
-            </p>
-
-            <a href="https://t.me/">
-
-                Написати в Telegram
-
-            </a>
+        <div class="cta-product"><h2 data-store-i18n="product.contact">Потрібна допомога з вибором?</h2>
+<p data-store-i18n="product.contactText">Зв’яжіться з нами, щоб уточнити характеристики та сумісність товару.</p>
+<a href="/contacts.html" data-store-i18n="product.contactLink">Контакти</a>
 
         </div>
 
@@ -237,6 +206,7 @@
 
 <script src="js/cart-modal.js"></script>
 <script src="js/cart.js"></script>
+<script src="/js/catalog-i18n.js"></script>
 <script src="js/product.js"></script>
 
 <script src="js/main.js"></script>
