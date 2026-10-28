@@ -48,4 +48,17 @@ CREATE TABLE IF NOT EXISTS shipping_recipient_settings (
 );
 INSERT INTO shipping_recipient_settings(id) VALUES(1)
 ON CONFLICT(id) DO NOTHING;
+-- Stage 1.1: confirmed, per-repair shipping instructions.
+-- A private recipient is shown only to the logged-in owner of the repair
+-- after an administrator explicitly approves this snapshot.
+CREATE TABLE IF NOT EXISTS repair_send_instructions (
+  service_request_id INTEGER PRIMARY KEY REFERENCES service_requests(id) ON DELETE CASCADE,
+  recipient_name VARCHAR(120) NOT NULL,
+  recipient_phone VARCHAR(30) NOT NULL,
+  city VARCHAR(120) NOT NULL,
+  warehouse VARCHAR(180) NOT NULL,
+  approved_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  approved_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 COMMIT;

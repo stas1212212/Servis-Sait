@@ -694,3 +694,12 @@ html.dark #footer .pult-site-footer p,html.dark #footer .pult-site-footer a{colo
 html.dark #footer .pult-site-footer a:hover{color:#fff!important}
 html.dark #footer .pult-site-footer .border-gray-200{border-color:#30425d!important}
 @media(max-width:640px){.pult-why-section{padding-top:64px;padding-bottom:64px}.pult-why-section h2{font-size:clamp(30px,8vw,44px)}}
+
+
+/* Mobile burger language selector: language choice is available even when header dropdowns are hidden. */
+#header .pult-mobile-languages{display:flex;gap:8px;align-items:center}
+#header .pult-mobile-languages button{flex:1;min-width:0;padding:10px 7px;border-radius:10px;background:#eaf1ff;color:#1e3a5f;font-size:13px;font-weight:750;cursor:pointer}
+#header .pult-mobile-languages button[aria-pressed="true"]{background:#2563eb;color:#fff}
+#header .pult-mobile-languages button:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+html.dark #header .pult-mobile-languages button{background:#223959;color:#dce9ff}
+html.dark #header .pult-mobile-languages button[aria-pressed="true"]{background:#2563eb;color:#fff}

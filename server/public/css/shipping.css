@@ -29,3 +29,32 @@ html.dark .ship-result[data-ok=true]{color:#9bffc0}
 html.dark .ship-result[data-ok=false]{color:#ffb4ad}
 html.dark .ship-leg>a{color:#a8caff!important}
 @media(max-width:760px){.ship-columns{grid-template-columns:1fr}.ship-card{padding:20px}}
+
+
+/* Per-repair shipping destination appears ONLY after staff approval. */
+.ship-instructions {
+  margin:18px 0 8px;
+  padding:22px;
+  border:1px solid #b9d2f6;
+  background:#f0f6ff;
+  border-radius:16px;
+}
+.ship-instructions h3 {font-weight:800;font-size:19px;margin:0 0 12px;}
+.ship-instructions>p:not(.ship-meta){font-size:14px;line-height:1.6;margin:8px 0 14px;}
+.ship-instructions .ship-meta {margin:10px 0;}
+.ship-instructions-approved {border-color:#a5d3bd;background:#f0fbf5;}
+.ship-instructions-approved h3{color:#14532d;}
+.ship-instructions-pending {border-color:#f0cd88;background:#fffbeb;}
+.ship-instructions-pending h3,.ship-instructions-pending p{color:#854d0e;}
+.ship-instructions button{margin-right:10px;}
+.ship-copy-feedback{font-size:13px;color:#126639;font-weight:650;}
+.ship-blocked{color:#92400e;font-weight:650;background:#fef3c7;padding:12px 16px;border-radius:10px;line-height:1.5;}
+.ship-note{color:#64748b;font-size:13px;line-height:1.55;}
+html.dark .ship-instructions{background:#192d47;border-color:#345779;color:#e0e9f7;}
+html.dark .ship-instructions-approved{background:#112c28;border-color:#30634d;}
+html.dark .ship-instructions-approved h3{color:#a7f3d0;}
+html.dark .ship-instructions-pending{background:#342a16;border-color:#79572e;}
+html.dark .ship-instructions-pending h3,html.dark .ship-instructions-pending p{color:#fde68a;}
+html.dark .ship-blocked{background:#493615;color:#fde68a;}
+html.dark .ship-note{color:#b7c5d8;}
+html.dark .ship-copy-feedback{color:#a7f3d0;}

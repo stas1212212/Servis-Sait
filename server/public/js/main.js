@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const data = await response.json();
             document.querySelectorAll("[data-site-setting]").forEach(node => {
                 const value = data.settings?.[node.dataset.siteSetting];
-                node.textContent = value || "Уточнюється";
+                node.textContent = value || (typeof PULT_I18N !== "undefined" ? PULT_I18N[document.documentElement.lang]?.["site.unknown"] : null) || "Уточнюється";
             });
         }
     } catch (error) { console.warn("Site contacts are unavailable", error); }

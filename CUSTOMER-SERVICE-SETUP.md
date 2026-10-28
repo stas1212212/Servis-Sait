@@ -82,3 +82,33 @@ This feature is independent of the main authentication schema. **Do not run `dat
 **Privacy/safety:** physical recipient contacts are admin-only; customer's contacts and delivery status are accessible only to the account owning the repair or an admin. Public `RP-` tracking remains status-only. Delivery events are entered manually; never pretend to have real-time status from Nova Poshta.
 
 **Verification:** `node --check server/routes/shipping.js`, `node --test tests/shipping.test.js`, run all test files, then exercise a full trial shipment in a test/staging database. GitHub tests use mock persistence and do not constitute an actual PostgreSQL/Nova Poshta integration test.
+
+## Per-request Nova Poshta recipient approval and UA/EN languages (2026-10-28)
+
+The parcel recipient is a **private individual**, so their contact details are not published in the public site settings or Google Maps.
+
+### Safe upgrade
+
+1. Back up the working PostgreSQL `service_shop` database via pgAdmin → Backup.
+2. In Query Tool for the DB configured in `server/.env`, run the **updated** `server/sql/shipping-setup.sql` again. The script is repeatable; it adds `repair_send_instructions` without deleting users, accounts, repairs or shipments.
+3. Restart Node with `node --env-file=server/.env server/app.js`.
+4. In `/admin-shipping.html`, configure the individual's exact name, phone, city and Nova Poshta branch. These remain admin-only until approval for a specific repair.
+5. After accepting a repair, click `Підтвердити реквізити` beside that repair. The server creates a snapshot of the recipient's details for this repair only.
+6. The logged-in owner sees `Куди відправити пристрій` at `/shipping.html` with the approved details and a copy button. Until approval, the page says **DO NOT SEND THE DEVICE**.
+7. For guest repair requests, personally verify the customer's request and share the approved details manually (phone/email/messenger). Use the admin-only copy action.
+8. Revoke or change approval only before the incoming TTN has been registered. Later address changes need to be coordinated manually with the customer/carrier.
+
+Public `/api/shipping/availability` and `/api/experience/track/:code` must never reveal the individual's details. `GET /api/shipping/mine` returns an approved `send_to` only for the logged-in owner of the repair.
+
+### Languages
+
+The shared header now switches between Ukrainian, English and Russian, persisting `pultplus-language`. Shipping pages, the approval workflow, shared device-repair forms, the homepage, contacts, delivery terms and navigation have translated UI labels. Other legacy pages may need a later localization pass.
+
+### Verification
+
+- Check unapproved requests show the warning without a private phone or branch.
+- Confirm a recipient as admin and check the owning customer sees the snapshot.
+- Verify a different logged-in customer and an anonymous visitor cannot read it.
+- Check that guest recipients can be contacted manually without opening public access.
+- Try language switching on `/shipping.html`, `/admin-shipping.html` and a repair form.
+- Test registration/login, existing repairs and orders after applying the upgrade.

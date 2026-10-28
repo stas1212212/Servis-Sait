@@ -7,26 +7,26 @@
 <script src="/js/theme.js"></script>
 </head><body><div id="header"></div>
 <main class="exp-main"><div class="exp-container">
-<section class="exp-hero"><p class="ship-eyebrow">PULT+ · АДМІНІСТРАТОР</p><h1>Логістика Нової пошти</h1>
-<p>Ручний облік ТТН, приймання техніки та зворотного відправлення. Інтеграції з API перевізника поки немає.</p></section>
-<p id="shippingAdminMessage" role="status" aria-live="polite">Перевіряємо доступ…</p>
+<section class="exp-hero"><p class="ship-eyebrow" data-shipping-i18n="admin.eyebrow">PULT+ · АДМІНІСТРАТОР</p><h1 data-shipping-i18n="admin.title">Логістика Нової пошти</h1>
+<p data-shipping-i18n="admin.subtitle">Ручний облік ТТН, приймання техніки та зворотного відправлення.</p></section>
+<p id="shippingAdminMessage" role="status" aria-live="polite" data-shipping-i18n="admin.loading">Перевіряємо доступ…</p>
 <div id="shippingAdminWorkspace" hidden>
 <section class="ship-card">
-  <h2>Одержувач посилок — фізична особа</h2>
-  <p class="exp-muted">Заповніть реальні реквізити фізичної особи, яка отримуватиме техніку у відділенні. Ці дані доступні лише адміністраторам. Повідомляйте їх клієнтам після узгодження ремонту. Адреса з Google Maps не використовується.</p>
+  <h2 data-shipping-i18n="admin.recipientTitle">Одержувач посилок — фізична особа</h2>
+  <p class="exp-muted" data-shipping-i18n="admin.recipientHelp">Заповніть реквізити одержувача.</p>
   <form id="shippingRecipientForm"><div class="ship-columns">
-    <label class="ship-field"><span>ПІБ одержувача</span><input name="full_name" maxlength="120" required autocomplete="off"></label>
-    <label class="ship-field"><span>Телефон одержувача</span><input name="phone" type="tel" maxlength="30" required autocomplete="off"></label>
-    <label class="ship-field"><span>Місто</span><input name="city" maxlength="120" required autocomplete="off"></label>
-    <label class="ship-field"><span>Відділення Нової пошти (№ або адреса)</span><input name="warehouse" maxlength="180" required autocomplete="off"></label>
-  </div><button class="ship-button" type="submit">Зберегти реквізити</button><p id="shippingRecipientStatus" role="status"></p></form>
+    <label class="ship-field"><span data-shipping-i18n="admin.name">ПІБ одержувача</span><input name="full_name" maxlength="120" required autocomplete="off"></label>
+    <label class="ship-field"><span data-shipping-i18n="admin.phone">Телефон одержувача</span><input name="phone" type="tel" maxlength="30" required autocomplete="off"></label>
+    <label class="ship-field"><span data-shipping-i18n="admin.city">Місто</span><input name="city" maxlength="120" required autocomplete="off"></label>
+    <label class="ship-field"><span data-shipping-i18n="admin.branch">Відділення Нової пошти (№ або адреса)</span><input name="warehouse" maxlength="180" required autocomplete="off"></label>
+  </div><button class="ship-button" type="submit" data-shipping-i18n="admin.saveRecipient">Зберегти реквізити</button><p id="shippingRecipientStatus" role="status"></p></form>
 </section>
 <section style="margin-top:26px">
-  <h2 style="font-size:24px;font-weight:800;margin-bottom:15px">Заявки та відправлення</h2>
-  <label class="ship-field" style="max-width:600px"><span>Пошук за номером заявки, клієнтом чи ТТН</span><input id="shippingAdminSearch" type="search" placeholder="Знайти заявку…" autocomplete="off"></label>
+  <h2 style="font-size:24px;font-weight:800;margin-bottom:15px" data-shipping-i18n="admin.requests">Заявки та відправлення</h2>
+  <label class="ship-field" style="max-width:600px"><span data-shipping-i18n="admin.search">Пошук за номером заявки, клієнтом чи ТТН</span><input id="shippingAdminSearch" type="search" data-shipping-placeholder="admin.searchPlaceholder" placeholder="Знайти заявку…" autocomplete="off"></label>
   <div id="shippingAdminList" class="ship-list"></div>
 </section>
-<p style="margin-top:25px"><a class="ship-button" style="display:inline-block;text-decoration:none" href="/admin.html">← До заявок</a></p>
+<p style="margin-top:25px"><a class="ship-button" style="display:inline-block;text-decoration:none" href="/admin.html" data-shipping-i18n="admin.back">← До заявок</a></p>
 </div></div></main><div id="footer"></div>
-<script src="/js/dropdown.js"></script><script src="/js/burger.js"></script><script src="/js/cart.js"></script><script src="/js/main.js"></script><script src="/js/shipping-admin.js"></script>
+<script src="/js/dropdown.js"></script><script src="/js/burger.js"></script><script src="/js/cart.js"></script><script src="/js/main.js"></script><script src="/js/shipping-i18n.js"></script><script src="/js/shipping-admin.js"></script>
 </body></html>

@@ -28,7 +28,7 @@ function writeGuard(req,res,next) {
 function fail(res,error,label) {
   console.error(label,error);
   if(error?.code==="23505")return res.status(409).json({message:"Така ТТН вже вказана для іншого відправлення"});
-  if(error?.code==="42P01"||error?.code==="42703")return res.status(503).json({message:MISSING});
+  if(error?.code==="42P01"||error?.code==="42703")return res.status(503).json({message:"Запустіть оновлений server/sql/shipping-setup.sql у pgAdmin, потім повторіть дію"});
   return res.status(500).json({message:"Не вдалося зберегти дані доставки"});
 }
 function groupedShipments(rows) {
@@ -39,6 +39,17 @@ function groupedShipments(rows) {
   }
   return result;
 }
+
+async function loadApprovedInstructions(ids) {
+  // Backwards-compatible until the repeatable shipping-setup.sql is applied.
+  const check=await pool.query("SELECT to_regclass('repair_send_instructions') IS NOT NULL AS installed");
+  if(!check.rows[0]?.installed || !ids.length)return {installed:!!check.rows[0]?.installed,records:new Map()};
+  const rows=await pool.query(
+    "SELECT service_request_id,recipient_name,recipient_phone,city,warehouse,approved_at FROM repair_send_instructions WHERE service_request_id=ANY($1::int[])",
+    [ids]);
+  return {installed:true,records:new Map(rows.rows.map(item=>[item.service_request_id,item]))};
+}
+
 // Readiness only. Never expose private recipient data publicly.
 router.get("/availability",async(req,res)=>{
   try{res.json({ready:await available(),carrier:"nova_poshta",mode:"manual"});}
@@ -51,11 +62,13 @@ router.get("/mine",requireUser,async(req,res)=>{
     const repairs=await pool.query("SELECT id,tracking_code,device_type,brand,model,status,created_at FROM service_requests WHERE user_id=$1 ORDER BY created_at DESC,id DESC LIMIT $2",[req.session.user.id,LIMIT]);
     const ids=repairs.rows.map(r=>r.id);
     if(!ids.length)return res.json({repairs:[]});
-    const shipments=await pool.query("SELECT service_request_id,direction,carrier,tracking_number,status,city,warehouse,recipient_name,recipient_phone,updated_at FROM repair_shipments WHERE service_request_id=ANY($1::int[])",[ids]);
+    const shipments=await pool.query("SELECT service_request_id,direction,carrier,tracking_number,status,city,warehouse,updated_at FROM repair_shipments WHERE service_request_id=ANY($1::int[])",[ids]);
     const intakes=await pool.query("SELECT service_request_id,received_at FROM repair_intakes WHERE service_request_id=ANY($1::int[])",[ids]);
     const byId=groupedShipments(shipments.rows);
     const intakeId=new Map(intakes.rows.map(x=>[x.service_request_id,x.received_at]));
-    res.json({repairs:repairs.rows.map(r=>({...r,shipments:byId[r.id]||{},received_at:intakeId.get(r.id)||null}))});
+    const instructions=await loadApprovedInstructions(ids);
+    res.json({repairs:repairs.rows.map(r=>({...r,shipments:byId[r.id]||{},
+      received_at:intakeId.get(r.id)||null,send_to:instructions.records.get(r.id)||null}))});
   }catch(error){fail(res,error,"Shipping /mine");}
 });
 
@@ -119,9 +132,54 @@ router.get("/admin/repairs",async(req,res)=>{
     const intakes=await pool.query("SELECT service_request_id,external_condition,accessories,serial_number,notes,received_at,updated_at FROM repair_intakes WHERE service_request_id=ANY($1::int[])",[ids]);
     const byId=groupedShipments(shipments.rows);
     const intakeMap=new Map(intakes.rows.map(x=>[x.service_request_id,x]));
-    res.json({repairs:repairs.rows.map(r=>({...r,shipments:byId[r.id]||{},intake:intakeMap.get(r.id)||null}))});
+    const instructions=await loadApprovedInstructions(ids);
+    res.json({instructions_ready:instructions.installed,repairs:repairs.rows.map(r=>({...r,shipments:byId[r.id]||{},
+      intake:intakeMap.get(r.id)||null,send_to:instructions.records.get(r.id)||null}))});
   }catch(error){fail(res,error,"Shipping admin repairs");}
 });
+
+/*
+ * Staff approves a snapshot for ONE repair. Global physical-person details
+ * are never published in public settings or the RP tracking endpoint.
+ * Repair ownership is verified in the /mine query before send_to is returned.
+ */
+router.put("/admin/repairs/:id/instructions",writeGuard,async(req,res)=>{
+  const id=numericId(req.params.id),approve=req.body?.approve;
+  if(!id||typeof approve!=="boolean")return res.status(400).json({message:"Вкажіть заявку та підтвердження"});
+  const client=await pool.connect();
+  try{
+    await client.query("BEGIN");
+    const request=await client.query("SELECT id,status FROM service_requests WHERE id=$1 FOR UPDATE",[id]);
+    if(!request.rowCount){await client.query("ROLLBACK");return res.status(404).json({message:"Заявку не знайдено"});}
+    if(request.rows[0].status==="cancelled"){await client.query("ROLLBACK");return res.status(409).json({message:"Заявку скасовано"});}
+    const shipment=await client.query(
+      "SELECT id,status,tracking_number FROM repair_shipments WHERE service_request_id=$1 AND direction='incoming' FOR UPDATE",[id]);
+    if(!shipment.rowCount){await client.query("ROLLBACK");return res.status(409).json({message:"Для цієї заявки не налаштована доставка Новою поштою"});}
+    if(shipment.rows[0].tracking_number || !["not_sent","registered"].includes(shipment.rows[0].status)){
+      await client.query("ROLLBACK");
+      return res.status(409).json({message:"Посилку вже відправлено чи прийнято. Зміни адреси погоджуйте з клієнтом вручну"});
+    }
+    let instruction=null;
+    if(approve){
+      const recipient=await client.query("SELECT full_name,phone,city,warehouse FROM shipping_recipient_settings WHERE id=1");
+      const p=recipient.rows[0];
+      if(!p||![p.full_name,p.phone,p.city,p.warehouse].every(x=>typeof x==="string"&&x.trim())){
+        await client.query("ROLLBACK");
+        return res.status(409).json({message:"Спочатку вкажіть ПІБ, телефон, місто і відділення одержувача"});
+      }
+      const result=await client.query(
+        "INSERT INTO repair_send_instructions(service_request_id,recipient_name,recipient_phone,city,warehouse,approved_by) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(service_request_id) DO UPDATE SET recipient_name=EXCLUDED.recipient_name,recipient_phone=EXCLUDED.recipient_phone,city=EXCLUDED.city,warehouse=EXCLUDED.warehouse,approved_by=EXCLUDED.approved_by,approved_at=NOW() RETURNING service_request_id,recipient_name,recipient_phone,city,warehouse,approved_at",
+        [id,p.full_name.trim(),p.phone.trim(),p.city.trim(),p.warehouse.trim(),req.session.user.id]);
+      instruction=result.rows[0];
+    }else{
+      await client.query("DELETE FROM repair_send_instructions WHERE service_request_id=$1",[id]);
+    }
+    await client.query("COMMIT");
+    res.json({message:approve?"Реквізити підтверджено для цієї заявки":"Реквізити відкликано для цієї заявки",send_to:instruction});
+  }catch(error){await client.query("ROLLBACK").catch(()=>{});fail(res,error,"Shipping approval");}
+  finally{client.release();}
+});
+
 router.put("/admin/repairs/:id/:direction",writeGuard,async(req,res)=>{
   const id=numericId(req.params.id),direction=req.params.direction;
   const shipment=parseShipment(req.body,direction);

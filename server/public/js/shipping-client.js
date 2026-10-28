@@ -2,123 +2,168 @@
 document.addEventListener("DOMContentLoaded",()=>{
   const status=document.getElementById("shippingStatus");
   const list=document.getElementById("shippingList");
-  const labels={
-    not_sent:"Не відправлено",registered:"ТТН зареєстровано",
-    in_transit:"У дорозі (за даними сервісу)",at_branch:"У відділенні (за даними сервісу)",
-    received:"Отримано",cancelled:"Скасовано"
-  };
+  const t=key=>window.PultShippingI18n?.t(key)||key;
+  let repairs=[];
+
   function node(tag,text,cls){
     const x=document.createElement(tag);
     if(text!==undefined)x.textContent=String(text??"");
     if(cls)x.className=cls;
     return x;
   }
-  function value(data,key){return typeof data?.[key]==="string"?data[key]:"";}
-  async function save(url,payload){
-    const r=await fetch(url,{method:"PUT",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-    const data=await r.json();
-    if(!r.ok)throw new Error(data.message||"Не вдалося зберегти");
-    return data;
+  function info(label,value){
+    const row=node("p",undefined,"ship-meta");
+    row.append(node("strong",label+": "),node("span",value||t("client.empty")));
+    return row;
   }
-  function info(label,text){
-    const line=node("p",undefined,"ship-meta");
-    line.append(node("strong",label+": "),node("span",text||"Не вказано"));
-    return line;
-  }
-  function field(label,name,preset,maxLength,required=false){
+  function field(label,name,preset,length,required=false){
     const wrapper=node("label",undefined,"ship-field");
-    const caption=node("span",label);
     const input=node("input");
-    input.name=name;input.value=preset||"";
-    input.maxLength=maxLength;input.required=required;
-    input.autocomplete="off";
-    wrapper.append(caption,input);
+    input.name=name;input.value=preset||"";input.maxLength=length;
+    input.required=required;input.autocomplete="off";
+    wrapper.append(node("span",label),input);
     return wrapper;
   }
-  function formFor(repair,direction) {
-    const item=repair.shipments[direction]||{};
-    const isIncoming=direction==="incoming";
+  function formFor(repair,direction){
+    const leg=repair.shipments[direction]||{};
+    const incoming=direction==="incoming";
     const form=node("form",undefined,"ship-edit-form");
-    const title=node("h4",isIncoming?"Додати вхідну ТТН":"Відділення для повернення");
-    form.append(title);
-    if(isIncoming){
-      if(item.status && !["not_sent","registered"].includes(item.status)){
-        form.append(info("Зміна ТТН", "Вже обробляється сервісом — зверніться до менеджера"));
+    form.append(node("h4",t(incoming?"client.incomingTitle":"client.returnTitle")));
+    if(incoming){
+      if(!repair.send_to){
+        form.append(node("p",t("client.instructionsPending"),"ship-blocked"));
         return form;
       }
-      const f=field("Номер експрес-накладної (14 цифр)","tracking_number",value(item,"tracking_number"),14,true);
-      f.querySelector("input").inputMode="numeric";
-      f.querySelector("input").pattern="[0-9]{14}";
-      form.append(f);
+      if(leg.status && !["not_sent","registered"].includes(leg.status)){
+        form.append(info(t("client.changeTtn"),t("client.contactManager")));
+        return form;
+      }
+      const box=field(t("client.ttnField"),"tracking_number",leg.tracking_number,14,true);
+      box.querySelector("input").pattern="[0-9]{14}";
+      box.querySelector("input").inputMode="numeric";
+      form.append(box);
     }else{
-      if(item.status && item.status!=="not_sent"){
-        form.append(info("Зміна відділення","Накладну вже оформлено — зверніться до менеджера"));
+      if(leg.status && leg.status!=="not_sent"){
+        form.append(info(t("client.changeBranch"),t("client.sentAlready")));
         return form;
       }
-      form.append(
-        field("Місто","return_city",value(item,"city"),120,true),
-        field("Відділення","return_warehouse",value(item,"warehouse"),180,true));
+      form.append(field(t("client.city"),"return_city",leg.city,120,true));
+      form.append(field(t("client.branch"),"return_warehouse",leg.warehouse,180,true));
     }
-    const btn=node("button","Зберегти","ship-button");btn.type="submit";
-    const result=node("p","", "ship-result");result.setAttribute("role","status");
-    form.append(btn,result);
-    form.addEventListener("submit",async(event)=>{
-      event.preventDefault();btn.disabled=true;result.textContent="";
+    const submit=node("button",t("client.save"),"ship-button");
+    submit.type="submit";
+    const feedback=node("p","", "ship-result");
+    feedback.setAttribute("role","status");
+    form.append(submit,feedback);
+    form.addEventListener("submit",async event=>{
+      event.preventDefault();
+      submit.disabled=true;
+      feedback.textContent="";
       const data=new FormData(form);
-      const payload=isIncoming
+      const payload=incoming
         ?{tracking_number:String(data.get("tracking_number")||"").trim()}
-        :{return_city:String(data.get("return_city")||"").trim(),return_warehouse:String(data.get("return_warehouse")||"").trim()};
+        :{return_city:String(data.get("return_city")||"").trim(),
+          return_warehouse:String(data.get("return_warehouse")||"").trim()};
       try{
-        const resultData=await save("/api/shipping/mine/"+repair.id+"/"+(isIncoming?"incoming":"return"),payload);
-        result.textContent=resultData.message;result.dataset.ok="true";
+        const response=await fetch("/api/shipping/mine/"+repair.id+"/"+(incoming?"incoming":"return"),{
+          method:"PUT",credentials:"same-origin",
+          headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+        const result=await response.json();
+        if(!response.ok)throw new Error(result.message||t("client.saveError"));
         await load();
-      }catch(error){result.textContent=error.message;result.dataset.ok="false";}
-      finally{btn.disabled=false;}
+      }catch(error){feedback.textContent=error.message;feedback.dataset.ok="false";}
+      finally{submit.disabled=false;}
     });
     return form;
   }
-  function leg(direction,item){
-    const wrapper=node("div",undefined,"ship-leg");
-    wrapper.append(node("h3",direction==="incoming"?"📦 До сервісу":"🚚 Назад клієнту"));
-    wrapper.append(info("Статус",labels[item?.status]||"Немає накладної"));
-    wrapper.append(info("ТТН",item?.tracking_number||"Ще не вказано"));
-    if(item?.city)wrapper.append(info("Місто",item.city));
-    if(item?.warehouse)wrapper.append(info("Відділення",item.warehouse));
-    if(item?.tracking_number){
-      const a=node("a","Перевірити ТТН на сайті Нової пошти");
-      a.href="https://novaposhta.ua/";
-      a.target="_blank";a.rel="noopener noreferrer";
-      wrapper.append(a);
+  function shippingLeg(direction,leg){
+    const item=leg||{};
+    const div=node("div",undefined,"ship-leg");
+    div.append(node("h3",t(direction==="incoming"?"client.incoming":"client.outgoing")));
+    div.append(info(t("client.status"),item.status?t("status."+item.status):t("client.noWaybill")));
+    div.append(info(t("client.ttn"),item.tracking_number||t("client.notSet")));
+    if(item.city)div.append(info(t("client.city"),item.city));
+    if(item.warehouse)div.append(info(t("client.branch"),item.warehouse));
+    if(item.tracking_number){
+      const link=node("a",t("client.checkCarrier"));
+      link.href="https://novaposhta.ua/";
+      link.target="_blank";
+      link.rel="noopener noreferrer";
+      div.append(link);
     }
-    return wrapper;
+    return div;
+  }
+  function recipientInstructions(repair){
+    const panel=node("section",undefined,"ship-instructions");
+    panel.append(node("h3",t("client.instructionsTitle")));
+    const recipient=repair.send_to;
+    if(!recipient){
+      panel.classList.add("ship-instructions-pending");
+      panel.append(node("p",t("client.instructionsPending")));
+      return panel;
+    }
+    panel.classList.add("ship-instructions-approved");
+    panel.append(node("p",t("client.instructionsReady")));
+    panel.append(
+      info(t("client.recipientName"),recipient.recipient_name),
+      info(t("client.recipientPhone"),recipient.recipient_phone),
+      info(t("client.city"),recipient.city),
+      info(t("client.branch"),recipient.warehouse));
+    const copy=node("button",t("client.copyDetails"),"ship-button");
+    copy.type="button";
+    const feedback=node("span","", "ship-copy-feedback");
+    feedback.setAttribute("role","status");
+    copy.addEventListener("click",async()=>{
+      const lines=[
+        "PULT+ · Nova Poshta",
+        t("client.repair")+repair.id,
+        t("client.recipientName")+": "+recipient.recipient_name,
+        t("client.recipientPhone")+": "+recipient.recipient_phone,
+        t("client.city")+": "+recipient.city,
+        t("client.branch")+": "+recipient.warehouse
+      ];
+      try{await navigator.clipboard.writeText(lines.join("\n"));feedback.textContent=t("client.copied");}
+      catch(error){feedback.textContent=t("client.copyFailed");}
+    });
+    panel.append(copy,feedback);
+    return panel;
+  }
+  function render(){
+    list.replaceChildren();
+    status.textContent=repairs.length?"":t("client.noRequests");
+    for(const repair of repairs){
+      const card=node("article",undefined,"ship-card");
+      card.append(node("h2",t("client.repair")+repair.id));
+      card.append(info(t("client.device"),[repair.device_type,repair.brand,repair.model].filter(Boolean).join(" · ")));
+      card.append(info(t("client.repairCode"),repair.tracking_code));
+      const hasDelivery=!!(repair.shipments?.incoming || repair.shipments?.outgoing);
+      if(!hasDelivery){
+        card.append(node("p",t("client.noDelivery"),"ship-blocked"));
+        list.append(card);
+        continue;
+      }
+      card.append(recipientInstructions(repair));
+      const grid=node("div",undefined,"ship-columns");
+      grid.append(shippingLeg("incoming",repair.shipments.incoming),shippingLeg("outgoing",repair.shipments.outgoing));
+      card.append(grid);
+      if(repair.received_at)card.append(info(t("client.receivedAt"),new Date(repair.received_at).toLocaleString(window.PultShippingI18n?.language()==="en"?"en-GB":"uk-UA")));
+      if(repair.status!=="cancelled"){
+        const forms=node("div",undefined,"ship-columns");
+        forms.append(formFor(repair,"incoming"),formFor(repair,"outgoing"));
+        card.append(forms);
+      }
+      list.append(card);
+    }
   }
   async function load(){
     try{
-      const r=await fetch("/api/shipping/mine",{credentials:"same-origin"});
-      const data=await r.json();
-      if(!r.ok)throw new Error(data.message||"Не вдалося завантажити доставку");
-      list.replaceChildren();
-      status.textContent=data.repairs.length?"":"Заявок на ремонт поки немає.";
-      for(const repair of data.repairs){
-        const card=node("article",undefined,"ship-card");
-        card.append(node("h2","Ремонт №"+repair.id));
-        card.append(info("Пристрій",[repair.device_type,repair.brand,repair.model].filter(Boolean).join(" · ")));
-        card.append(info("Код ремонту",repair.tracking_code));
-        const grid=node("div",undefined,"ship-columns");
-        grid.append(leg("incoming",repair.shipments.incoming),leg("outgoing",repair.shipments.outgoing));
-        card.append(grid);
-        if(repair.received_at)card.append(info("Прийомка",new Date(repair.received_at).toLocaleString("uk-UA")));
-        if(repair.status!=="cancelled"){
-          const forms=node("div",undefined,"ship-columns");
-          forms.append(formFor(repair,"incoming"),formFor(repair,"outgoing"));
-          card.append(forms);
-        }
-        list.append(card);
-      }
-    }catch(error){
-      list.replaceChildren();
-      status.textContent=error.message;
-    }
+      const response=await fetch("/api/shipping/mine",{credentials:"same-origin"});
+      const data=await response.json();
+      if(!response.ok)throw new Error(data.message||t("client.loadError"));
+      repairs=Array.isArray(data.repairs)?data.repairs:[];
+      render();
+    }catch(error){list.replaceChildren();status.textContent=error.message;}
   }
+  window.addEventListener("pult:language-changed",render);
   load();
 });

@@ -38,35 +38,35 @@
 
     <nav class="flex-1 px-6 py-6 space-y-2">
 
-        <a href="index.html"
+        <a href="index.html" data-i18n="nav.home"
            class="block px-4 py-3 rounded-xl hover:bg-gray-100">
 
             🏠 Головна
 
         </a>
 
-        <a href="Phone.html"
+        <a href="Phone.html" data-i18n="nav.phone"
            class="block px-4 py-3 rounded-xl hover:bg-gray-100">
 
             📱 Телефони
 
         </a>
 
-        <a href="Laptop.html"
+        <a href="Laptop.html" data-i18n="nav.laptop"
            class="block px-4 py-3 rounded-xl hover:bg-gray-100">
 
             💻 Ноутбуки
 
         </a>
 
-        <a href="tv.html"
+        <a href="tv.html" data-i18n="nav.tv"
            class="block px-4 py-3 rounded-xl hover:bg-gray-100">
 
             📺 Телевізори
 
         </a>
 
-        <a href="speakers.html"
+        <a href="speakers.html" data-i18n="nav.audio"
            class="block px-4 py-3 rounded-xl hover:bg-gray-100">
 
             🔊 Колонки
@@ -85,6 +85,13 @@
     <!-- FOOTER -->
 
     <div class="border-t p-6 space-y-3">
+
+        <div class="pult-mobile-languages" role="group" aria-label="Мова / Language / Язык">
+          <button type="button" data-lang="uk" aria-label="Українська" aria-pressed="false">🇺🇦 UA</button>
+          <button type="button" data-lang="en" aria-label="English" aria-pressed="false">🇬🇧 EN</button>
+          <button type="button" data-lang="ru" aria-label="Русский" aria-pressed="false">🇷🇺 RU</button>
+        </div>
+        <a href="/shipping.html" data-i18n="footer.shipping" class="block text-center py-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition">Доставка ремонту</a>
 
         <button
             id="themeButton"
@@ -188,6 +195,7 @@
         <nav aria-label="Основна навігація" class="pult-header-nav hidden lg:flex items-center gap-2">
 
             <a href="index.html"
+               data-i18n="nav.home"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Головна
@@ -195,6 +203,7 @@
             </a>
 
             <a href="Phone.html"
+               data-i18n="nav.phone"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Телефони
@@ -202,6 +211,7 @@
             </a>
 
             <a href="Laptop.html"
+               data-i18n="nav.laptop"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Ноутбуки
@@ -209,6 +219,7 @@
             </a>
 
             <a href="tv.html"
+               data-i18n="nav.tv"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Телевізори
@@ -216,6 +227,7 @@
             </a>
 
             <a href="speakers.html"
+               data-i18n="nav.audio"
                class="px-4 py-2 rounded-full hover:bg-gray-100 transition">
 
                 Колонки
@@ -329,19 +341,19 @@
 
                 <div class="dropdown-menu absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 w-44 p-3">
 
-                    <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+                    <button type="button" data-lang="uk" aria-pressed="false" class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
 
                         🇺🇦 Українська
 
                     </button>
 
-                    <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+                    <button type="button" data-lang="ru" aria-pressed="false" class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
 
                         🇷🇺 Русский
 
                     </button>
 
-                    <button class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
+                    <button type="button" data-lang="en" aria-pressed="false" class="block w-full text-left px-3 py-2 rounded-xl hover:bg-gray-100">
 
                         🇬🇧 English
 
