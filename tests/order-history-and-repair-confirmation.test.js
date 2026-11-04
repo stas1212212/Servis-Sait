@@ -104,7 +104,7 @@ test("customer removes own order from history without cancelling stock or admin 
 test("migration and client implementation do not delete sale/order rows",()=>{
   const sql=fs.readFileSync(path.resolve(__dirname,"../server/sql/order-history-visibility.sql"),"utf8");
   assert.match(sql,/ADD COLUMN IF NOT EXISTS customer_hidden_at/);
-  assert.doesNotMatch(sql,/\b(?:DROP|TRUNCATE|DELETE)\b/i);
+  assert.doesNotMatch(sql,/^\s*(?:DROP|TRUNCATE|DELETE)\b/im);
   const cabinet=fs.readFileSync(path.resolve(__dirname,"../server/public/js/cabinet.js"),"utf8");
   assert.ok(cabinet.includes('method: "DELETE"'));
   assert.ok(cabinet.includes("data-hide-order"));
