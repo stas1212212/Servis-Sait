@@ -27,6 +27,15 @@ function requireAuthMiddleware(req, res, next) {
 
     next();
 }
+// The visibility migration is optional until installed on the local DB.
+// Old installations can still load historical orders before running SQL.
+async function hasHistoryVisibility() {
+    const result = await pool.query(
+        "SELECT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema=current_schema() AND table_name='orders' AND column_name='customer_hidden_at') AS ready"
+    );
+    return result.rows[0]?.ready === true;
+}
+
 // -------------------------------------------------
 // GET /api/orders
 // Список замовлень поточного юзера (найновіші перші),
@@ -36,10 +45,11 @@ router.get('/', requireAuthMiddleware, async (req, res) => {
     const userId = req.session.user.id;
 
     try {
+        const visibilityReady = await hasHistoryVisibility();
         const ordersResult = await pool.query(
             `SELECT id, status, total, created_at
              FROM orders
-             WHERE user_id = $1
+             WHERE user_id = $1${visibilityReady ? ' AND customer_hidden_at IS NULL' : ''}
              ORDER BY created_at DESC`,
             [userId]
         );
@@ -99,10 +109,11 @@ router.get('/:id', requireAuthMiddleware, async (req, res) => {
     }
 
     try {
+        const visibilityReady = await hasHistoryVisibility();
         const orderResult = await pool.query(
             `SELECT id, status, total, created_at
              FROM orders
-             WHERE id = $1 AND user_id = $2`,
+             WHERE id = $1 AND user_id = $2${visibilityReady ? ' AND customer_hidden_at IS NULL' : ''}`,
             [orderId, userId]
         );
 
@@ -134,6 +145,37 @@ router.get('/:id', requireAuthMiddleware, async (req, res) => {
     } catch (error) {
         console.error('GET /api/orders/:id error:', error);
         res.status(500).json({ message: 'Помилка сервера' });
+    }
+});
+
+// DELETE /api/orders/:id
+// Removes ONLY the customer's view of an order, keeping the sale/audit record
+// and its item lines available to staff. Does NOT cancel or replenish stock.
+router.delete('/:id', requireAuthMiddleware, async (req, res) => {
+    const orderId = Number(req.params.id);
+    if (!Number.isSafeInteger(orderId) || orderId < 1) {
+        return res.status(400).json({message:'Некоректний номер замовлення'});
+    }
+    const origin = req.get('origin');
+    const site = req.get('sec-fetch-site');
+    if ((origin && origin !== req.protocol + '://' + req.get('host')) ||
+        (site && site !== 'same-origin' && site !== 'none')) {
+        return res.status(403).json({message:'Недозволене джерело запиту'});
+    }
+    try {
+        if (!await hasHistoryVisibility()) {
+            return res.status(503).json({message:'Спочатку виконайте server/sql/order-history-visibility.sql у pgAdmin'});
+        }
+        const saved = await pool.query(
+            'UPDATE orders SET customer_hidden_at=NOW() WHERE id=$1 AND user_id=$2 AND customer_hidden_at IS NULL RETURNING id',
+            [orderId, req.session.user.id]
+        );
+        if (!saved.rowCount) return res.status(404).json({message:'Замовлення не знайдено у вашому кабінеті'});
+        return res.json({message:'Замовлення прибрано з історії кабінету. Воно не скасоване, а запис збережено для сервісу.',order_id:saved.rows[0].id});
+    } catch (error) {
+        console.error('DELETE /api/orders/:id:',error);
+        if (error.code === '42703') return res.status(503).json({message:'Виконайте server/sql/order-history-visibility.sql у pgAdmin'});
+        return res.status(500).json({message:'Не вдалося прибрати замовлення'});
     }
 });
 
