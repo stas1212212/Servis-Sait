@@ -228,11 +228,46 @@ function renderOrders(orders) {
                         <h4>Товари</h4>
                         ${itemsHtml}
                     </div>
+                    <div class="cabinet-order-actions">
+                        <button type="button" class="cabinet-order-hide" data-hide-order="${orderId}" aria-label="Прибрати замовлення №${orderId} з історії">
+                            Прибрати з історії
+                        </button>
+                    </div>
                 </article>
             `;
         })
         .join("");
 }
+
+// Event delegation: the order cards are rendered anew after each update.
+document.addEventListener("click", async (event) => {
+    const button = event.target.closest?.("[data-hide-order]");
+    if (!button) return;
+    const orderId = Number(button.dataset.hideOrder);
+    if (!Number.isSafeInteger(orderId) || orderId < 1) return;
+    if (!window.confirm(
+        "Прибрати замовлення №" + orderId + " з історії кабінету?\n\n" +
+        "ЦЕ НЕ СКАСОВУЄ замовлення та не повертає товари на склад. " +
+        "Інформація залишиться у адміністратора."
+    )) return;
+    button.disabled = true;
+    const feedback = document.getElementById("orderActionMessage");
+    if (feedback) feedback.textContent = "";
+    try {
+        const response = await fetch("/api/orders/" + orderId, {
+            method: "DELETE", credentials: "same-origin",
+            headers: {"Accept": "application/json"}
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message || "Не вдалося прибрати замовлення");
+        await loadOrders();
+        if (feedback) {feedback.dataset.error = "false";feedback.textContent = result.message;}
+    } catch (error) {
+        if (feedback) {feedback.dataset.error = "true";feedback.textContent = error.message;}
+        else alert(error.message);
+        button.disabled = false;
+    }
+});
 
 /* =========================================================
 ORDER ITEM

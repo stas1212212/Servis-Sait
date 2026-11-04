@@ -1,0 +1,49 @@
+.submitted-page{background:#f3f7fd;min-height:100vh;padding:145px 20px 75px;color:#1e293b}
+.submitted-wrap{max-width:850px;margin:0 auto}
+.submitted-hero{text-align:center;margin-bottom:24px}
+.submitted-check{display:grid;place-items:center;margin:0 auto 16px;width:70px;height:70px;border-radius:22px;color:#fff;font-size:35px;font-weight:800;background:linear-gradient(145deg,#2563eb,#1d4ed8);box-shadow:0 8px 22px #2563eb35}
+.submitted-eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;color:#2563eb;margin-bottom:10px}
+.submitted-hero h1{font-size:clamp(27px,4.2vw,42px);font-weight:850;line-height:1.15;color:#152b4e}
+.submitted-hero>p:last-child{color:#536982;line-height:1.65;margin:15px auto 0;max-width:670px}
+.submitted-card{background:#fff;border:1px solid #dce6f5;border-radius:22px;padding:27px 31px;margin-top:20px;box-shadow:0 10px 30px #1e293b0b}
+.submitted-card h2{font-size:21px;line-height:1.3;font-weight:800;margin-bottom:17px;color:#17365b}
+.submitted-code-line{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px;border:1px dashed #88addd;border-radius:14px;background:#f1f7ff}
+#submittedTrackingCode{font-weight:850;letter-spacing:.02em;overflow-wrap:anywhere;color:#133f83}
+.submitted-code-line button{background:#dceafe;color:#1d4ed8;font-weight:750;padding:10px 13px;border-radius:10px;flex-shrink:0}
+.submitted-code-line button:disabled{opacity:.5}
+.submitted-feedback{font-size:13px;color:#177141;margin-top:9px}.submitted-feedback:empty{display:none}
+.submitted-tip{font-size:14px;color:#52677f;line-height:1.6;margin:13px 0}
+.submitted-actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:21px}
+.submitted-actions a,.submitted-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:11px 17px;font-size:14px;font-weight:750;border-radius:11px;text-decoration:none}
+.submitted-primary{background:#2563eb;color:#fff!important}
+.submitted-primary:hover{background:#1d4ed8}
+.submitted-secondary{border:1px solid #c7d9ef;background:#eef5ff;color:#215398!important}
+.submitted-secondary:hover{background:#dceaff}
+.submitted-steps{list-style:none;display:grid;gap:17px;padding:0;margin:0}
+.submitted-steps li{display:flex;gap:16px;align-items:flex-start}
+.submitted-steps li>span{display:grid;place-items:center;flex:0 0 33px;width:33px;height:33px;border-radius:11px;background:#dceaff;color:#2153a2;font-weight:850}
+.submitted-steps h3{font-size:16px;font-weight:780;color:#1c365d}
+.submitted-steps p{color:#52677f;font-size:14px;margin-top:3px;line-height:1.6}
+.submitted-warning{background:#fffbeb;color:#854d0e;border:1px solid #f0cb8f;padding:17px 19px;border-radius:13px;font-size:15px;font-weight:700;line-height:1.6}
+.submitted-warning[hidden],.submitted-recipient[hidden]{display:none!important}
+.submitted-recipient{margin:18px 0;background:#f0fdf4;border:1px solid #86cba4;border-radius:14px;padding:19px}
+.submitted-recipient>p{font-weight:700;color:#166534}
+.submitted-recipient dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:15px}
+.submitted-recipient dt{font-size:12px;color:#4b7360;font-weight:750}
+.submitted-recipient dd{color:#155e34;font-weight:750;overflow-wrap:anywhere;margin-top:3px}
+html.dark .submitted-page{background:#0b1220;color:#e2e8f0}
+html.dark .submitted-hero h1{color:#f1f5f9}
+html.dark .submitted-hero>p:last-child,html.dark .submitted-tip{color:#b4c8de}
+html.dark .submitted-card{background:#172235;border-color:#354760}
+html.dark .submitted-card h2,html.dark .submitted-steps h3{color:#e4f0ff}
+html.dark .submitted-code-line{background:#1d314e;border-color:#3c6da8}
+html.dark #submittedTrackingCode{color:#bfdbfe}
+html.dark .submitted-code-line button{background:#264779;color:#e1edff}
+html.dark .submitted-steps p{color:#b4c8de}
+html.dark .submitted-steps li>span{background:#244777;color:#d5e8ff}
+html.dark .submitted-warning{background:#362c1b;border-color:#836539;color:#fde68a}
+html.dark .submitted-secondary{background:#233c5b;border-color:#476588;color:#dbeafe!important}
+html.dark .submitted-recipient{background:#133526;border-color:#427b5f}
+html.dark .submitted-recipient>p,html.dark .submitted-recipient dd{color:#bbf7d0}
+html.dark .submitted-recipient dt{color:#a2d6b6}
+@media(max-width:650px){.submitted-page{padding:112px 14px 45px}.submitted-card{padding:21px 17px}.submitted-code-line{align-items:stretch;flex-direction:column}.submitted-actions{flex-direction:column}.submitted-actions a,.submitted-actions button{width:100%}.submitted-recipient dl{grid-template-columns:1fr}}

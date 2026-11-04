@@ -70,12 +70,23 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       const result=await response.json();
       if(!response.ok)throw new Error(result.message||result.error||t("form.error"));
-      const code=result.request?.tracking_code||t("form.checkCabinet");
-      const extra=payload.shipping?t("form.successExtra"):"";
-      feedback.dataset.error="false";
-      feedback.textContent=t("form.success")+" "+code+" "+t("form.statusLink")+extra;
-      form.reset();if(brandInput)brandInput.value=buttons.find(b=>b.classList.contains("active"))?.dataset.brand||"";
-      showShipping();
+      // Persist only minimal confirmation metadata in this browser tab.
+      // Hash-based fallback works if sessionStorage is disabled (no phone/email in URL).
+      const requestId=Number(result.request?.id);
+      const code=String(result.request?.tracking_code||"");
+      const hasCode=/^RP-[A-F0-9]{24,32}$/.test(code);
+      const receipt={
+        id:Number.isSafeInteger(requestId)&&requestId>0?requestId:null,
+        code:hasCode?code:"",
+        shipping:!!payload.shipping
+      };
+      try{sessionStorage.setItem("pult:last-repair",JSON.stringify(receipt));}
+      catch(error){/* The confirmation page can also read the location hash. */}
+      const parameters=new URLSearchParams();
+      if(receipt.id)parameters.set("id",String(receipt.id));
+      if(hasCode)parameters.set("code",code);
+      parameters.set("shipping",receipt.shipping?"1":"0");
+      window.location.assign("/repair-submitted.html#"+parameters.toString());
     }catch(error){feedback.dataset.error="true";feedback.textContent=error.message||t("form.error");}
     finally{submit.disabled=false;submit.textContent=original;}
   });
