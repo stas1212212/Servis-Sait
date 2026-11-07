@@ -8,6 +8,8 @@ const requireAdmin=require("../middleware/requireAdmin");
 const router=express.Router();
 const CARRIERS=new Set(["nova_poshta","ukrposhta"]);
 const MIGRATION="Адміністратор має виконати server/sql/carrier-choice-map.sql у pgAdmin.";
+const CUSTOMER_UNAVAILABLE="Адреса відділення тимчасово недоступна. Дочекайтеся підтвердження від менеджера PULT+ або зв’яжіться з нами. Не відправляйте пристрій до отримання реквізитів.";
+const adminRequest=req=>req.path==="/admin"||req.path.startsWith("/admin/");
 const publicFields="carrier,city,warehouse,address,latitude,longitude";
 const allFields=publicFields+",recipient_name,recipient_phone";
 
@@ -25,14 +27,14 @@ function originGuard(req,res,next){
 }
 function errorReply(res,error,label){
   console.error(label,error);
-  if(error?.code==="42P01"||error?.code==="42703")return res.status(503).json({message:MIGRATION});
+  if(error?.code==="42P01"||error?.code==="42703")return res.status(503).json({message:adminRequest(res.req)?MIGRATION:CUSTOMER_UNAVAILABLE});
   return res.status(500).json({message:"Сервіс доставки тимчасово недоступний"});
 }
 async function schema(req,res,next){
   try{
     const check=await pool.query(
       "SELECT to_regclass('shipping_carrier_locations') IS NOT NULL AS locations, to_regclass('repair_delivery_tokens') IS NOT NULL AS tokens");
-    if(!check.rows[0]?.locations||!check.rows[0]?.tokens)return res.status(503).json({message:MIGRATION});
+    if(!check.rows[0]?.locations||!check.rows[0]?.tokens)return res.status(503).json({message:adminRequest(req)?MIGRATION:CUSTOMER_UNAVAILABLE});
     next();
   }catch(error){errorReply(res,error,"Carrier schema");}
 }
