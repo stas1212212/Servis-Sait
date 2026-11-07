@@ -271,3 +271,51 @@
     }
 
 }
+
+/* PULT+ product details: the global dark theme changes surrounding text,
+   so each product surface must receive a matching background AND foreground. */
+.product-image,
+.info-card,
+.description-card {
+    color:#1e293b;
+    border:1px solid #e2e8f0;
+}
+.info-card h2,
+.description-card h2 {color:#0f2745}
+.info-card li,
+.description-card p {color:#475569}
+.product-image {background:#fff}
+html.dark .product-image,
+html.dark .info-card,
+html.dark .description-card {
+    background:#172235!important;
+    color:#e2e8f0!important;
+    border-color:#35445a!important;
+    box-shadow:0 12px 35px rgba(0,0,0,.22);
+}
+html.dark .info-card h2,
+html.dark .description-card h2 {
+    color:#f1f5f9!important;
+}
+html.dark .info-card ul,
+html.dark .info-card li,
+html.dark .description-card p {
+    color:#cbd5e1!important;
+}
+html.dark .product-image img {color:#e2e8f0}
+html.dark .product-image .store-product-photo-fallback {
+    background:#223b5b!important;
+    color:#d7e9ff!important;
+}
+html.dark .cta-product {
+    background:linear-gradient(135deg,#152c50,#10213b)!important;
+    border:1px solid #375175;
+    color:#f1f5f9!important;
+}
+html.dark .cta-product h2 {color:#f1f5f9!important}
+html.dark .cta-product p {color:#cbd5e1!important}
+html.dark .cta-product a {
+    background:#2563eb!important;
+    color:#fff!important;
+}
+html.dark .cta-product a:hover {background:#1d4ed8!important}
