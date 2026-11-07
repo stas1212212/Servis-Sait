@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const incoming=direction==="incoming";
     const form=node("form",undefined,"ship-edit-form");
     form.append(node("h3",t(incoming?"admin.incoming":"admin.outgoing")));
+    form.append(info(t("carrier.which"),leg.carrier==="ukrposhta"?"Укрпошта":"Нова пошта"));
     if(incoming&&leg.status==="received"){
       form.append(info(t("admin.deliveryStatus"),t("admin.arrived")),info(t("admin.ttn"),leg.tracking_number));
       return form;
@@ -55,9 +56,9 @@ document.addEventListener("DOMContentLoaded",()=>{
       select.append(option);
     }
     selectWrapper.append(node("span",t("admin.deliveryStatus")),select);
-    const ttnField=field(t("admin.ttn"),"tracking_number",leg.tracking_number,14);
+    const ttnField=field(leg.carrier==="ukrposhta"?t("carrier.ukrTtn"):t("admin.ttn"),"tracking_number",leg.tracking_number,20);
     const ttnInput=ttnField.querySelector("input");
-    ttnInput.pattern="[0-9]{14}";
+    ttnInput.pattern=leg.carrier==="ukrposhta"?"[A-Za-z0-9]{13}":"[0-9]{14}";
     ttnInput.inputMode="numeric";
     form.append(selectWrapper,ttnField);
     form.append(
@@ -79,6 +80,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       event.preventDefault();button.disabled=true;
       const data=new FormData(form);
       const body={
+        carrier:leg.carrier||"nova_poshta",
         status:String(data.get("status")||"not_sent"),
         tracking_number:String(data.get("tracking_number")||"").trim(),
         city:String(data.get("city")||"").trim(),
@@ -131,6 +133,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       return panel;
     }
     const snapshot=repair.send_to;
+    panel.append(info(t("carrier.which"),incoming.carrier==="ukrposhta"?"Укрпошта":"Нова пошта"));
     panel.append(node("p",t(snapshot?"admin.instructionsReady":"admin.instructionsPending")));
     if(!instructionsReady){
       panel.append(node("p",t("admin.migrationMissing"),"ship-blocked"));
@@ -141,18 +144,20 @@ document.addEventListener("DOMContentLoaded",()=>{
         info(t("admin.name"),snapshot.recipient_name),
         info(t("admin.phone"),snapshot.recipient_phone),
         info(t("admin.city"),snapshot.city),
-        info(t("admin.branch"),snapshot.warehouse));
+        info(t("admin.branch"),snapshot.warehouse),
+        info(t("carrier.address"),snapshot.address||"—"));
       const copy=node("button",t("admin.copy"),"ship-button");
       copy.type="button";
       const feedback=node("span","", "ship-copy-feedback");
       feedback.setAttribute("role","status");
       copy.addEventListener("click",async()=>{
         const content=[
-          "PULT+ · Nova Poshta",t("admin.repair")+repair.id,
+          "PULT+ · "+(snapshot.carrier==="ukrposhta"?"Укрпошта":"Нова пошта"),t("admin.repair")+repair.id,
           t("admin.name")+": "+snapshot.recipient_name,
           t("admin.phone")+": "+snapshot.recipient_phone,
           t("admin.city")+": "+snapshot.city,
-          t("admin.branch")+": "+snapshot.warehouse
+          t("admin.branch")+": "+snapshot.warehouse,
+          t("carrier.address")+": "+(snapshot.address||"")
         ].join("\n");
         try{await navigator.clipboard.writeText(content);feedback.textContent=t("admin.copied");}
         catch(error){feedback.textContent=t("admin.copyFailed");}
@@ -168,7 +173,11 @@ document.addEventListener("DOMContentLoaded",()=>{
       button.addEventListener("click",async()=>{
         button.disabled=true;
         try{
-          await api("/repairs/"+repair.id+"/instructions",mutation({approve}));
+          const reply=await fetch("/api/shipping-carriers/admin/requests/"+repair.id+"/approve",{
+            credentials:"same-origin",...mutation({approve})
+          });
+          const result=await reply.json();
+          if(!reply.ok)throw Error(result.message||t("admin.apiError"));
           await reload();
         }catch(error){feedback.textContent=error.message;button.disabled=false;}
       });
