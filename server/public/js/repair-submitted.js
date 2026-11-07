@@ -70,7 +70,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     return url.toString();
   }
   function previewMap(){
-    const office=locationFor(selected);
+    // Approved instructions are a per-repair snapshot: later changes to the
+    // global carrier settings must not move the customer's confirmed pin.
+    const approved=lastApproved&&(lastApproved.carrier||"nova_poshta")===selected?lastApproved:null;
+    const chosen=approved||locationFor(selected);
+    const office=chosen?{...chosen,configured:!!(chosen.city&&chosen.warehouse&&chosen.address&&
+      chosen.latitude!=null&&chosen.longitude!=null)}:null;
     locationPanel.hidden=true;
     mapContainer.hidden=true;
     map.removeAttribute("src");
