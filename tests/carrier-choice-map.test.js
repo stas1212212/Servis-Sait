@@ -36,6 +36,8 @@ function dbQuery(sql,args=[]){
   if(q.includes("FROM service_requests WHERE id=$1"))return args[0]===18?row(state.repair):output([]);
   if(q.startsWith("SELECT carrier,city,warehouse,address,latitude,longitude FROM shipping_carrier_locations"))
     return output(Object.values(state.settings));
+  if(q.startsWith("SELECT carrier,city,warehouse,address,latitude,longitude,recipient_name,recipient_phone FROM shipping_carrier_locations WHERE carrier=$1"))
+    return state.settings[args[0]]?row(state.settings[args[0]]):output([]);
   if(q.startsWith("SELECT carrier,city,warehouse,address,latitude,longitude,recipient_name,recipient_phone FROM shipping_carrier_locations"))
     return output(Object.values(state.settings));
   if(q.startsWith("SELECT carrier,status,tracking_number FROM repair_shipments WHERE service_request_id=$1 AND direction='incoming'"))
@@ -56,8 +58,6 @@ function dbQuery(sql,args=[]){
     state.legs.push({direction,carrier:args[1],status:"not_sent",tracking_number:null});
     return output([]);
   }
-  if(q.startsWith("SELECT carrier,city,warehouse,address,latitude,longitude,recipient_name,recipient_phone FROM shipping_carrier_locations WHERE carrier=$1"))
-    return state.settings[args[0]]?row(state.settings[args[0]]):output([]);
   if(q.startsWith("INSERT INTO repair_send_instructions")){
     const [id,recipient_name,recipient_phone,city,warehouse,carrier,address,latitude,longitude]=args;
     state.approved={service_request_id:id,recipient_name,recipient_phone,city,warehouse,carrier,address,latitude,longitude,approved_at:"2026-11-08"};
