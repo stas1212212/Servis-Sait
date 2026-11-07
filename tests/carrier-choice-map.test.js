@@ -12,6 +12,7 @@ const token="a".repeat(64);
 const tokenHash=crypto.createHash("sha256").update(token).digest("hex");
 function fresh(){
   return {
+    schemaReady:true,
     settings:{
       nova_poshta:{carrier:"nova_poshta",city:"Тестове місто",warehouse:"Відділення 1",
         address:"Вулиця Тестова, 1",latitude:"50.123456",longitude:"31.123456",
@@ -28,7 +29,7 @@ const output=(rows)=>({rows,rowCount:rows.length});
 const row=(x)=>output([x]);
 function dbQuery(sql,args=[]){
   const q=String(sql).replace(/\s+/g," ").trim();
-  if(q.includes("to_regclass('shipping_carrier_locations')"))return row({locations:true,tokens:true});
+  if(q.includes("to_regclass('shipping_carrier_locations')"))return row({locations:state.schemaReady,tokens:state.schemaReady});
   if(q==="BEGIN"||q==="COMMIT"||q==="ROLLBACK")return output([]);
   if(q.includes("FROM repair_delivery_tokens WHERE service_request_id=$1"))
     return args[0]===18&&args[1]===tokenHash?row({one:1}):output([]);
@@ -112,6 +113,19 @@ async function put(url,body,key=null,asAdmin=false){
 }
 test.beforeEach(()=>{state=fresh();});
 
+test("customers see a friendly notice instead of SQL steps; admins still see setup diagnostics",async()=>{
+  state.schemaReady=false;
+  const customer=await get("/api/shipping-carriers/locations");
+  assert.equal(customer.status,503);
+  const customerMessage=(await customer.json()).message;
+  assert.ok(customerMessage.includes("менеджера PULT+"));
+  assert.ok(!customerMessage.includes("pgAdmin"));
+  assert.ok(!customerMessage.includes(".sql"));
+  const admin=await get("/api/shipping-carriers/admin/locations",null,true);
+  assert.equal(admin.status,503);
+  const adminMessage=(await admin.json()).message;
+  assert.ok(adminMessage.includes("carrier-choice-map.sql"));
+});
 test("public map locations show coordinates and street, NEVER individual phone or name",async()=>{
   const response=await get("/api/shipping-carriers/locations");
   assert.equal(response.status,200);
