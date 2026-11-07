@@ -172,13 +172,16 @@ document.addEventListener("DOMContentLoaded",()=>{
         method:"PUT",credentials:"same-origin",headers:requestHeaders(true),
         body:JSON.stringify({carrier})});
       const data=await response.json();
-      if(!response.ok)throw Error(data.message||t("carrier.saveError"));
+      if(!response.ok){
+        if(response.status===503)throw Object.assign(Error(t("carrier.setupPending")),{code:"delivery_unavailable"});
+        throw Error(data.message||t("carrier.saveError"));
+      }
       setSelection("carrier.saved");
       saveInTab();
       await loadInstructions();
     }catch(error){
-      selectionStatus.dataset.error="true";
-      selectionStatus.textContent=error.message;
+      if(error.code==="delivery_unavailable")setSelection("carrier.setupPending",true);
+      else {selectionStatus.dataset.error="true";selectionStatus.textContent=error.message;}
       recipient.hidden=true;setWarning("submit.wait");
     }finally{
       busy=false;
