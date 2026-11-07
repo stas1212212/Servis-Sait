@@ -27,6 +27,8 @@ function renderCheckout() {
     const items = document.getElementById("checkoutItems");
 
     if (!items) return;
+    const submit=document.querySelector(".checkout-button");
+    if(submit)submit.disabled=cart.length===0;
 
     // All product types use the same SKU cart. Never interpolate admin product names
     // directly into HTML; customer/local storage can contain arbitrary text.

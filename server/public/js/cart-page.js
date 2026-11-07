@@ -14,6 +14,11 @@ function renderCart(){
   if(!root||!empty)return;
   root.replaceChildren();
   empty.classList.toggle("hidden",products.length>0);
+  const checkout=document.getElementById("checkoutButton");
+  if(checkout){
+    checkout.disabled=products.length===0;
+    checkout.title=checkout.disabled?"Спочатку додайте товар до кошика":"";
+  }
   function node(tag,text,cls){
     const e=document.createElement(tag);
     if(text!==undefined)e.textContent=String(text??"");

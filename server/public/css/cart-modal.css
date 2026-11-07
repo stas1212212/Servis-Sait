@@ -207,3 +207,16 @@
     }
 
 }
+
+/* Shared add-to-cart dialog must use a matched dark surface/text palette too. */
+html.dark .cart-modal {
+  background:#172235!important;
+  color:#e2e8f0!important;
+  border:1px solid #40516b;
+}
+html.dark .cart-modal-title {color:#f1f5f9!important}
+html.dark .cart-modal-product {color:#b7c9df!important}
+html.dark .cart-continue {background:#263954!important;color:#e2e8f0!important}
+html.dark .cart-continue:hover {background:#344e72!important}
+html.dark .cart-open {background:#2563eb!important;color:#fff!important}
+html.dark .cart-open:hover {background:#1d4ed8!important}

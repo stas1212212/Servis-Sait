@@ -199,3 +199,58 @@
     }
 
 }
+
+/* Checkout surface contrast: the common theme handles .checkout-card
+   but not .checkout-summary, so provide both theme variants consistently. */
+.checkout-card,.checkout-summary {
+  border:1px solid #e2e8f0;
+  color:#1e293b;
+}
+.checkout-card h2,.checkout-summary h2,
+.checkout-product h3,.summary-line,#checkoutTotal,#checkoutCount {
+  color:#1e293b;
+}
+.checkout-product p {color:#475569}
+.checkout-card input,.checkout-card textarea {
+  color:#1e293b;
+}
+.checkout-card input::placeholder,.checkout-card textarea::placeholder {
+  color:#64748b;
+}
+.checkout-button {background:#2563eb;color:#fff}
+.checkout-button:hover:not(:disabled) {background:#1d4ed8}
+.checkout-button:disabled {background:#94a3b8;color:#fff;opacity:.7;cursor:not-allowed;transform:none}
+.checkout-product .store-cart-photo-placeholder {
+  display:grid;place-items:center;width:70px;height:70px;
+  border-radius:12px;background:#eff6ff;font-size:31px;
+}
+html.dark .checkout-card,
+html.dark .checkout-summary {
+  background:#172235!important;
+  color:#e2e8f0!important;
+  border-color:#334155!important;
+  box-shadow:0 12px 35px rgba(0,0,0,.2);
+}
+html.dark .checkout-card h2,
+html.dark .checkout-summary h2,
+html.dark .checkout-product h3,
+html.dark .summary-line,
+html.dark #checkoutTotal,
+html.dark #checkoutCount {color:#f1f5f9!important}
+html.dark .checkout-product p {color:#b7c9df!important}
+html.dark .checkout-product,
+html.dark .summary-line {border-color:#40516b!important}
+html.dark .checkout-card input,
+html.dark .checkout-card textarea {
+  background:#101a2b!important;color:#f1f5f9!important;
+  border-color:#526783!important;
+}
+html.dark .checkout-product .store-cart-photo-placeholder {
+  background:#243b58;color:#d9e7fb;
+}
+html.dark .checkout-button:not(:disabled) {background:#2563eb!important;color:#fff!important}
+html.dark .checkout-button:hover:not(:disabled) {background:#1d4ed8!important}
+html.dark .checkout-button:disabled {
+  background:#475569!important;color:#d6e0ec!important;
+  opacity:.8;transform:none;
+}
