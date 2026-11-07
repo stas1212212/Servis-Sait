@@ -37,6 +37,10 @@ app.use(session({
 }));
 
 app.use('/api', require('./middleware/sessionVersion'));
+// Even if someone manually types a known admin URL, the HTML page itself
+// must be protected; privileged API routes also check the DB role separately.
+const requireAdminPage = require('./middleware/requireAdmin');
+app.get(['/admin.html', '/admin-hub.html', '/admin-shipping.html'], requireAdminPage, (req,res,next) => next());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Маршруты
