@@ -2,7 +2,7 @@ const pool = require("../db");
 
 async function getUserById(id) {
     const result = await pool.query(
-        `SELECT id, name, email, created_at, auth_version
+        `SELECT id, name, email, role, created_at, auth_version
          FROM users
          WHERE id = $1`,
         [id]

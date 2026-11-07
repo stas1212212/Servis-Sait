@@ -34,6 +34,23 @@ headers: {
 
     const user = data.user;
 
+    // Render the link ONLY after the authenticated server profile confirms admin role.
+    // An absent/non-admin role does not create any link in the DOM.
+    const adminSlot = document.getElementById("cabinetAdminLink");
+    if (adminSlot) {
+        adminSlot.replaceChildren();
+        if (user.role === "admin") {
+            const adminLink = document.createElement("a");
+            adminLink.href = "/admin.html";
+            adminLink.className = "cabinet-admin-shortcut";
+            adminLink.textContent = "🛡 Адмін-панель";
+            adminLink.dataset.i18n = "cabinet.adminLink";
+            adminLink.setAttribute("aria-label", "Відкрити панель адміністратора PULT+");
+            adminSlot.append(adminLink);
+            if (typeof applySiteLanguage === "function") applySiteLanguage();
+        }
+    }
+
     /*
      * Важно:
      * cabinet.html уже содержит слово "Вітаємо,"

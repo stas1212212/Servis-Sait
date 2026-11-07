@@ -192,6 +192,10 @@ Object.assign(PULT_I18N.ru,{
   "delivery.contact":"Связаться с нами"
 });
 
+Object.assign(PULT_I18N.uk, {"cabinet.adminLink":"🛡 Адмін-панель"});
+Object.assign(PULT_I18N.ru, {"cabinet.adminLink":"🛡 Админ-панель"});
+Object.assign(PULT_I18N.en, {"cabinet.adminLink":"🛡 Admin panel"});
+
 function applySiteLanguage() {
  const lang = ["uk","ru","en"].includes(localStorage.getItem("pultplus-language")) ? localStorage.getItem("pultplus-language") : "uk";
  document.documentElement.lang = lang;
