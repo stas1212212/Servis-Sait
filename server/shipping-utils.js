@@ -10,18 +10,18 @@ function stringField(value, maxLength) {
   const result = value.trim();
   return result.length <= maxLength ? result : null;
 }
-function isTtn(value) { return typeof value === "string" && /^[0-9]{14}$/.test(value); }
-function parseShipment(body, direction) {
+function isTtn(value,carrier="nova_poshta") { return typeof value==="string" && (carrier==="ukrposhta"?/^[A-Za-z0-9]{13}$/.test(value):carrier==="nova_poshta"&&/^[0-9]{14}$/.test(value)); }
+function parseShipment(body, direction, carrier="nova_poshta") {
   if (!body || typeof body !== "object" || Array.isArray(body) || !DIRECTIONS.includes(direction)) return null;
   const status = body.status || "not_sent";
-  const tracking_number = stringField(body.tracking_number, 14);
+  const tracking_number = stringField(body.tracking_number, 20);
   const city = stringField(body.city, 120);
   const warehouse = stringField(body.warehouse, 180);
   const recipient_name = stringField(body.recipient_name, 120);
   const recipient_phone = stringField(body.recipient_phone, 30);
   if ([tracking_number,city,warehouse,recipient_name,recipient_phone].some(x=>x===null)) return null;
   if (!STATUSES.includes(status)) return null;
-  if (tracking_number && !isTtn(tracking_number)) return null;
+  if (tracking_number && !isTtn(tracking_number,carrier)) return null;
   if (!tracking_number && !["not_sent","cancelled"].includes(status)) return null;
   if (tracking_number && status === "not_sent") return null;
   if (direction === "outgoing" && status !== "not_sent" && status !== "cancelled" && (!city || !warehouse || !recipient_name || !recipient_phone)) return null;
