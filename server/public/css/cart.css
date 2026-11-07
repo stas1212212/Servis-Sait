@@ -267,3 +267,69 @@
     }
 
 }
+
+/* PULT+ cart theme surfaces and text. Keep foreground/background paired.
+   Shared theme.css is dynamically added later, so dark selectors are explicit. */
+.summary-card,
+#emptyCart,
+.cart-item {
+  color:#1e293b;
+  border:1px solid #e2e8f0;
+}
+.summary-card h2,
+#emptyCart h2,
+.cart-info h3,
+.cart-price,
+.quantity-value,
+.summary-row,
+#summaryPrice,
+#summaryCount {color:#1e293b}
+#emptyCart p {color:#64748b}
+.quantity-btn {color:#1e293b}
+.cart-item .store-cart-photo-placeholder {
+  display:grid;place-items:center;width:140px;height:140px;
+  border-radius:14px;background:#eff6ff;font-size:44px;
+}
+.checkout-btn {background:#2563eb;color:#fff}
+.checkout-btn:hover:not(:disabled) {background:#1d4ed8}
+.checkout-btn:disabled {background:#94a3b8;color:#fff;opacity:.7;cursor:not-allowed;transform:none}
+html.dark .summary-card,
+html.dark #emptyCart,
+html.dark .cart-item {
+  background:#172235!important;
+  color:#e2e8f0!important;
+  border-color:#334155!important;
+  box-shadow:0 12px 35px rgba(0,0,0,.2);
+}
+html.dark .summary-card h2,
+html.dark #emptyCart h2,
+html.dark .cart-info h3,
+html.dark .cart-price,
+html.dark .quantity-value,
+html.dark .summary-row,
+html.dark #summaryPrice,
+html.dark #summaryCount {
+  color:#f1f5f9!important;
+}
+html.dark #emptyCart p,
+html.dark .cart-info p {color:#b7c9df!important}
+html.dark .summary-row {border-color:#40516b}
+html.dark .quantity-box {border-color:#526783}
+html.dark .quantity-btn {
+  background:#243b58!important;color:#e6f0ff!important;
+}
+html.dark .quantity-btn:hover {background:#345581!important}
+html.dark .cart-item .store-cart-photo-placeholder {
+  background:#243b58;color:#d9e7fb;
+}
+html.dark .checkout-btn:not(:disabled) {background:#2563eb!important;color:#fff!important}
+html.dark .checkout-btn:hover:not(:disabled) {background:#1d4ed8!important}
+html.dark .checkout-btn:disabled {
+  background:#475569!important;color:#d6e0ec!important;
+  opacity:.8;transform:none;
+}
+html.dark .cart-item .remove-btn {background:#a12d3c;color:#fff}
+html.dark .cart-item .remove-btn:hover {background:#bd3546}
+@media(max-width:900px){
+  html.dark .summary-card {position:static}
+}
