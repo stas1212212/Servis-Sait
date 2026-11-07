@@ -157,7 +157,7 @@ router.put("/admin/repairs/:id/instructions",writeGuard,async(req,res)=>{
     const shipment=await client.query(
       "SELECT id,status,tracking_number,carrier FROM repair_shipments WHERE service_request_id=$1 AND direction='incoming' FOR UPDATE",[id]);
     if(!shipment.rowCount){await client.query("ROLLBACK");return res.status(409).json({message:"Для цієї заявки не налаштована доставка Новою поштою"});}
-    if(shipment.rows[0].carrier!=="nova_poshta"){await client.query("ROLLBACK");return res.status(409).json({message:"Для Укрпошти використовуйте нове підтвердження реквізитів у панелі доставки"});}
+    if(shipment.rows[0].carrier && shipment.rows[0].carrier!=="nova_poshta"){await client.query("ROLLBACK");return res.status(409).json({message:"Для Укрпошти використовуйте нове підтвердження реквізитів у панелі доставки"});}
     if(shipment.rows[0].tracking_number || !["not_sent","registered"].includes(shipment.rows[0].status)){
       await client.query("ROLLBACK");
       return res.status(409).json({message:"Посилку вже відправлено чи прийнято. Зміни адреси погоджуйте з клієнтом вручну"});
