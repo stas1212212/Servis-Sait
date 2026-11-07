@@ -149,8 +149,8 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(data.tracking_code!==code){setMessage("carrier.noAccess");return;}
       selected=validCarrier(data.carrier)?data.carrier:null;
       for(const radio of radios)radio.checked=radio.value===selected;
-      previewMap();
       showApproved(data.send_to);
+      previewMap();
       if(selected)setSelection(!locationFor(selected)?.configured?"carrier.notConfigured":data.can_change?"carrier.saved":"carrier.locked",!locationFor(selected)?.configured);
       else setSelection("carrier.chooseHint");
       locked=!data.can_change;
