@@ -44,8 +44,10 @@ headers: {
             adminLink.href = "/admin.html";
             adminLink.className = "cabinet-admin-shortcut";
             adminLink.textContent = "🛡 Адмін-панель";
+            adminLink.dataset.i18n = "cabinet.adminLink";
             adminLink.setAttribute("aria-label", "Відкрити панель адміністратора PULT+");
             adminSlot.append(adminLink);
+            if (typeof applySiteLanguage === "function") applySiteLanguage();
         }
     }
 
