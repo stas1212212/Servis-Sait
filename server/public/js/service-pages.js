@@ -78,7 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const receipt={
         id:Number.isSafeInteger(requestId)&&requestId>0?requestId:null,
         code:hasCode?code:"",
-        shipping:!!payload.shipping
+        shipping:!!payload.shipping,
+        token:/^[a-f0-9]{64}$/.test(result.delivery_token||"")?result.delivery_token:null
       };
       try{sessionStorage.setItem("pult:last-repair",JSON.stringify(receipt));}
       catch(error){/* The confirmation page can also read the location hash. */}

@@ -156,9 +156,29 @@ router.post("/", async (req, res) => {
             console.error("Admin repair notification failed:", notificationError);
         }
 
+        // For guest applicants, a high-entropy one-time browser capability
+        // permits carrier selection on the confirmation page, never by RP code.
+        // A migration-free install continues accepting repair applications.
+        let deliveryToken = null;
+        try {
+            const enabled = await pool.query("SELECT to_regclass('repair_delivery_tokens') IS NOT NULL AS ready");
+            if (enabled.rows[0]?.ready) {
+                const token = crypto.randomBytes(32).toString("hex");
+                const digest = crypto.createHash("sha256").update(token).digest("hex");
+                await pool.query(
+                    "INSERT INTO repair_delivery_tokens(service_request_id,token_hash) VALUES($1,$2) ON CONFLICT(service_request_id) DO NOTHING",
+                    [result.rows[0].id,digest]
+                );
+                deliveryToken = token;
+            }
+        } catch (error) {
+            console.error("Repair delivery token unavailable (repair was saved):",error);
+        }
+        res.set("Cache-Control","no-store");
         res.status(201).json({
             message: "Заявку успішно створено",
-            request: result.rows[0]
+            request: result.rows[0],
+            ...(deliveryToken ? {delivery_token:deliveryToken} : {})
         });
 
     } catch (error) {

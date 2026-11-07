@@ -44,6 +44,35 @@
     </section>
     <section class="submitted-card" id="submittedDeliveryPanel" aria-labelledby="submittedDeliveryTitle">
       <h2 id="submittedDeliveryTitle" data-shipping-i18n="submit.deliveryTitle">Куди відправляти техніку?</h2>
+
+      <div class="carrier-choice">
+        <p class="carrier-choice-title" data-shipping-i18n="carrier.choose">Оберіть, якою поштою ви хочете надіслати техніку:</p>
+        <div class="carrier-choice-options" role="group" aria-label="Оберіть службу доставки">
+          <label class="carrier-choice-option">
+            <input type="radio" name="repairCarrier" value="nova_poshta">
+            <span class="carrier-choice-content"><strong>📦 Нова пошта</strong><small data-shipping-i18n="carrier.novaDesc">Відділення Нової пошти</small></span>
+          </label>
+          <label class="carrier-choice-option">
+            <input type="radio" name="repairCarrier" value="ukrposhta">
+            <span class="carrier-choice-content"><strong>📮 Укрпошта</strong><small data-shipping-i18n="carrier.ukrDesc">Відділення Укрпошти</small></span>
+          </label>
+        </div>
+        <p id="submittedCarrierStatus" role="status" aria-live="polite" class="submitted-tip"></p>
+      </div>
+      <section class="carrier-location-card" id="submittedLocation" hidden aria-labelledby="submittedLocationTitle">
+        <h3 id="submittedLocationTitle" data-shipping-i18n="carrier.locationTitle">Відділення отримання техніки</h3>
+        <dl class="carrier-location-details">
+          <div><dt data-shipping-i18n="carrier.city">Місто</dt><dd id="carrierLocationCity"></dd></div>
+          <div><dt data-shipping-i18n="carrier.branch">Відділення</dt><dd id="carrierLocationBranch"></dd></div>
+          <div class="carrier-location-address"><dt data-shipping-i18n="carrier.address">Точна адреса</dt><dd id="carrierLocationAddress"></dd></div>
+        </dl>
+        <div class="carrier-location-map" id="carrierLocationMap" hidden>
+          <iframe id="carrierMapFrame" title="Google Maps — поштове відділення" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+        <a id="carrierDirections" class="submitted-secondary carrier-directions" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps" data-shipping-i18n="carrier.directions">↗ Прокласти маршрут у Google Maps</a>
+        <p class="submitted-tip" data-shipping-i18n="carrier.mapNote">На карті показано лише відділення, не дані фізичної особи. Не відправляйте пристрій до підтвердження одержувача менеджером.</p>
+      </section>
+
       <p class="submitted-warning" id="submittedWarning" data-shipping-i18n="submit.wait">НЕ відправляйте пристрій, доки менеджер не підтвердить реквізити фізичної особи-одержувача.</p>
       <div id="submittedRecipient" class="submitted-recipient" hidden>
         <p data-shipping-i18n="submit.approved">Менеджер підтвердив реквізити саме для вашої заявки:</p>
