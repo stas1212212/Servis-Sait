@@ -52,7 +52,7 @@ async function loadApprovedInstructions(ids) {
 
 // Readiness only. Never expose private recipient data publicly.
 router.get("/availability",async(req,res)=>{
-  try{res.json({ready:await available(),carrier:"nova_poshta",mode:"manual"});}
+  try{res.json({ready:await available(),carriers:["nova_poshta","ukrposhta"],mode:"manual"});}
   catch(error){console.error("Shipping availability:",error);res.status(503).json({ready:false});}
 });
 router.use(requireSchema);
@@ -155,8 +155,9 @@ router.put("/admin/repairs/:id/instructions",writeGuard,async(req,res)=>{
     if(!request.rowCount){await client.query("ROLLBACK");return res.status(404).json({message:"Заявку не знайдено"});}
     if(request.rows[0].status==="cancelled"){await client.query("ROLLBACK");return res.status(409).json({message:"Заявку скасовано"});}
     const shipment=await client.query(
-      "SELECT id,status,tracking_number FROM repair_shipments WHERE service_request_id=$1 AND direction='incoming' FOR UPDATE",[id]);
+      "SELECT id,status,tracking_number,carrier FROM repair_shipments WHERE service_request_id=$1 AND direction='incoming' FOR UPDATE",[id]);
     if(!shipment.rowCount){await client.query("ROLLBACK");return res.status(409).json({message:"Для цієї заявки не налаштована доставка Новою поштою"});}
+    if(shipment.rows[0].carrier!=="nova_poshta"){await client.query("ROLLBACK");return res.status(409).json({message:"Для Укрпошти використовуйте нове підтвердження реквізитів у панелі доставки"});}
     if(shipment.rows[0].tracking_number || !["not_sent","registered"].includes(shipment.rows[0].status)){
       await client.query("ROLLBACK");
       return res.status(409).json({message:"Посилку вже відправлено чи прийнято. Зміни адреси погоджуйте з клієнтом вручну"});
