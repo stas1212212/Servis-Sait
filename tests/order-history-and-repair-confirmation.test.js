@@ -123,7 +123,8 @@ test("receipt instructs users to wait and never exposes global recipient details
   const code=fs.readFileSync(path.join(dir,"js/repair-submitted.js"),"utf8");
   const routes=fs.readFileSync(path.resolve(__dirname,"../server/routes/shipping.js"),"utf8");
   assert.ok(page.includes('id="submittedRecipient"'));
-  assert.ok(code.includes('fetch("/api/shipping/mine"'));
+  assert.ok(code.includes('"/api/shipping-carriers/request/"'));
+  assert.ok(code.includes('"X-PULT-Delivery-Key"'));
   assert.ok(!code.includes("/api/shipping/admin/recipient"));
   assert.ok(routes.includes('router.get("/mine",requireUser'));
   assert.ok(page.includes("Не відправляйте пристрій"));
