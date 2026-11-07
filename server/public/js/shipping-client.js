@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         form.append(info(t("client.changeTtn"),t("client.contactManager")));
         return form;
       }
-      const box=field(t("client.ttnField"),"tracking_number",leg.tracking_number,14,true);
-      box.querySelector("input").pattern="[0-9]{14}";
+      const box=field(leg.carrier==="ukrposhta"?t("carrier.ukrTtn"):t("client.ttnField"),"tracking_number",leg.tracking_number,20,true);
+      box.querySelector("input").pattern=leg.carrier==="ukrposhta"?"[A-Za-z0-9]{13}":"[0-9]{14}";
       box.querySelector("input").inputMode="numeric";
       form.append(box);
     }else{
@@ -80,13 +80,14 @@ document.addEventListener("DOMContentLoaded",()=>{
     const item=leg||{};
     const div=node("div",undefined,"ship-leg");
     div.append(node("h3",t(direction==="incoming"?"client.incoming":"client.outgoing")));
+    if(item.carrier)div.append(info(t("carrier.which"),item.carrier==="ukrposhta"?"Укрпошта":"Нова пошта"));
     div.append(info(t("client.status"),item.status?t("status."+item.status):t("client.noWaybill")));
     div.append(info(t("client.ttn"),item.tracking_number||t("client.notSet")));
     if(item.city)div.append(info(t("client.city"),item.city));
     if(item.warehouse)div.append(info(t("client.branch"),item.warehouse));
     if(item.tracking_number){
       const link=node("a",t("client.checkCarrier"));
-      link.href="https://novaposhta.ua/";
+      link.href=item.carrier==="ukrposhta"?"https://track.ukrposhta.ua/":"https://novaposhta.ua/";
       link.target="_blank";
       link.rel="noopener noreferrer";
       div.append(link);
@@ -104,11 +105,13 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
     panel.classList.add("ship-instructions-approved");
     panel.append(node("p",t("client.instructionsReady")));
+    panel.append(info(t("carrier.which"),recipient.carrier==="ukrposhta"?"Укрпошта":"Нова пошта"));
     panel.append(
       info(t("client.recipientName"),recipient.recipient_name),
       info(t("client.recipientPhone"),recipient.recipient_phone),
       info(t("client.city"),recipient.city),
-      info(t("client.branch"),recipient.warehouse));
+      info(t("client.branch"),recipient.warehouse),
+      info(t("carrier.address"),recipient.address||""));
     const copy=node("button",t("client.copyDetails"),"ship-button");
     copy.type="button";
     const feedback=node("span","", "ship-copy-feedback");
