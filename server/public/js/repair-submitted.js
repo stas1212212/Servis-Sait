@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     refresh=$("submittedRefresh"),copy=$("submittedCopy");
   const radios=Array.from(document.querySelectorAll('input[name="repairCarrier"]'));
   let locations=[],selected=null,lastApproved=null,warningKey="submit.wait",messageKey="submit.chooseCarrier",
-    selectionKey="carrier.chooseHint",busy=false;
+    selectionKey="carrier.chooseHint",busy=false,locked=false;
 
   function setWarning(key){
     warningKey=key;warning.hidden=false;warning.textContent=t(key);
@@ -146,9 +146,10 @@ document.addEventListener("DOMContentLoaded",()=>{
       for(const radio of radios)radio.checked=radio.value===selected;
       previewMap();
       showApproved(data.send_to);
-      if(selected)setSelection(data.can_change?"carrier.saved":"carrier.locked");
+      if(selected)setSelection(!locationFor(selected)?.configured?"carrier.notConfigured":data.can_change?"carrier.saved":"carrier.locked",!locationFor(selected)?.configured);
       else setSelection("carrier.chooseHint");
-      radios.forEach(r=>r.disabled=!data.can_change);
+      locked=!data.can_change;
+      radios.forEach(r=>r.disabled=locked);
       saveInTab();
     }catch(error){
       setMessage("submit.notReady");
@@ -177,7 +178,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     }finally{
       busy=false;
       // loadInstructions can mark completed shipments as locked.
-      if(!radios.every(r=>r.disabled))radios.forEach(r=>r.disabled=false);
+      radios.forEach(r=>r.disabled=locked);
     }
   }
   radios.forEach(radio=>radio.addEventListener("change",()=>{
