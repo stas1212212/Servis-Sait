@@ -22,10 +22,17 @@ document.addEventListener("DOMContentLoaded",()=>{
     return p;
   }
   async function api(path,options){
-    const response=await fetch("/api/shipping/admin"+path,{credentials:"same-origin",...options});
-    const data=await response.json();
-    if(!response.ok)throw new Error(data.message||t("admin.apiError"));
-    return data;
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+    try{
+      const response=await fetch("/api/shipping/admin"+path,{credentials:"same-origin",...options,signal:controller.signal});
+      let data;
+      try{data=await response.json();}catch(error){data={};}
+      if(!response.ok)throw new Error(data.message||"Не вдалося завантажити дані доставки (HTTP "+response.status+")");
+      return data;
+    }catch(error){
+      if(error.name==="AbortError")throw Error("Сервер доставки не відповів протягом 10 секунд. Перевірте Node.js і PostgreSQL.");
+      throw error;
+    }finally{clearTimeout(timer);}
   }
   const mutation=body=>({method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
   function field(label,name,value,length,required=false,area=false){
@@ -229,16 +236,18 @@ document.addEventListener("DOMContentLoaded",()=>{
   });
   search.addEventListener("input",render);
   window.addEventListener("pult:language-changed",render);
+  // Legacy shipping records are optional for rendering the carrier form.
+  // If shipping-setup.sql has not been applied, retain the working branch
+  // configuration and display an actionable error only in the shipment list.
   (async()=>{
     try{
-      const [recipient,records]=await Promise.all([api("/recipient"),api("/repairs")]);
-      for(const field of ["full_name","phone","city","warehouse"])
-        recipientForm.elements[field].value=recipient.recipient[field]||"";
+      const records=await api("/repairs");
       repairs=Array.isArray(records.repairs)?records.repairs:[];
       instructionsReady=!!records.instructions_ready;
-      $("shippingAdminWorkspace").hidden=false;
-      message.textContent="";
       render();
-    }catch(error){message.textContent=error.message;}
+    }catch(error){
+      list.replaceChildren(node("p","Не вдалося відкрити журнал відправлень: "+error.message+
+        " Перевірте server/sql/shipping-setup.sql у pgAdmin (після резервного копіювання)."));
+    }
   })();
 });
