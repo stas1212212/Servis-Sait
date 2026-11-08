@@ -45,13 +45,19 @@ function dbQuery(sql,args=[]){
     return output(state.legs.filter(x=>x.direction==="incoming"));
   if(q.startsWith("SELECT carrier,status,tracking_number FROM repair_shipments WHERE service_request_id=$1 AND direction='incoming' FOR UPDATE"))
     return output(state.legs.filter(x=>x.direction==="incoming"));
-  if(q.startsWith("SELECT direction,carrier,status,tracking_number FROM repair_shipments WHERE service_request_id=$1 FOR UPDATE"))
+  if(q.startsWith("SELECT direction,carrier,status,tracking_number,city,warehouse FROM repair_shipments WHERE service_request_id=$1 FOR UPDATE"))
     return output(state.legs);
   if(q.startsWith("SELECT carrier,recipient_name,recipient_phone,city,warehouse,address,latitude,longitude,approved_at FROM repair_send_instructions"))
     return output(state.approved?[state.approved]:[]);
   if(q.startsWith("DELETE FROM repair_send_instructions")){state.approved=null;return output([]);}
-  if(q.startsWith("UPDATE repair_shipments SET carrier=$2")){
-    for(const leg of state.legs){leg.carrier=args[1];leg.city="";leg.warehouse="";}
+  if(q.startsWith("UPDATE repair_shipments SET carrier=$2,city=''")){
+    for(const leg of state.legs.filter(x=>x.direction==="incoming")){
+      leg.carrier=args[1];leg.city="";leg.warehouse="";
+    }
+    return output([]);
+  }
+  if(q.startsWith("UPDATE repair_shipments SET carrier=$2,updated_at=NOW()")){
+    for(const leg of state.legs.filter(x=>x.direction==="outgoing"))leg.carrier=args[1];
     return output([]);
   }
   if(q.startsWith("INSERT INTO repair_shipments(service_request_id,direction,carrier")){
@@ -170,6 +176,18 @@ test("only staff can save recipient contact settings, and approval uses correct 
   assert.equal(owner.send_to.carrier,"ukrposhta");
   const publicResponse=await (await get("/api/shipping-carriers/locations")).json();
   assert.ok(!JSON.stringify(publicResponse).includes("PRIVATE UKR"));
+});
+test("changing the incoming carrier never overwrites an explicitly selected return destination",async()=>{
+  state.legs=[
+    {direction:"incoming",carrier:"nova_poshta",city:"",warehouse:"",status:"not_sent",tracking_number:null},
+    {direction:"outgoing",carrier:"nova_poshta",city:"Яготин",warehouse:"№2",status:"not_sent",tracking_number:null}
+  ];
+  const changed=await put("/api/shipping-carriers/request/18",{carrier:"ukrposhta"},token);
+  assert.equal(changed.status,200);
+  assert.equal(state.legs[0].carrier,"ukrposhta");
+  assert.equal(state.legs[1].carrier,"nova_poshta");
+  assert.equal(state.legs[1].city,"Яготин");
+  assert.equal(state.legs[1].warehouse,"№2");
 });
 test("a shipment with a recorded tracking number locks carrier changes",async()=>{
   state.legs=[{direction:"incoming",carrier:"nova_poshta",status:"registered",tracking_number:"20400000000000"},
