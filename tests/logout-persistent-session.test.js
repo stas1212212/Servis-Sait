@@ -51,7 +51,9 @@ const pool={
 
 const originalLoad=Module._load;
 Module._load=function(request,parent,isMain){
-  if(request==="../db"&&/[/\\](?:routes[/\\]auth\.js|server[/\\]auth-security\.js|models[/\\]user\.js)$/.test(parent?.filename||""))
+  const parentFile=parent?.filename||"";
+  if((request==="../db"&&/[/\\](?:routes[/\\]auth\.js|models[/\\]user\.js)$/.test(parentFile))||
+     (request==="./db"&&/[/\\]server[/\\]auth-security\.js$/.test(parentFile)))
     return pool;
   return originalLoad.call(this,request,parent,isMain);
 };
