@@ -40,7 +40,11 @@ function parseReturnPreference(body) {
   const return_city=stringField(body.return_city,120);
   const return_warehouse=stringField(body.return_warehouse,180);
   if (!return_city || !return_warehouse) return null;
-  return {return_city,return_warehouse};
+  const carriers=["nova_poshta","ukrposhta"];
+  const carrier=body.carrier===undefined?"nova_poshta":body.carrier;
+  const return_carrier=body.return_carrier===undefined?null:body.return_carrier;
+  if(!carriers.includes(carrier)||(return_carrier!==null&&!carriers.includes(return_carrier)))return null;
+  return {return_city,return_warehouse,carrier,return_carrier};
 }
 function parseIntake(body) {
   if (!body || typeof body !== "object" || Array.isArray(body)) return null;
