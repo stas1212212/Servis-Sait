@@ -4,6 +4,8 @@ const fs = require('node:fs');
 const localEnv = path.join(__dirname, '.env');
 if (fs.existsSync(localEnv) && typeof process.loadEnvFile === 'function') process.loadEnvFile(localEnv);
 const session = require('express-session');
+const pool = require('./db');
+const PostgresSessionStore = require('./session-store');
 const app = express();
 if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) throw new Error('Set SESSION_SECRET before production startup');
 if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
@@ -22,9 +24,19 @@ const experienceRoutes = require('./routes/experience');
 const shippingRoutes = require('./routes/shipping');
 const shippingCarriersRoutes = require('./routes/shipping-carriers');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.disable('x-powered-by');
+app.use((req,res,next)=>{
+  res.set('X-Content-Type-Options','nosniff');
+  res.set('Referrer-Policy','strict-origin-when-cross-origin');
+  res.set('X-Frame-Options','SAMEORIGIN');
+  if(req.path.startsWith('/api/auth') || req.path.startsWith('/api/admin') || /^\/admin(?:-hub|-shipping)?\.html$/.test(req.path))res.set('Cache-Control','no-store');
+  next();
+});
+app.use(express.json({limit:'48kb'}));
+app.use(express.urlencoded({ extended: true, limit:'48kb' }));
 app.use(session({
+    store: new PostgresSessionStore(pool),
+    name: 'pult.sid',
     secret: process.env.SESSION_SECRET || 'PULT_PLUS_DEV_SECRET_CHANGE_LATER',
     resave: false,
     saveUninitialized: false,
@@ -60,7 +72,6 @@ app.use('/_header', uiRoutes);
 // Verify the existing database was migrated before accepting customers.
 // This is read-only: no tables or user records are changed automatically.
 async function startServer() {
-  const pool = require('./db');
   try {
     const result = await pool.query(`
       SELECT current_database() AS db_name,
@@ -69,6 +80,7 @@ async function startServer() {
              to_regclass('site_settings') IS NOT NULL AS has_settings,
              to_regclass('password_reset_tokens') IS NOT NULL AS has_resets,
              to_regclass('admin_notifications') IS NOT NULL AS has_notifications,
+             to_regclass('pult_sessions') IS NOT NULL AS has_sessions,
              to_regclass('repair_reviews') IS NOT NULL AS has_reviews,
              EXISTS (SELECT 1 FROM information_schema.columns
                      WHERE table_schema = current_schema()
@@ -81,6 +93,7 @@ async function startServer() {
     const required = [
       ['has_users', 'users'], ['has_repairs', 'service_requests'],
       ['has_settings', 'site_settings'], ['has_resets', 'password_reset_tokens'],
+      ['has_sessions','pult_sessions (run final-v1-setup.sql)'],
       ['has_notifications', 'admin_notifications'], ['has_reviews', 'repair_reviews'],
       ['has_auth_version', 'users.auth_version'], ['has_tracking_code', 'service_requests.tracking_code']
     ];
@@ -90,6 +103,7 @@ async function startServer() {
       console.error('Missing: ' + missing.join(', '));
       console.error('Back up PostgreSQL, then open the correct database in pgAdmin and run:');
       console.error('  server/sql/customer-service-suite.sql');
+      console.error('  server/sql/final-v1-setup.sql');
       console.error('Existing accounts and orders should NOT be deleted.\n');
       process.exitCode = 1;
       await pool.end();
