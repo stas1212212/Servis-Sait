@@ -15,3 +15,37 @@ html.dark .service-shipping{background:#152641;border-color:#315283}
 html.dark .service-shipping legend{color:#a8caff}
 html.dark .service-shipping-fields>p{color:#cad7e8}
 html.dark .service-shipping-fields label input{background:#101d30;color:#e9f1ff;border-color:#436389}
+
+
+/* PULT+ v1: two carriers for incoming repair and independent return preference. */
+.service-carrier-heading,.service-carrier-return-heading{
+  font-size:14px;font-weight:800;color:#17365b;line-height:1.5;
+}
+.service-carrier-return-heading{margin-top:6px;padding-top:15px;border-top:1px solid #c6d9f7}
+.service-carrier-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.service-shipping .service-carrier-choice{
+  display:flex;flex-direction:row;align-items:center;gap:10px;
+  padding:13px 12px;border:1px solid #b7cce9;border-radius:12px;
+  background:#fff;cursor:pointer;line-height:1.3;font-weight:750;
+}
+.service-shipping .service-carrier-choice:has(input:checked){
+  background:#e3efff;border-color:#2563eb;box-shadow:0 0 0 1px #2563eb;
+}
+.service-shipping .service-carrier-choice input{
+  width:17px;height:17px;min-width:17px;accent-color:#2563eb;
+}
+.service-shipping-fields label select{
+  width:100%;min-width:0;border:1px solid #bbd1ea;border-radius:12px;
+  background:#fff;color:#1e293b;padding:12px;font:inherit;
+}
+.service-shipping-fields input:focus-visible,.service-shipping-fields select:focus-visible{
+  outline:2px solid #2563eb;outline-offset:2px;
+}
+html.dark .service-carrier-heading,html.dark .service-carrier-return-heading{color:#d6e8ff}
+html.dark .service-carrier-return-heading{border-top-color:#365987}
+html.dark .service-shipping .service-carrier-choice{background:#10213b;border-color:#436389;color:#e9f1ff}
+html.dark .service-shipping .service-carrier-choice:has(input:checked){
+  background:#203e65;border-color:#60a5fa;box-shadow:0 0 0 1px #60a5fa;
+}
+html.dark .service-shipping-fields label select{background:#101d30;color:#e9f1ff;border-color:#436389}
+@media(max-width:470px){.service-carrier-options{grid-template-columns:1fr}}
