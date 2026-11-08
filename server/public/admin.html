@@ -24,7 +24,22 @@
 <div id="adminRepairsPanel"><div class="admin-toolbar"><label for="adminSearch">Пошук заявки</label><input id="adminSearch" type="search" placeholder="Номер, клієнт, телефон або пристрій"><button id="adminRefresh" type="button">Оновити</button></div>
 <div id="adminRequests" class="admin-requests"></div></div>
 <div id="adminOrdersPanel" hidden><div class="admin-toolbar"><label for="adminOrdersSearch">Пошук замовлення</label><input id="adminOrdersSearch" type="search" placeholder="Номер, клієнт або товар"><button id="adminOrdersRefresh" type="button">Оновити</button></div><div id="adminOrdersList" class="admin-requests"></div></div>
-<div id="adminProductsPanel" hidden><div class="admin-toolbar"><label for="adminProductsSearch">Пошук товару</label><input id="adminProductsSearch" type="search" placeholder="Назва, бренд, SKU"><button type="button" id="adminProductsNew">+ Додати товар</button></div><div class="store-taxonomy-admin" id="storeTaxonomyAdmin">
+<div id="adminProductsPanel" hidden><div class="admin-toolbar"><label for="adminProductsSearch">Пошук у всіх товарах</label><input id="adminProductsSearch" type="search" maxlength="120" placeholder="Назва, модель, бренд, SKU — включно з архівом"><button type="button" id="adminProductsNew">+ Додати товар</button></div>
+<nav class="admin-product-views" aria-label="Активні товари та архів">
+  <button id="adminProductViewActive" class="active" type="button" aria-pressed="true">У продажу <span id="adminProductCountActive"></span></button>
+  <button id="adminProductViewArchive" type="button" aria-pressed="false">Архів товарів <span id="adminProductCountArchive"></span></button>
+  <label class="admin-product-sort-label">Сортувати
+    <select id="adminProductsSort">
+      <option value="newest">Спочатку нові</option>
+      <option value="name">Назва А–Я</option>
+      <option value="stock">За залишком</option>
+      <option value="price">За ціною</option>
+    </select>
+  </label>
+</nav>
+<p class="admin-products-hint" id="adminProductsHint" role="status">Пошук знаходить товари і в продажу, і в архіві. Приховані товари залишаються в базі.</p>
+<div id="adminProductsList" class="admin-requests"></div>
+<div class="store-taxonomy-admin" id="storeTaxonomyAdmin">
   <div class="store-taxonomy-heading">
     <div><h2>Категорії та бренди</h2><p>Додавайте типи товарів і бренди без редагування SQL. Вимкнені категорії та бренди приховують пов’язані товари в магазині, але не видаляють їх.</p></div>
     <span class="store-taxonomy-help">🔐 Доступно лише адміністратору</span>
@@ -59,7 +74,7 @@
   </div>
 </div>
 
-<div id="adminProductsList" class="admin-requests"></div><form id="adminProductForm" class="admin-product-form" hidden><h2 id="adminProductFormTitle">Редагувати товар</h2><div class="admin-product-fields"><label>SKU<input name="sku" maxlength="80" required></label><label>Назва<input name="name" maxlength="200" required></label><label>Бренд<select name="brand" id="adminProductBrand"><option value="">Без бренду</option></select></label><label>Модель<input name="model" maxlength="150"></label><label>Ціна (грн)<input name="price" type="number" min="0" max="10000000" step="0.01" required></label><label>На складі<input name="stock" type="number" min="0" max="1000000" step="1" required></label><label>Тип товару / категорія<select name="category" required id="adminProductCategory"><option value="">Спочатку завантажте категорії</option></select></label><label>Шлях до фото (необов’язково)<input name="image_url" placeholder="/img/products/example.webp"></label><label class="admin-product-wide">Опис<textarea name="description" rows="3"></textarea></label><label class="admin-product-checkbox"><input name="is_active" type="checkbox" checked> Показувати в магазині</label></div><div class="admin-request-actions"><button class="admin-save" type="submit">Зберегти товар</button><button type="button" id="adminProductCancel">Скасувати</button></div></form></div></section>
+<form id="adminProductForm" class="admin-product-form" hidden><h2 id="adminProductFormTitle">Редагувати товар</h2><div class="admin-product-fields"><label>SKU<input name="sku" maxlength="80" required></label><label>Назва<input name="name" maxlength="200" required></label><label>Бренд<select name="brand" id="adminProductBrand"><option value="">Без бренду</option></select></label><label>Модель<input name="model" maxlength="150"></label><label>Ціна (грн)<input name="price" type="number" min="0" max="10000000" step="0.01" required></label><label>На складі<input name="stock" type="number" min="0" max="1000000" step="1" required></label><label>Тип товару / категорія<select name="category" required id="adminProductCategory"><option value="">Спочатку завантажте категорії</option></select></label><label>Шлях до фото (необов’язково)<input name="image_url" placeholder="/img/products/example.webp"></label><label class="admin-product-wide">Опис<textarea name="description" rows="3"></textarea></label><label class="admin-product-checkbox"><input name="is_active" type="checkbox" checked> Показувати в магазині</label></div><div class="admin-request-actions"><button class="admin-save" type="submit">Зберегти товар</button><button type="button" id="adminProductCancel">Скасувати</button></div></form></div></section>
 </div>
 </main>
 <div id="footer"></div>
@@ -67,5 +82,5 @@
 <script src="js/admin.js"></script>
 <script src="js/admin-orders.js"></script>
 <script src="js/admin-taxonomy.js"></script>
-<script src="js/admin-products.js"></script>
+<script src="js/admin-products.js?v=20261108-archive"></script>
 </body></html>
