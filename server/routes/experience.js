@@ -6,7 +6,7 @@ const pool = require("../db");
 const requireAdmin = require("../middleware/requireAdmin");
 const router = express.Router();
 
-const SETTING_LIMITS = Object.freeze({phone:35,telegram:100,email:254,address:200,business_hours:150});
+const SETTING_LIMITS = Object.freeze({phone:35,telegram:100,email:254,address:200,business_hours:150,business_name:200,business_registration:200});
 const RESET_REPLY = "Якщо така адреса зареєстрована та пошта налаштована, ви отримаєте лист з інструкціями.";
 const attempts = new Map();
 
