@@ -64,3 +64,11 @@ test("admin page always loads updated scripts after browser refresh",()=>{
   assert.ok(html.includes('shipping-admin.js?v=20261108-admin-fix'));
   assert.ok(html.includes('shipping-carrier-admin.js?v=20261108-admin-fix'));
 });
+
+
+test("server rejects compressed request bodies and uses the simple query parser during dependency upgrade",()=>{
+  const app=fs.readFileSync(path.resolve(__dirname,"../server/app.js"),"utf8");
+  assert.ok(app.includes("app.set('query parser','simple')"));
+  assert.ok(app.includes("express.json({limit:'48kb',inflate:false})"));
+  assert.ok(app.includes("express.urlencoded({ extended: false, limit:'48kb',inflate:false })"));
+});
