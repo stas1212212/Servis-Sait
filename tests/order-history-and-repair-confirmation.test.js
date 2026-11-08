@@ -21,10 +21,10 @@ const pool={
     const query=String(sql).replace(/\s+/g," ").trim();
     if(query.includes("FROM information_schema.columns") && query.includes("customer_hidden_at"))
       return {rows:[{ready:migration}],rowCount:1};
-    if(query.startsWith("SELECT id, status, total, created_at FROM orders WHERE user_id = $1")){
+    if(query.startsWith("SELECT id, status, total, created_at, delivery_method, delivery_city, delivery_branch, payment_method FROM orders WHERE user_id = $1")){
       return {rows:orders.filter(o=>o.user_id===args[0]&&(!query.includes("customer_hidden_at IS NULL")||!o.customer_hidden_at)),rowCount:1};
     }
-    if(query.startsWith("SELECT id, status, total, created_at FROM orders WHERE id = $1 AND user_id = $2")){
+    if(query.startsWith("SELECT id, status, total, created_at, delivery_method, delivery_city, delivery_branch, payment_method FROM orders WHERE id = $1 AND user_id = $2")){
       const rows=orders.filter(o=>o.id===args[0]&&o.user_id===args[1]&&(!query.includes("customer_hidden_at IS NULL")||!o.customer_hidden_at));
       return {rows,rowCount:rows.length};
     }
