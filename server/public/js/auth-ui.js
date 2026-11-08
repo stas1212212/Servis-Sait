@@ -80,8 +80,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     logoutBtn.className = 'ml-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition text-sm auth-logout-btn';
                     logoutBtn.addEventListener('click', async () => {
                         try {
-                            const r = await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
-                            if (r.ok) location.reload();
+                            const r = await fetch('/api/auth/logout', {
+                                method: 'POST', credentials: 'same-origin',
+                                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                body: '{}'
+                            });
+                            if (r.ok) window.location.assign('/login.html');
                             else alert('Помилка виходу');
                         } catch (e) {
                             console.error('Logout error:', e);
@@ -103,8 +107,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 logoutA.addEventListener('click', async (e) => {
                     e.preventDefault();
                     try {
-                        const r = await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
-                        if (r.ok) location.reload();
+                        const r = await fetch('/api/auth/logout', {
+                                method: 'POST', credentials: 'same-origin',
+                                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                body: '{}'
+                            });
+                        if (r.ok) window.location.assign('/login.html');
                         else alert('Помилка виходу');
                     } catch (err) {
                         console.error(err);
