@@ -101,9 +101,11 @@ router.put("/mine/:id/return",requireUser,writeGuard,async(req,res)=>{
     const owner=await client.query("SELECT id,status,name,phone FROM service_requests WHERE id=$1 AND user_id=$2 FOR UPDATE",[id,req.session.user.id]);
     if(!owner.rowCount){await client.query("ROLLBACK");return res.status(404).json({message:"Заявку не знайдено"});}
     if(owner.rows[0].status==="cancelled"){await client.query("ROLLBACK");return res.status(409).json({message:"Заявку скасовано"});}
-    const prev=await client.query("SELECT status FROM repair_shipments WHERE service_request_id=$1 AND direction='outgoing' FOR UPDATE",[id]);
+    const prev=await client.query("SELECT status,carrier FROM repair_shipments WHERE service_request_id=$1 AND direction='outgoing' FOR UPDATE",[id]);
     if(prev.rowCount&&prev.rows[0].status!=="not_sent"){await client.query("ROLLBACK");return res.status(409).json({message:"Зворотну посилку вже оформлюють. Зверніться до сервісу"});}
-    await client.query("INSERT INTO repair_shipments(service_request_id,direction,city,warehouse,recipient_name,recipient_phone) VALUES($1,'outgoing',$2,$3,$4,$5) ON CONFLICT(service_request_id,direction) DO UPDATE SET city=EXCLUDED.city,warehouse=EXCLUDED.warehouse,updated_at=NOW()",[id,preference.return_city,preference.return_warehouse,owner.rows[0].name,owner.rows[0].phone]);
+    const incoming=await client.query("SELECT carrier FROM repair_shipments WHERE service_request_id=$1 AND direction='incoming'",[id]);
+    const returnCarrier=preference.return_carrier||prev.rows[0]?.carrier||incoming.rows[0]?.carrier||"nova_poshta";
+    await client.query("INSERT INTO repair_shipments(service_request_id,direction,carrier,city,warehouse,recipient_name,recipient_phone) VALUES($1,'outgoing',$2,$3,$4,$5,$6) ON CONFLICT(service_request_id,direction) DO UPDATE SET carrier=EXCLUDED.carrier,city=EXCLUDED.city,warehouse=EXCLUDED.warehouse,updated_at=NOW()",[id,returnCarrier,preference.return_city,preference.return_warehouse,owner.rows[0].name,owner.rows[0].phone]);
     await client.query("COMMIT");
     res.json({message:"Відділення для повернення збережено"});
   }catch(error){await client.query("ROLLBACK").catch(()=>{});fail(res,error,"Client return branch");}
