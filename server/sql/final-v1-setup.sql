@@ -38,6 +38,16 @@ CREATE TABLE IF NOT EXISTS pult_sessions (
 );
 CREATE INDEX IF NOT EXISTS idx_pult_sessions_expires_at ON pult_sessions(expires_at);
 
+-- Hash-keyed login/signup rate limits, shared between Node processes.
+-- IP / email addresses are NOT stored in plaintext.
+CREATE TABLE IF NOT EXISTS pult_auth_attempts (
+  attempt_key CHAR(64) PRIMARY KEY,
+  count INTEGER NOT NULL DEFAULT 0,
+  expires_at TIMESTAMPTZ NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_pult_auth_attempts_expires_at ON pult_auth_attempts(expires_at);
+
+
 COMMIT;
 
 -- Legacy purchases created before this migration have NULL order_items.product_id.
