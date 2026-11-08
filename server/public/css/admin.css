@@ -2,3 +2,46 @@
 .admin-tabs{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}.admin-tabs button{padding:12px 20px;border:1px solid #cbd5e1;border-radius:12px;background:white;font-weight:700;cursor:pointer}.admin-tabs button.active{background:#2563eb;border-color:#2563eb;color:white}.admin-order-items{margin-top:14px;padding:12px 16px;background:#f8fafc;border-radius:12px}.admin-order-items p{margin:8px 0}#adminOrdersPanel[hidden],#adminRepairsPanel[hidden],#adminWorkspace[hidden]{display:none!important}
 #adminProductsPanel[hidden],#adminProductForm[hidden]{display:none!important}.admin-product-form{background:#fff;border-radius:20px;padding:24px;margin-top:24px;box-shadow:0 10px 35px #1e293b0a}.admin-product-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}.admin-product-fields label{display:flex;flex-direction:column;gap:7px;font-weight:600}.admin-product-fields input,.admin-product-fields select,.admin-product-fields textarea{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:11px;font:inherit}.admin-product-wide{grid-column:1/-1}.admin-product-fields .admin-product-checkbox{flex-direction:row;align-items:center}.admin-product-checkbox input{width:auto}@media(max-width:600px){.admin-product-fields{grid-template-columns:1fr}}
 .admin-product-toggle{margin-left:10px;padding:12px 18px;border:1px solid #94a3b8;border-radius:12px;background:#fff;color:#334155;font-weight:700;cursor:pointer}.admin-product-toggle:disabled{opacity:.5;cursor:wait}
+
+
+/* Inventory archive: two clear sections and one search across BOTH. */
+.admin-product-views{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:-2px 0 12px}
+.admin-product-views>button{border:1px solid #bfd0e8;background:#fff;color:#254363;padding:12px 16px;
+  border-radius:12px;cursor:pointer;font-weight:750;transition:background .15s,color .15s}
+.admin-product-views>button.active{color:#fff;border-color:#2563eb;background:#2563eb}
+.admin-product-views>button:hover:not(.active){background:#edf5ff}
+.admin-product-views>button:focus-visible,.admin-product-sort-label select:focus-visible,
+.admin-product-delete:focus-visible{outline:2px solid #2563eb;outline-offset:3px}
+.admin-product-views>button span{font-variant-numeric:tabular-nums}
+.admin-product-sort-label{display:flex;align-items:center;gap:8px;font-weight:700;margin-left:auto}
+.admin-product-sort-label select{padding:11px;border:1px solid #bfd0e8;border-radius:10px;background:#fff;color:#1e293b}
+.admin-products-hint{color:#536985;font-size:14px;line-height:1.6;margin:0 0 15px}
+.admin-product-group{display:grid;gap:12px;margin-bottom:24px;min-width:0}
+.admin-product-group-title{font-weight:800;font-size:19px;margin:6px 0 4px}
+.admin-product-group .admin-product-card{display:block;min-width:0}
+.admin-product-card h4{font-size:18px;font-weight:800;margin:0 0 10px;overflow-wrap:anywhere}
+.admin-product-status{display:inline-block;border-radius:999px;font-weight:800;font-size:12px;
+  padding:5px 11px;border:1px solid transparent}
+.admin-product-status.is-active{color:#166534;background:#dcfce7;border-color:#a7f3d0}
+.admin-product-status.is-archived{color:#92400e;background:#fef3c7;border-color:#fde68a}
+.admin-product-empty,.admin-product-limit{padding:18px;border-radius:14px;background:#f3f7fd;
+  border:1px solid #dbe4f2;color:#526684;line-height:1.55}
+.admin-product-delete{padding:12px 16px;color:#b42318;background:#fff;border:1px solid #efaaaa;
+  border-radius:12px;font-weight:750;cursor:pointer}
+.admin-product-delete:hover{background:#fff1f1}
+.admin-product-delete:disabled{opacity:.55;cursor:wait}
+html.dark .admin-product-views>button{background:#172b45;color:#e3edfc;border-color:#49607e}
+html.dark .admin-product-views>button.active{background:#2563eb;color:#fff;border-color:#5791ff}
+html.dark .admin-product-views>button:hover:not(.active){background:#243c5e}
+html.dark .admin-product-sort-label select{background:#101d30;color:#e6f0ff;border-color:#49607e}
+html.dark .admin-products-hint{color:#a8bad4}
+html.dark .admin-product-status.is-active{color:#86efac;background:#173d35;border-color:#2a745b}
+html.dark .admin-product-status.is-archived{color:#fde68a;background:#49341a;border-color:#775a2c}
+html.dark .admin-product-empty,html.dark .admin-product-limit{background:#182b44;color:#aec5e4;border-color:#425c7f}
+html.dark .admin-product-delete{background:#392226;color:#fecaca;border-color:#87424a}
+html.dark .admin-product-delete:hover{background:#4b252c}
+@media(max-width:600px){
+  .admin-product-views{align-items:stretch}
+  .admin-product-views>button{flex:1 1 calc(50% - 10px)}
+  .admin-product-sort-label{flex:1 1 100%;justify-content:space-between;margin-left:0}
+}
