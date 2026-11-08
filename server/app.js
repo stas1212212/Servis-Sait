@@ -25,6 +25,9 @@ const shippingRoutes = require('./routes/shipping');
 const shippingCarriersRoutes = require('./routes/shipping-carriers');
 
 app.disable('x-powered-by');
+// PULT+ only needs flat URL queries and JSON request bodies. Avoid vulnerable
+// qs nested-form parsing until all transitive npm dependencies are patched.
+app.set('query parser','simple');
 app.use((req,res,next)=>{
   res.set('X-Content-Type-Options','nosniff');
   res.set('Referrer-Policy','strict-origin-when-cross-origin');
@@ -32,8 +35,8 @@ app.use((req,res,next)=>{
   if(req.path.startsWith('/api/auth') || req.path.startsWith('/api/admin') || /^\/admin(?:-hub|-shipping)?\.html$/.test(req.path))res.set('Cache-Control','no-store');
   next();
 });
-app.use(express.json({limit:'48kb'}));
-app.use(express.urlencoded({ extended: true, limit:'48kb' }));
+app.use(express.json({limit:'48kb',inflate:false}));
+app.use(express.urlencoded({ extended: false, limit:'48kb',inflate:false }));
 app.use(session({
     store: new PostgresSessionStore(pool),
     name: 'pult.sid',
