@@ -187,9 +187,24 @@ function productFailure(res,error,context){
   console.error(context,error);
   return res.status(500).json({message:"Помилка збереження товару"});
 }
+// Admin search intentionally includes both visible and archived products.
+// Search is performed in PostgreSQL, so older matches outside the default
+// 500 most recent entries remain findable.
 router.get("/products",async(req,res)=>{
-  try{const result=await pool.query("SELECT id,sku,name,brand,model,description,price,stock,image_url,category,is_active FROM products ORDER BY id DESC LIMIT 500");res.json({products:result.rows})}
-  catch(e){console.error("Admin products error",e);res.status(500).json({message:"Помилка завантаження товарів"})}
+  const raw=req.query.search;
+  if(raw!==undefined&&(typeof raw!=="string"||raw.length>120))
+    return res.status(400).json({message:"Пошуковий запит занадто довгий"});
+  const query=String(raw||"").trim().toLocaleLowerCase("uk");
+  const fields="id,sku,name,brand,model,description,price,stock,image_url,category,is_active";
+  const needle="strpos(lower(coalesce(name,'')),$1)>0 OR strpos(lower(coalesce(sku,'')),$1)>0 OR "+
+    "strpos(lower(coalesce(brand,'')),$1)>0 OR strpos(lower(coalesce(model,'')),$1)>0 OR "+
+    "strpos(lower(coalesce(category,'')),$1)>0";
+  try{
+    const result=query?
+      await pool.query("SELECT "+fields+" FROM products WHERE "+needle+" ORDER BY id DESC LIMIT 500",[query]):
+      await pool.query("SELECT "+fields+" FROM products ORDER BY id DESC LIMIT 500");
+    res.json({products:result.rows,limit:500,search:query});
+  }catch(e){console.error("Admin products error",e);res.status(500).json({message:"Помилка завантаження товарів"})}
 });
 router.post("/products",sameOrigin,async(req,res)=>{
   const p=validateProduct(req.body);
@@ -213,6 +228,75 @@ router.put("/products/:id",sameOrigin,async(req,res)=>{
     if(!result.rowCount)return res.status(404).json({message:"Товар не знайдено"});
     res.json({id});
   }catch(error){productFailure(res,error,"Update product");}
+});
+
+function validProductId(raw){
+  const id=Number(raw);
+  return Number.isSafeInteger(id)&&id>0?id:null;
+}
+
+// Archive/restore changes only product visibility; pricing, stock, order
+// history, original product SKU and photos are retained.
+router.patch("/products/:id/visibility",sameOrigin,async(req,res)=>{
+  const id=validProductId(req.params.id),active=req.body?.is_active;
+  if(!id||typeof active!=="boolean")
+    return res.status(400).json({message:"Некоректні дані видимості товару"});
+  try{
+    const result=await pool.query(
+      "UPDATE products SET is_active=$1,updated_at=NOW() WHERE id=$2 RETURNING id,is_active",
+      [active,id]);
+    if(!result.rowCount)return res.status(404).json({message:"Товар не знайдено"});
+    res.json({product:result.rows[0],message:active?"Товар відновлено з архіву":"Товар перенесено в архів"});
+  }catch(error){productFailure(res,error,"Archive/restore product");}
+});
+
+// Permanent removal is deliberately separate from archiving: only an archived
+// product with no historic purchases can be deleted. A matching SKU is required
+// as explicit irreversible-action confirmation. Transaction + row lock prevent
+// conflicts with another administrator, and FK constraints remain authoritative.
+router.delete("/products/:id",sameOrigin,async(req,res)=>{
+  const id=validProductId(req.params.id);
+  const confirmSku=req.body?.confirm_sku;
+  if(!id||typeof confirmSku!=="string"||!confirmSku||confirmSku.length>80)
+    return res.status(400).json({message:"Введіть точний SKU товару для підтвердження видалення"});
+  let client;
+  try{
+    client=await pool.connect();
+    await client.query("BEGIN");
+    const existing=await client.query(
+      "SELECT id,sku,name,is_active FROM products WHERE id=$1 FOR UPDATE",[id]);
+    if(!existing.rowCount){
+      await client.query("ROLLBACK");
+      return res.status(404).json({message:"Товар не знайдено"});
+    }
+    const product=existing.rows[0];
+    if(product.is_active){
+      await client.query("ROLLBACK");
+      return res.status(409).json({message:"Спочатку перемістіть товар до архіву"});
+    }
+    if(confirmSku!==product.sku){
+      await client.query("ROLLBACK");
+      return res.status(400).json({message:"SKU не збігається. Товар не видалено"});
+    }
+    const linked=await client.query(
+      "SELECT 1 FROM order_items WHERE product_id=$1 OR (product_id IS NULL AND product_name=$2) LIMIT 1",
+      [id,product.name]);
+    if(linked.rowCount){
+      await client.query("ROLLBACK");
+      return res.status(409).json({message:"Товар зустрічається в історії замовлень. Його можна залишити в архіві, але не видалити назавжди"});
+    }
+    const deleted=await client.query("DELETE FROM products WHERE id=$1 RETURNING id,sku",[id]);
+    await client.query("COMMIT");
+    res.json({deleted:deleted.rows[0],message:"Товар остаточно видалено"});
+  }catch(error){
+    if(client)await client.query("ROLLBACK").catch(()=>{});
+    if(error.code==="23503")
+      return res.status(409).json({message:"Товар використовується іншими записами. Залиште його в архіві"});
+    if(error.code==="42703"||error.code==="42P01")
+      return res.status(503).json({message:"Для безпечного видалення потрібна міграція server/sql/final-v1-setup.sql"});
+    console.error("Permanent product deletion error",error);
+    res.status(500).json({message:"Не вдалося видалити товар"});
+  }finally{if(client)client.release();}
 });
 
 module.exports = router;
