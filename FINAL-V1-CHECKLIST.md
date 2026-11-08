@@ -19,6 +19,35 @@ PR: https://github.com/stas1212212/Servis-Sait/pull/16
 
 Якщо git status показує незбережені зміни — спершу збережіть їх в окремому коміті чи backup. Гілка вже містить попередні PR: не копіюйте вручну файли зі старих гілок поверх неї.
 
+## 1а. Усунення npm audit попереджень перед публічним запуском
+
+Якщо npm ci показує 3 вразливості (body-parser, proxy-addr, qs), **після підтягування останньої гілки** виконайте в PowerShell:
+
+    npm audit fix
+    npm audit
+    npm run check:js
+    npm test
+
+Не використовуйте npm audit fix --force. Якщо npm audit не показує вразливостей та тести успішні, збережіть лише оновлені manifests/lock-файли у GitHub:
+
+    git status
+    git add package.json package-lock.json
+    git commit -m "Security update: patched npm dependencies"
+    git push origin release/final-service-sait-v1.0
+
+Якщо змін немає, commit не потрібен. Якщо npm audit fix повідомляє про конфлікти, не ламайте lockfile вручну — покажіть вивід для аналізу. У релізній гілці сервер додатково відхиляє стиснені тіла запитів та уникає складного qs-парсингу, але це **не замінює** оновлення залежностей. До усунення high/critical vulnerabilities сайт не можна публікувати.
+
+## 1б. Якщо адмінка доставки зависає на «Перевіряємо доступ…»
+
+Зупиніть старий Node-процес (Ctrl+C), підтягніть останній код, перезапустіть сервер і натисніть Ctrl+F5 в Chrome. Тепер форма перевізників не чекає журнал попередніх відправлень і виводить окремі помилки.
+
+Перевірте авторизованим адміном:
+- http://localhost:3000/api/shipping-carriers/admin/locations — JSON з locations при успіху.
+- HTTP 401 → увійдіть заново; 403 → користувач не admin.
+- HTTP 503 → після backup запустіть у pgAdmin server/sql/shipping-setup.sql, потім server/sql/carrier-choice-map.sql у правильній БД.
+- Якщо браузер не отримує відповіді, перевірте лог Node.js, підключення PostgreSQL та міграцію server/sql/final-v1-setup.sql.
+- Відкрийте http://localhost:3000/admin-shipping.html повторно. Панель відділень має відкриватися незалежно від старих записів доставки.
+
 ## 2. Обов'язково зробіть backup PostgreSQL
 
 1. Відкрийте pgAdmin → Databases → service_shop → Backup, формат Custom, збережіть .backup.
