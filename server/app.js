@@ -81,6 +81,7 @@ async function startServer() {
              to_regclass('password_reset_tokens') IS NOT NULL AS has_resets,
              to_regclass('admin_notifications') IS NOT NULL AS has_notifications,
              to_regclass('pult_sessions') IS NOT NULL AS has_sessions,
+             to_regclass('pult_auth_attempts') IS NOT NULL AS has_auth_attempts,
              to_regclass('repair_reviews') IS NOT NULL AS has_reviews,
              EXISTS (SELECT 1 FROM information_schema.columns
                      WHERE table_schema = current_schema()
@@ -94,6 +95,7 @@ async function startServer() {
       ['has_users', 'users'], ['has_repairs', 'service_requests'],
       ['has_settings', 'site_settings'], ['has_resets', 'password_reset_tokens'],
       ['has_sessions','pult_sessions (run final-v1-setup.sql)'],
+      ['has_auth_attempts','pult_auth_attempts (run final-v1-setup.sql)'],
       ['has_notifications', 'admin_notifications'], ['has_reviews', 'repair_reviews'],
       ['has_auth_version', 'users.auth_version'], ['has_tracking_code', 'service_requests.tracking_code']
     ];
