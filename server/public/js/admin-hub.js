@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
   async function settings(){
     const data=await request("/settings");
-    for(const name of ["phone","email","telegram","address","business_hours"]){
+    for(const name of ["phone","email","telegram","address","business_hours","business_name","business_registration"]){
       const input=$("setting_"+name);
       if(input)input.value=data.settings[name]||"";
     }
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     event.preventDefault();
     const button=$("settingsSave");button.disabled=true;
     const settings={};
-    for(const name of ["phone","email","telegram","address","business_hours"])settings[name]=$("setting_"+name).value;
+    for(const name of ["phone","email","telegram","address","business_hours","business_name","business_registration"])settings[name]=$("setting_"+name).value;
     try{
       const data=await request("/settings",mutation("PUT",{settings}));
       $("hubStatus").textContent=data.message;await settings();
