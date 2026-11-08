@@ -2,6 +2,7 @@
 const express = require("express");
 const crypto = require("node:crypto");
 const bcrypt = require("bcrypt");
+const {passwordResetEmail}=require("../mail/password-reset-template");
 const pool = require("../db");
 const requireAdmin = require("../middleware/requireAdmin");
 const router = express.Router();
@@ -43,8 +44,7 @@ async function sendResetEmail(address, token) {
   const link=base.replace(/\/$/,"")+"/reset-password.html#token="+encodeURIComponent(token);
   const response=await fetch("https://api.resend.com/emails", {
     method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},
-    body:JSON.stringify({from,to:[address],subject:"PULT+ — відновлення пароля",
-      text:"Використайте це одноразове посилання протягом 20 хвилин:\n"+link+"\nЯкщо ви не запитували відновлення, проігноруйте цей лист."})
+    body:JSON.stringify({from,to:[address],...passwordResetEmail(link)})
   });
   if (!response.ok) {console.error("Reset email delivery failed: HTTP",response.status);return false;}
   return true;
