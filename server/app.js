@@ -7,7 +7,7 @@ const session = require('express-session');
 const pool = require('./db');
 const PostgresSessionStore = require('./session-store');
 const app = express();
-if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) throw new Error('Set SESSION_SECRET before production startup');
+if (process.env.NODE_ENV === 'production' && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length<32 || /replace_with|CHANGE_LATER|PULT_PLUS_DEV/i.test(process.env.SESSION_SECRET))) throw new Error('Set a strong non-placeholder SESSION_SECRET before production startup');
 if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
 
 const port = Number(process.env.PORT || 3000);
