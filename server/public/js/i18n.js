@@ -196,6 +196,38 @@ Object.assign(PULT_I18N.uk, {"cabinet.adminLink":"🛡 Адмін-панель"}
 Object.assign(PULT_I18N.ru, {"cabinet.adminLink":"🛡 Админ-панель"});
 Object.assign(PULT_I18N.en, {"cabinet.adminLink":"🛡 Admin panel"});
 
+// Final v1: truthful feature descriptions instead of unverified repair statistics.
+Object.assign(PULT_I18N.uk,{
+  "home.statRepairs":"Онлайн-заявка на ремонт",
+  "home.statSuccess":"Код відстеження заявки",
+  "home.statDuration":"Доставка поштою",
+  "home.statWarranty":"Умови ремонту",
+  "home.whyText":"Оформіть заявку онлайн, отримайте код відстеження та погодьте з менеджером умови ремонту й доставки.",
+  "delivery.repairTitle":"📦 Відправлення техніки на ремонт поштою",
+  "delivery.repairText":"1. Оформіть заявку. 2. На сторінці підтвердження оберіть Нову пошту або Укрпошту. 3. Дочекайтеся підтвердження реквізитів менеджером. 4. Надійно запакуйте пристрій і передайте номер відправлення. 5. Відстежуйте статус ремонту за кодом.",
+  "delivery.repairNote":"Статуси перевізників у PULT+ наразі оновлюються вручну, а умови й вартість доставки узгоджуються окремо."
+});
+Object.assign(PULT_I18N.ru,{
+  "home.statRepairs":"Онлайн-заявка на ремонт",
+  "home.statSuccess":"Код отслеживания заявки",
+  "home.statDuration":"Доставка по почте",
+  "home.statWarranty":"Условия ремонта",
+  "home.whyText":"Оформите заявку онлайн, получите код отслеживания и согласуйте с менеджером условия ремонта и доставки.",
+  "delivery.repairTitle":"📦 Отправка техники на ремонт почтой",
+  "delivery.repairText":"1. Оформите заявку. 2. На странице подтверждения выберите Новую почту или Укрпочту. 3. Дождитесь подтверждения реквизитов менеджером. 4. Надежно упакуйте устройство и сообщите номер отправления. 5. Отслеживайте ремонт по коду.",
+  "delivery.repairNote":"Статусы перевозчиков в PULT+ пока обновляются вручную, условия и стоимость доставки согласуются отдельно."
+});
+Object.assign(PULT_I18N.en,{
+  "home.statRepairs":"Online repair request",
+  "home.statSuccess":"Repair tracking code",
+  "home.statDuration":"Postal delivery",
+  "home.statWarranty":"Repair terms",
+  "home.whyText":"Submit a repair request online, receive a tracking code and agree on repair and shipping terms with our manager.",
+  "delivery.repairTitle":"📦 Ship your device for repair",
+  "delivery.repairText":"1. Submit a request. 2. Choose Nova Poshta or Ukrposhta on the confirmation page. 3. Wait for the manager to approve the recipient details. 4. Pack your device securely and provide the shipment number. 5. Follow repair status with your tracking code.",
+  "delivery.repairNote":"Carrier statuses are still updated manually by PULT+. Shipping costs and terms are agreed separately."
+});
+
 function applySiteLanguage() {
  const lang = ["uk","ru","en"].includes(localStorage.getItem("pultplus-language")) ? localStorage.getItem("pultplus-language") : "uk";
  document.documentElement.lang = lang;
