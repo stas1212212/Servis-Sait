@@ -47,6 +47,18 @@ document.addEventListener("DOMContentLoaded",()=>{
         form.append(info(t("client.changeBranch"),t("client.sentAlready")));
         return form;
       }
+      const choice=node("label",undefined,"ship-field");
+      const select=node("select");
+      select.name="return_carrier";
+      for(const [value,label] of [
+        ["nova_poshta","📦 Нова пошта"],["ukrposhta","📮 Укрпошта"]
+      ]){
+        const option=node("option",label);
+        option.value=value;select.append(option);
+      }
+      select.value=leg.carrier==="ukrposhta"?"ukrposhta":"nova_poshta";
+      choice.append(node("span",t("client.returnCarrier")),select);
+      form.append(choice);
       form.append(field(t("client.city"),"return_city",leg.city,120,true));
       form.append(field(t("client.branch"),"return_warehouse",leg.warehouse,180,true));
     }
@@ -63,7 +75,8 @@ document.addEventListener("DOMContentLoaded",()=>{
       const payload=incoming
         ?{tracking_number:String(data.get("tracking_number")||"").trim()}
         :{return_city:String(data.get("return_city")||"").trim(),
-          return_warehouse:String(data.get("return_warehouse")||"").trim()};
+          return_warehouse:String(data.get("return_warehouse")||"").trim(),
+          return_carrier:String(data.get("return_carrier")||"").trim()};
       try{
         const response=await fetch("/api/shipping/mine/"+repair.id+"/"+(incoming?"incoming":"return"),{
           method:"PUT",credentials:"same-origin",
@@ -118,7 +131,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     feedback.setAttribute("role","status");
     copy.addEventListener("click",async()=>{
       const lines=[
-        "PULT+ · Nova Poshta",
+        "PULT+ · "+(recipient.carrier==="ukrposhta"?"Укрпошта":"Нова пошта"),
         t("client.repair")+repair.id,
         t("client.recipientName")+": "+recipient.recipient_name,
         t("client.recipientPhone")+": "+recipient.recipient_phone,
