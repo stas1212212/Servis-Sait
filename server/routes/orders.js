@@ -66,7 +66,7 @@ router.get('/', requireAuthMiddleware, async (req, res) => {
     try {
         const visibilityReady = await hasHistoryVisibility();
         const ordersResult = await pool.query(
-            `SELECT id, status, total, created_at
+            `SELECT id, status, total, created_at, delivery_method, delivery_city, delivery_branch, payment_method
              FROM orders
              WHERE user_id = $1${visibilityReady ? ' AND customer_hidden_at IS NULL' : ''}
              ORDER BY created_at DESC`,
@@ -104,6 +104,10 @@ router.get('/', requireAuthMiddleware, async (req, res) => {
             status: order.status,
             total: order.total,
             createdAt: order.created_at,
+            delivery_method:order.delivery_method,
+            delivery_city:order.delivery_city,
+            delivery_branch:order.delivery_branch,
+            payment_method:order.payment_method,
             items: itemsByOrder[order.id] || []
         }));
 
@@ -130,7 +134,7 @@ router.get('/:id', requireAuthMiddleware, async (req, res) => {
     try {
         const visibilityReady = await hasHistoryVisibility();
         const orderResult = await pool.query(
-            `SELECT id, status, total, created_at
+            `SELECT id, status, total, created_at, delivery_method, delivery_city, delivery_branch, payment_method
              FROM orders
              WHERE id = $1 AND user_id = $2${visibilityReady ? ' AND customer_hidden_at IS NULL' : ''}`,
             [orderId, userId]
