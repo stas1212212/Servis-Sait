@@ -15,7 +15,9 @@ test("all static HTML assets and internal document links exist on disk",()=>{
     for(const found of html.matchAll(pattern)){
       const raw=found[1];
       if(/^(?:https?:|\/\/|mailto:|tel:|data:|javascript:|#)/i.test(raw))continue;
-      const pathname=raw.split(/[?#]/,1)[0];
+      let pathname;
+      try{pathname=decodeURIComponent(raw.split(/[?#]/,1)[0]);}
+      catch(error){missing.push(page+" -> malformed URL "+raw);continue;}
       if(!pathname||pathname==="/"||pathname.startsWith("/api/")||
         pathname.startsWith("/_header")||pathname.startsWith("\${"))continue;
       let target;
