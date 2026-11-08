@@ -19,13 +19,24 @@ document.addEventListener("DOMContentLoaded", () => {
   section.className="service-shipping";
   section.hidden=true;
   section.innerHTML=[
-    '<legend data-shipping-i18n="form.legend">Доставка Новою поштою</legend>',
-    '<label class="service-shipping-option"><input type="checkbox" name="shipping_enabled" id="shippingEnabled"> <span data-shipping-i18n="form.enable">Надіслати пристрій у PULT+ через відділення Нової пошти</span></label>',
+    '<legend data-shipping-i18n="form.legend">Доставка техніки поштою</legend>',
+    '<label class="service-shipping-option"><input type="checkbox" name="shipping_enabled" id="shippingEnabled"> <span data-shipping-i18n="form.enable">Хочу надіслати пристрій на ремонт поштою</span></label>',
     '<div class="service-shipping-fields" id="shippingDetails" hidden>',
-    '<p data-shipping-i18n="form.warning">До підтвердження реквізитів не відправляйте пристрій.</p>',
+    '<p class="service-carrier-heading" data-shipping-i18n="form.selectIncoming">Якою поштою надішлете пристрій до PULT+?</p>',
+    '<div class="service-carrier-options" role="group" aria-label="Вибір пошти для відправлення на ремонт">',
+    '<label class="service-carrier-choice"><input type="radio" name="incoming_carrier" value="nova_poshta" checked><span data-shipping-i18n="form.nova">📦 Нова пошта</span></label>',
+    '<label class="service-carrier-choice"><input type="radio" name="incoming_carrier" value="ukrposhta"><span data-shipping-i18n="form.ukr">📮 Укрпошта</span></label>',
+    '</div>',
+    '<p data-shipping-i18n="form.warning">Після подання заявки ви побачите обране відділення PULT+ та карту. Не відправляйте техніку до підтвердження менеджером.</p>',
+    '<div class="service-carrier-return-heading" data-shipping-i18n="form.returnTitle">Куди повернути пристрій після ремонту?</div>',
+    '<label><span data-shipping-i18n="form.returnCarrier">Пошта для повернення</span><select id="returnCarrier" name="return_carrier">',
+    '<option value="same" data-shipping-i18n="form.sameCarrier">Тією самою поштою</option>',
+    '<option value="nova_poshta" data-shipping-i18n="form.nova">📦 Нова пошта</option>',
+    '<option value="ukrposhta" data-shipping-i18n="form.ukr">📮 Укрпошта</option>',
+    '</select></label>',
     '<label><span data-shipping-i18n="form.returnCity">Місто для зворотної доставки</span><input name="return_city" maxlength="120" autocomplete="address-level2" data-shipping-placeholder="form.returnCityPlaceholder" placeholder="Наприклад, Київ"></label>',
-    '<label><span data-shipping-i18n="form.returnBranch">Відділення Нової пошти для повернення</span><input name="return_warehouse" maxlength="180" data-shipping-placeholder="form.returnBranchPlaceholder" placeholder="Номер або адреса відділення"></label>',
-    '<p class="service-shipping-note" data-shipping-i18n="form.note">Після відправлення введіть ТТН у кабінеті.</p>',
+    '<label><span id="returnBranchLabel" data-shipping-i18n="form.returnBranchNova">Відділення Нової пошти для повернення</span><input name="return_warehouse" maxlength="180" data-shipping-placeholder="form.returnBranchPlaceholder" placeholder="Номер або адреса відділення"></label>',
+    '<p class="service-shipping-note" data-shipping-i18n="form.note">Після відправлення введіть трек-номер у кабінеті або передайте менеджеру.</p>',
     '</div>'
   ].join("");
   const before=feedback||form.querySelector('button[type="submit"]');
@@ -35,12 +46,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const shippingDetails=section.querySelector("#shippingDetails");
   const returnCity=section.querySelector('[name="return_city"]');
   const returnWarehouse=section.querySelector('[name="return_warehouse"]');
+  const returnCarrier=section.querySelector("#returnCarrier");
+  const incomingRadios=Array.from(section.querySelectorAll('input[name="incoming_carrier"]'));
+  const returnBranchLabel=section.querySelector("#returnBranchLabel");
+  function effectiveReturnCarrier(){
+    const choice=returnCarrier.value;
+    return choice==="same" ? incomingRadios.find(r=>r.checked)?.value||"nova_poshta" : choice;
+  }
+  function updateReturnLabel(){
+    const key=effectiveReturnCarrier()==="ukrposhta"?"form.returnBranchUkr":"form.returnBranchNova";
+    returnBranchLabel.dataset.shippingI18n=key;
+    returnBranchLabel.textContent=t(key);
+  }
   function showShipping(){
     shippingDetails.hidden=!shippingCheckbox.checked;
     returnCity.required=shippingCheckbox.checked;
     returnWarehouse.required=shippingCheckbox.checked;
+    updateReturnLabel();
   }
   shippingCheckbox.addEventListener("change",showShipping);
+  returnCarrier.addEventListener("change",updateReturnLabel);
+  incomingRadios.forEach(radio=>radio.addEventListener("change",updateReturnLabel));
+  window.addEventListener("pult:language-changed",()=>queueMicrotask(updateReturnLabel));
   showShipping();
   fetch("/api/shipping/availability",{credentials:"same-origin"})
     .then(r=>r.ok?r.json():{ready:false})
@@ -58,10 +85,16 @@ document.addEventListener("DOMContentLoaded", () => {
       device_type:form.dataset.deviceType,brand:data.get("brand"),model:data.get("model"),
       issue:data.get("problem"),issue_cause:data.get("history"),repair_type:data.get("repair_type")
     };
-    if(!section.hidden&&shippingCheckbox.checked)payload.shipping={
-      return_city:String(data.get("return_city")||"").trim(),
-      return_warehouse:String(data.get("return_warehouse")||"").trim()
-    };
+    if(!section.hidden&&shippingCheckbox.checked){
+      const carrier=String(data.get("incoming_carrier")||"");
+      const outgoing=String(data.get("return_carrier")||"same");
+      payload.shipping={
+        carrier,
+        return_carrier:outgoing==="same"?carrier:outgoing,
+        return_city:String(data.get("return_city")||"").trim(),
+        return_warehouse:String(data.get("return_warehouse")||"").trim()
+      };
+    }
     submit.disabled=true;submit.textContent=t("form.submitting");feedback.textContent="";
     try{
       const response=await fetch("/api/repairs",{
@@ -79,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id:Number.isSafeInteger(requestId)&&requestId>0?requestId:null,
         code:hasCode?code:"",
         shipping:!!payload.shipping,
+        carrier:payload.shipping?.carrier||null,
         token:/^[a-f0-9]{64}$/.test(result.delivery_token||"")?result.delivery_token:null
       };
       try{sessionStorage.setItem("pult:last-repair",JSON.stringify(receipt));}
@@ -87,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if(receipt.id)parameters.set("id",String(receipt.id));
       if(hasCode)parameters.set("code",code);
       parameters.set("shipping",receipt.shipping?"1":"0");
+      if(receipt.carrier)parameters.set("carrier",receipt.carrier);
       window.location.assign("/repair-submitted.html#"+parameters.toString());
     }catch(error){feedback.dataset.error="true";feedback.textContent=error.message||t("form.error");}
     finally{submit.disabled=false;submit.textContent=original;}
