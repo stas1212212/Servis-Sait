@@ -125,7 +125,7 @@
     "submit.name":["ПІБ одержувача","Recipient full name","ФИО получателя"],
     "submit.phone":["Телефон","Phone","Телефон"],
     "submit.city":["Місто","City","Город"],
-    "submit.branch":["Відділення Нової пошти","Nova Poshta branch","Отделение Новой почты"],
+    "submit.branch":["Відділення","Branch","Отделение"],
     "submit.refresh":["Перевірити реквізити","Refresh destination","Проверить реквизиты"],
     "submit.shipping":["Кабінет доставки","Delivery dashboard","Кабинет доставки"],
     "submit.contacts":["Контакти сервісу","Contact the repair center","Контакты сервиса"],
