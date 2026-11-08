@@ -210,14 +210,14 @@ test("hiding a category or brand hides its products and blocks stale-cart checko
   state.categories.find(c=>c.slug==="tv").is_active=false;
   const hidden=await (await fetch(root+"/api/products")).json();
   assert.equal(hidden.products.some(p=>p.sku==="remote001"),false);
-  const checkout=await request("/api/orders","POST",{items:[{sku:"remote001",quantity:1}]},false);
+  const checkout=await request("/api/orders","POST",{items:[{sku:"remote001",quantity:1}],customer:{name:"Покупець",phone:"+380501112233",email:"buyer@example.test",delivery_method:"nova_poshta",delivery_city:"Київ",delivery_branch:"Відділення №1",comment:""}},false);
   assert.equal(checkout.status,409);
   assert.equal(state.products[0].stock,3);
   state.categories.find(c=>c.slug==="tv").is_active=true;
   state.brands.find(b=>b.name==="Sony").is_active=false;
   const hiddenBrand=await (await fetch(root+"/api/products")).json();
   assert.equal(hiddenBrand.products.some(p=>p.sku==="remote001"),false);
-  const checkout2=await request("/api/orders","POST",{items:[{sku:"remote001",quantity:1}]},false);
+  const checkout2=await request("/api/orders","POST",{items:[{sku:"remote001",quantity:1}],customer:{name:"Покупець",phone:"+380501112233",email:"buyer@example.test",delivery_method:"nova_poshta",delivery_city:"Київ",delivery_branch:"Відділення №1",comment:""}},false);
   assert.equal(checkout2.status,409);
 });
 test("migration is non-destructive and preserves old remote SKU/stock",()=>{
