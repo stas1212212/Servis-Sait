@@ -33,9 +33,9 @@ const required={
 };
 async function main(){
   console.log("PULT+ v1.0 — read-only release readiness audit");
-  if(process.env.NODE_ENV==="production"&&(!process.env.SESSION_SECRET||process.env.SESSION_SECRET.length<32))
+  if(process.env.NODE_ENV==="production"&&(!process.env.SESSION_SECRET||(process.env.SESSION_SECRET.length<32||/replace_with|CHANGE_LATER|PULT_PLUS_DEV/i.test(process.env.SESSION_SECRET))))
     log("BLOCK","Set a private, randomly generated SESSION_SECRET of at least 32 characters.");
-  else if(!process.env.SESSION_SECRET||process.env.SESSION_SECRET.includes("CHANGE_LATER"))
+  else if(!process.env.SESSION_SECRET||/replace_with|CHANGE_LATER|PULT_PLUS_DEV/i.test(process.env.SESSION_SECRET))
     log("CHECK","Replace the development SESSION_SECRET before public hosting.");
   if(process.env.NODE_ENV==="production"&&!/^https:\/\//.test(process.env.PUBLIC_BASE_URL||""))
     log("BLOCK","PUBLIC_BASE_URL must be an HTTPS URL on production.");
