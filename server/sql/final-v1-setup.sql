@@ -50,6 +50,9 @@ CREATE INDEX IF NOT EXISTS idx_pult_auth_attempts_expires_at ON pult_auth_attemp
 
 COMMIT;
 
+-- Public legal identification is left blank until the real business owner fills it in.
+INSERT INTO site_settings(key,value) VALUES('business_name',''),('business_registration','') ON CONFLICT(key) DO NOTHING;
+
 -- Legacy purchases created before this migration have NULL order_items.product_id.
 -- Do NOT infer a product from its display name automatically. Their cancelled stock
 -- requires admin reconciliation. New v1 orders store product_id and are reversible.
