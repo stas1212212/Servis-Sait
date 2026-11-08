@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     id:Number.isSafeInteger(hashId)&&hashId>0?hashId:null,
     code:validCode(codeFromHash)?codeFromHash:"",
     shipping:params.get("shipping")==="1",
+    carrier:validCarrier(params.get("carrier"))?params.get("carrier"):null,
     token:null
   };
   const code=validCode(info.code)?info.code:"";
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     map=$("carrierMapFrame"),directions=$("carrierDirections"),
     refresh=$("submittedRefresh"),copy=$("submittedCopy");
   const radios=Array.from(document.querySelectorAll('input[name="repairCarrier"]'));
-  let locations=[],selected=null,lastApproved=null,warningKey="submit.wait",messageKey="submit.chooseCarrier",
+  let locations=[],selected=validCarrier(info.carrier)?info.carrier:null,lastApproved=null,warningKey="submit.wait",messageKey="submit.chooseCarrier",
     selectionKey="carrier.chooseHint",busy=false,locked=false;
 
   function setWarning(key){
@@ -53,7 +54,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     return headers;
   }
   function saveInTab(){
-    try{sessionStorage.setItem("pult:last-repair",JSON.stringify({...info,shipping:!!selected,token}));}
+    try{sessionStorage.setItem("pult:last-repair",JSON.stringify({...info,shipping:!!selected,carrier:selected,token}));}
     catch(error){}
   }
   function locationFor(carrier){return locations.find(x=>x.carrier===carrier)||null;}
@@ -212,9 +213,14 @@ document.addEventListener("DOMContentLoaded",()=>{
   });
   window.addEventListener("pult:language-changed",refreshLanguage);
   refreshLanguage();
-  setWarning("carrier.needChoice");
-  setMessage("submit.chooseCarrier");
-  setSelection("carrier.chooseHint");
+  if(selected){
+    applySelected(selected);
+    setSelection("carrier.saved");
+  }else{
+    setWarning("carrier.needChoice");
+    setMessage("submit.chooseCarrier");
+    setSelection("carrier.chooseHint");
+  }
   (async()=>{
     await loadLocations();
     await loadInstructions();

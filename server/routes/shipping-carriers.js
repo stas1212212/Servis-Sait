@@ -118,7 +118,7 @@ router.put("/request/:id",originGuard,async(req,res)=>{
     const repair=result.rows[0];
     if(!await authorized(client,repair,req)){await client.query("ROLLBACK");return res.status(403).json({message:"Немає права змінювати доставку цієї заявки"});}
     if(repair.status==="cancelled"){await client.query("ROLLBACK");return res.status(409).json({message:"Заявку скасовано"});}
-    const legs=await client.query("SELECT direction,carrier,status,tracking_number FROM repair_shipments WHERE service_request_id=$1 FOR UPDATE",[id]);
+    const legs=await client.query("SELECT direction,carrier,status,tracking_number,city,warehouse FROM repair_shipments WHERE service_request_id=$1 FOR UPDATE",[id]);
     if(legs.rows.some(x=>x.tracking_number||x.status!=="not_sent")){
       await client.query("ROLLBACK");
       return res.status(409).json({message:"Відправлення вже оформлюється. Змінити перевізника може лише менеджер"});
@@ -127,7 +127,14 @@ router.put("/request/:id",originGuard,async(req,res)=>{
     if(old!==carrier){
       // Approved information becomes invalid when the carrier changes.
       await client.query("DELETE FROM repair_send_instructions WHERE service_request_id=$1",[id]);
-      await client.query("UPDATE repair_shipments SET carrier=$2,city='',warehouse='',updated_at=NOW() WHERE service_request_id=$1",[id,carrier]);
+      // Only the *incoming* service changes on the confirmation page.
+      // A customer-selected return carrier and destination must remain intact.
+      await client.query("UPDATE repair_shipments SET carrier=$2,city='',warehouse='',updated_at=NOW() WHERE service_request_id=$1 AND direction='incoming'",[id,carrier]);
+      const outgoing=legs.rows.find(x=>x.direction==="outgoing");
+      if(outgoing&&outgoing.carrier===old&&!outgoing.city&&!outgoing.warehouse){
+        // Older repairs without a return destination default to the incoming carrier.
+        await client.query("UPDATE repair_shipments SET carrier=$2,updated_at=NOW() WHERE service_request_id=$1 AND direction='outgoing'",[id,carrier]);
+      }
     }
     if(!legs.rows.some(x=>x.direction==="incoming"))
       await client.query("INSERT INTO repair_shipments(service_request_id,direction,carrier) VALUES($1,'incoming',$2)",[id,carrier]);
