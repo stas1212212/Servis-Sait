@@ -47,8 +47,11 @@ router.patch("/repairs/:id/status", async (req, res) => {
 router.get("/orders", async (req, res) => {
   try {
     const ordersResult = await pool.query(
-      `SELECT o.id, o.user_id, o.status, o.total, o.created_at,
-              u.name AS customer_name, u.email AS customer_email
+      `SELECT o.id,o.user_id,o.status,o.total,o.created_at,
+              COALESCE(NULLIF(o.customer_name,''),u.name) AS customer_name,
+              COALESCE(NULLIF(o.customer_email,''),u.email) AS customer_email,
+              o.customer_phone,o.delivery_method,o.delivery_city,o.delivery_branch,
+              o.customer_comment,o.payment_method,o.stock_restored
        FROM orders o LEFT JOIN users u ON u.id = o.user_id
        ORDER BY o.created_at DESC, o.id DESC LIMIT 300`
     );
@@ -75,29 +78,67 @@ router.get("/orders", async (req, res) => {
 });
 
 router.patch("/orders/:id/status", async (req, res) => {
-  const origin = req.get("origin");
-  if (origin && origin !== `${req.protocol}://${req.get("host")}`) {
-    return res.status(403).json({ message: "Недозволене джерело запиту" });
-  }
-  const id = Number(req.params.id);
-  const status = req.body?.status;
-  const statuses = ["pending", "processing", "shipped", "completed", "cancelled"];
-  if (!Number.isSafeInteger(id) || id < 1 || !statuses.includes(status)) {
-    return res.status(400).json({ message: "Некоректний номер або статус замовлення" });
-  }
+  const origin=req.get("origin"),site=req.get("sec-fetch-site");
+  if((origin&&origin!==req.protocol+"://"+req.get("host"))||site==="cross-site")
+    return res.status(403).json({message:"Недозволене джерело запиту"});
+  if(!req.is("application/json"))return res.status(415).json({message:"Очікується JSON"});
+  const id=Number(req.params.id),status=req.body?.status;
+  if(!Number.isSafeInteger(id)||id<1||!["pending","processing","shipped","completed","cancelled"].includes(status))
+    return res.status(400).json({message:"Некоректний номер або статус замовлення"});
+  let client;
   try {
-    const result = await pool.query(
-      "UPDATE orders SET status = $1 WHERE id = $2 RETURNING id, status",
-      [status, id]
-    );
-    if (!result.rowCount) return res.status(404).json({ message: "Замовлення не знайдено" });
-    res.json({ order: result.rows[0] });
-  } catch (error) {
-    console.error("Admin order status error:", error);
-    res.status(500).json({ message: "Не вдалося оновити статус замовлення" });
-  }
+    client=await pool.connect();
+    await client.query("BEGIN");
+    const found=await client.query("SELECT id,status,stock_restored FROM orders WHERE id=$1 FOR UPDATE",[id]);
+    if(!found.rowCount){
+      await client.query("ROLLBACK");return res.status(404).json({message:"Замовлення не знайдено"});
+    }
+    const order=found.rows[0],before=order.status;
+    if(before===status){
+      await client.query("COMMIT");
+      return res.json({order:{id,status,stock_restored:!!order.stock_restored}});
+    }
+    if(before==="cancelled"){
+      await client.query("ROLLBACK");
+      return res.status(409).json({message:"Скасоване замовлення не можна відновити просто зміною статусу: склад уже міг бути повернений"});
+    }
+    if(status==="cancelled"){
+      if(!["pending","processing"].includes(before)){
+        await client.query("ROLLBACK");
+        return res.status(409).json({message:"Замовлення вже відправлено або завершено. Потрібна окрема процедура повернення товару, а не звичайне скасування"});
+      }
+      if(order.stock_restored){
+        await client.query("ROLLBACK");
+        return res.status(409).json({message:"Залишок цього замовлення вже повернений на склад. Перевірте облік"});
+      }
+      const lines=await client.query("SELECT product_id,quantity FROM order_items WHERE order_id=$1 ORDER BY id FOR UPDATE",[id]);
+      if(!lines.rowCount||lines.rows.some(x=>!Number.isSafeInteger(Number(x.product_id))||Number(x.product_id)<1||
+        !Number.isSafeInteger(Number(x.quantity))||Number(x.quantity)<1)){
+        await client.query("ROLLBACK");
+        return res.status(409).json({message:"У старому замовленні бракує точних ID товарів. Скасуйте його лише після ручної звірки складу"});
+      }
+      for(const line of lines.rows){
+        const updated=await client.query("UPDATE products SET stock=stock+$1,updated_at=NOW() WHERE id=$2 RETURNING id",
+          [Number(line.quantity),Number(line.product_id)]);
+        if(!updated.rowCount)throw Error("Product no longer exists: "+line.product_id);
+      }
+      await client.query("UPDATE orders SET status='cancelled',stock_restored=TRUE WHERE id=$1",[id]);
+    }else{
+      await client.query("UPDATE orders SET status=$1 WHERE id=$2",[status,id]);
+    }
+    await client.query(
+      "INSERT INTO order_status_history(order_id,old_status,new_status,changed_by) VALUES($1,$2,$3,$4)",
+      [id,before,status,req.session.user.id]);
+    await client.query("COMMIT");
+    res.json({order:{id,status,stock_restored:status==="cancelled"},message:status==="cancelled"?"Замовлення скасовано, резерв товарів повернено на склад":"Статус збережено"});
+  }catch(error){
+    if(client)await client.query("ROLLBACK").catch(()=>{});
+    console.error("Admin order status error:",error);
+    if(error.code==="42703"||error.code==="42P01")
+      return res.status(503).json({message:"Для керування залишками виконайте server/sql/final-v1-setup.sql у pgAdmin"});
+    res.status(500).json({message:"Не вдалося оновити статус замовлення"});
+  }finally{if(client)client.release();}
 });
-
 
 // Product types and brands are managed in PostgreSQL, not a hardcoded list.
 const TAXONOMY_MIGRATION="Зробіть резервну копію БД і виконайте server/sql/store-catalog-setup.sql у pgAdmin.";
