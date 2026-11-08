@@ -1,42 +1,36 @@
-<!DOCTYPE html>
-<html lang="ru">
+<!doctype html>
+<html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Заявка принята</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Замовлення прийнято | PULT+</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/thanks.css">
   <script src="/js/theme.js"></script>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gray-100 font-sans">
-
-  <div class="bg-white p-8 rounded-xl shadow-lg text-center w-[350px]">
-
-    <div class="flex justify-center mb-4">
-      <svg xmlns="http://www.w3.org/2000/svg"
-           class="h-10 w-10 text-green-600"
-           fill="none"
-           viewBox="0 0 24 24"
-           stroke="currentColor">
-        <path stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 13l4 4L19 7"/>
-      </svg>
-    </div>
-
-    <h1 class="text-xl font-semibold mb-2">
-      Заявка принята
-    </h1>
-
-    <p class="text-gray-600 mb-4">
-      Спасибо! Мы свяжемся с вами в ближайшее робочее время.
-    </p>
-
-    <a href="/"
-       class="text-blue-600 hover:underline text-sm">
-      Вернуться на главную
-    </a>
-
-  </div>
-
+<body>
+  <div id="header"></div>
+  <main class="thanks-main">
+    <section class="thanks-panel" aria-labelledby="thanksTitle">
+      <div class="thanks-icon" aria-hidden="true">✓</div>
+      <p class="thanks-eyebrow">PULT+ · МАГАЗИН</p>
+      <h1 id="thanksTitle">Дякуємо за замовлення!</h1>
+      <p id="thanksOrderNumber" class="thanks-order" role="status"></p>
+      <p>Ваше замовлення збережене. Менеджер PULT+ зв'яжеться з вами для підтвердження наявності товарів, способу доставки, її вартості та оплати.</p>
+      <div class="thanks-next">
+        <h2>Що далі?</h2>
+        <ol>
+          <li>Дочекайтеся підтвердження від менеджера.</li>
+          <li>Погодьте остаточну вартість та спосіб оплати.</li>
+          <li>Після відправлення ви отримаєте інформацію для відстеження доставки.</li>
+        </ol>
+      </div>
+      <p class="thanks-note">Оплата карткою на цьому сайті поки недоступна. Не надсилайте кошти до отримання узгоджених реквізитів.</p>
+      <div class="thanks-actions"><a href="/cabinet.html" class="thanks-button">Мої замовлення</a><a href="/pults-shop.html" class="thanks-secondary">Повернутися до магазину</a></div>
+    </section>
+  </main>
+  <div id="footer"></div>
+  <script src="/js/main.js"></script>
+  <script src="/js/thanks.js"></script>
 </body>
 </html>
