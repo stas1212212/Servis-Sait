@@ -20,13 +20,14 @@ test("Nova Poshta validators reject invalid TTNs, status/branch combinations and
   assert.ok(validators.parseIntake({external_condition:"Подряпини",accessories:"Без зарядки"}));
 });
 
-const mockState={queries:[],failShipmentInsert:false,ready:true,ownerId:4};
+const mockState={queries:[],calls:[],failShipmentInsert:false,ready:true,ownerId:4};
 const mockPool={
   async query(sql,args){return respond(sql,args);},
   async connect(){return {query:async(sql,args)=>respond(sql,args),release(){mockState.queries.push("RELEASE")}};}
 };
 function respond(sql,args){
   mockState.queries.push(String(sql));
+  mockState.calls.push({sql:String(sql),args});
   if(sql.includes("to_regclass('repair_shipments')"))return {rows:[{shipments:mockState.ready,intakes:mockState.ready,recipient:mockState.ready}],rowCount:1};
   if(sql.includes("FROM shipping_recipient_settings"))return {rows:[{full_name:"PRIVATE PERSON",phone:"+380PRIVATE",city:"Тест",warehouse:"12"}],rowCount:1};
   if(sql.includes("FROM service_requests WHERE id=$1 AND user_id=$2 FOR UPDATE"))
@@ -119,6 +120,47 @@ test("shipping-enabled repair inserts both delivery legs in one transaction",asy
   const sql=mockState.queries.join("\n");
   assert.ok(sql.includes("BEGIN")&&sql.includes("COMMIT"));
   assert.ok(sql.includes("'incoming'")&&sql.includes("'outgoing'"));
+});
+test("a new Ukrposhta request stores incoming Ukrposhta and an independent Nova Poshta return",async()=>{
+  mockState.queries.length=0;mockState.calls.length=0;
+  const response=await fetch(root+"/api/repairs",{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({name:"Тестовий клієнт",phone:"+380111111111",device_type:"Ноутбук",issue:"Не вмикається",
+      shipping:{carrier:"ukrposhta",return_carrier:"nova_poshta",return_city:"Яготин",return_warehouse:"№2"}})
+  });
+  assert.equal(response.status,201);
+  const incoming=mockState.calls.find(c=>c.sql.includes("INSERT INTO repair_shipments")&&c.sql.includes("'incoming'"));
+  const outgoing=mockState.calls.find(c=>c.sql.includes("INSERT INTO repair_shipments")&&c.sql.includes("'outgoing'"));
+  assert.ok(incoming);
+  assert.ok(outgoing);
+  assert.equal(incoming.args[1],"ukrposhta");
+  assert.equal(outgoing.args[1],"nova_poshta");
+  assert.equal(outgoing.args[2],"Яготин");
+  assert.equal(outgoing.args[3],"№2");
+  assert.ok(mockState.queries.includes("COMMIT"));
+});
+test("repair delivery rejects an invalid incoming or return carrier before storing the repair",async()=>{
+  for(const shipping of [
+    {carrier:"some_other_carrier",return_city:"Київ",return_warehouse:"1"},
+    {carrier:"nova_poshta",return_carrier:"fake_carrier",return_city:"Київ",return_warehouse:"1"}
+  ]){
+    mockState.queries.length=0;
+    const res=await fetch(root+"/api/repairs",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name:"Клієнт",phone:"+380111111111",device_type:"Ноутбук",issue:"Тест",shipping})});
+    assert.equal(res.status,400);
+    assert.equal(mockState.queries.some(q=>q.includes("INSERT INTO service_requests")),false);
+  }
+});
+test("the owner can update the return carrier without touching incoming shipment",async()=>{
+  mockState.calls.length=0;
+  const res=await put("/api/shipping/mine/4/return",{
+    return_carrier:"ukrposhta",return_city:"Яготин",return_warehouse:"07701"
+  },{"X-Test-User":"4"});
+  assert.equal(res.status,200);
+  const saved=mockState.calls.find(c=>c.sql.includes("INSERT INTO repair_shipments")&&c.sql.includes("'outgoing'"));
+  assert.ok(saved);
+  assert.equal(saved.args[1],"ukrposhta");
+  assert.equal(saved.args[3],"07701");
 });
 test("shipping migration never drops user/order/repair records",()=>{
   const sql=fs.readFileSync(path.resolve(__dirname,"../server/sql/shipping-setup.sql"),"utf8");
