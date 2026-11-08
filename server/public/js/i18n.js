@@ -196,6 +196,9 @@ Object.assign(PULT_I18N.uk, {"cabinet.adminLink":"🛡 Адмін-панель"}
 Object.assign(PULT_I18N.ru, {"cabinet.adminLink":"🛡 Админ-панель"});
 Object.assign(PULT_I18N.en, {"cabinet.adminLink":"🛡 Admin panel"});
 
+Object.assign(PULT_I18N.uk,{"footer.privacy":"Конфіденційність і персональні дані"});
+Object.assign(PULT_I18N.ru,{"footer.privacy":"Конфиденциальность и персональные данные"});
+Object.assign(PULT_I18N.en,{"footer.privacy":"Privacy & personal data"});
 // Final v1: truthful feature descriptions instead of unverified repair statistics.
 Object.assign(PULT_I18N.uk,{
   "home.statRepairs":"Онлайн-заявка на ремонт",
