@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       const select=node("select");
       select.name="return_carrier";
       for(const [value,label] of [
-        ["nova_poshta","📦 Нова пошта"],["ukrposhta","📮 Укрпошта"]
+        ["nova_poshta",t("form.nova")],["ukrposhta",t("form.ukr")]
       ]){
         const option=node("option",label);
         option.value=value;select.append(option);
