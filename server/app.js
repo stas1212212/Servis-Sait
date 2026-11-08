@@ -1,43 +1,127 @@
 const express = require('express');
 const path = require('path');
+const fs = require('node:fs');
+const localEnv = path.join(__dirname, '.env');
+if (fs.existsSync(localEnv) && typeof process.loadEnvFile === 'function') process.loadEnvFile(localEnv);
 const session = require('express-session');
+const pool = require('./db');
+const PostgresSessionStore = require('./session-store');
 const app = express();
+if (process.env.NODE_ENV === 'production' && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length<32 || /replace_with|CHANGE_LATER|PULT_PLUS_DEV/i.test(process.env.SESSION_SECRET))) throw new Error('Set a strong non-placeholder SESSION_SECRET before production startup');
+if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
 
-const port = 3000;
+const port = Number(process.env.PORT || 3000);
 
 const ordersRoutes = require('./routes/orders');
 const servicesRoutes = require('./routes/services');
 const productsRoutes = require('./routes/products');
+const taxonomyRoutes = require('./routes/store-taxonomy');
 const authRoutes = require('./routes/auth');
 const repairsRoutes = require('./routes/repairs');
 const adminRoutes = require('./routes/admin');
 const uiRoutes = require('./routes/ui');
+const experienceRoutes = require('./routes/experience');
+const shippingRoutes = require('./routes/shipping');
+const shippingCarriersRoutes = require('./routes/shipping-carriers');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.disable('x-powered-by');
+// PULT+ only needs flat URL queries and JSON request bodies. Avoid vulnerable
+// qs nested-form parsing until all transitive npm dependencies are patched.
+app.set('query parser','simple');
+app.use((req,res,next)=>{
+  res.set('X-Content-Type-Options','nosniff');
+  res.set('Referrer-Policy','strict-origin-when-cross-origin');
+  res.set('X-Frame-Options','SAMEORIGIN');
+  if(req.path.startsWith('/api/auth') || req.path.startsWith('/api/admin') || /^\/admin(?:-hub|-shipping)?\.html$/.test(req.path))res.set('Cache-Control','no-store');
+  next();
+});
+app.use(express.json({limit:'48kb',inflate:false}));
+app.use(express.urlencoded({ extended: false, limit:'48kb',inflate:false }));
 app.use(session({
-    secret: 'PULT_PLUS_DEV_SECRET_CHANGE_LATER',
+    store: new PostgresSessionStore(pool),
+    name: 'pult.sid',
+    secret: process.env.SESSION_SECRET || 'PULT_PLUS_DEV_SECRET_CHANGE_LATER',
     resave: false,
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         maxAge: 1000 * 60 * 60 * 24 * 30 // 30 дней
     }
 }));
 
+app.use('/api', require('./middleware/sessionVersion'));
+// Even if someone manually types a known admin URL, the HTML page itself
+// must be protected; privileged API routes also check the DB role separately.
+const requireAdminPage = require('./middleware/requireAdmin');
+app.get(['/admin.html', '/admin-hub.html', '/admin-shipping.html'], requireAdminPage, (req,res,next) => next());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Маршруты
 app.use('/api/orders', ordersRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api/products', productsRoutes);
+app.use('/api/store-taxonomy', taxonomyRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/repairs', repairsRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/experience', experienceRoutes);
+app.use('/api/shipping', shippingRoutes);
+app.use('/api/shipping-carriers', shippingCarriersRoutes);
 // Dynamic UI fragments (header)
 app.use('/_header', uiRoutes);
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+// Verify the existing database was migrated before accepting customers.
+// This is read-only: no tables or user records are changed automatically.
+async function startServer() {
+  try {
+    const result = await pool.query(`
+      SELECT current_database() AS db_name,
+             to_regclass('users') IS NOT NULL AS has_users,
+             to_regclass('service_requests') IS NOT NULL AS has_repairs,
+             to_regclass('site_settings') IS NOT NULL AS has_settings,
+             to_regclass('password_reset_tokens') IS NOT NULL AS has_resets,
+             to_regclass('admin_notifications') IS NOT NULL AS has_notifications,
+             to_regclass('pult_sessions') IS NOT NULL AS has_sessions,
+             to_regclass('pult_auth_attempts') IS NOT NULL AS has_auth_attempts,
+             to_regclass('repair_reviews') IS NOT NULL AS has_reviews,
+             EXISTS (SELECT 1 FROM information_schema.columns
+                     WHERE table_schema = current_schema()
+                       AND table_name = 'users' AND column_name = 'auth_version') AS has_auth_version,
+             EXISTS (SELECT 1 FROM information_schema.columns
+                     WHERE table_schema = current_schema()
+                       AND table_name = 'service_requests' AND column_name = 'tracking_code') AS has_tracking_code
+    `);
+    const row = result.rows[0];
+    const required = [
+      ['has_users', 'users'], ['has_repairs', 'service_requests'],
+      ['has_settings', 'site_settings'], ['has_resets', 'password_reset_tokens'],
+      ['has_sessions','pult_sessions (run final-v1-setup.sql)'],
+      ['has_auth_attempts','pult_auth_attempts (run final-v1-setup.sql)'],
+      ['has_notifications', 'admin_notifications'], ['has_reviews', 'repair_reviews'],
+      ['has_auth_version', 'users.auth_version'], ['has_tracking_code', 'service_requests.tracking_code']
+    ];
+    const missing = required.filter(([key]) => !row[key]).map(([, label]) => label);
+    if (missing.length) {
+      console.error('\nPULT+ database migration required; connected database: ' + row.db_name);
+      console.error('Missing: ' + missing.join(', '));
+      console.error('Back up PostgreSQL, then open the correct database in pgAdmin and run:');
+      console.error('  server/sql/customer-service-suite.sql');
+      console.error('  server/sql/final-v1-setup.sql');
+      console.error('Existing accounts and orders should NOT be deleted.\n');
+      process.exitCode = 1;
+      await pool.end();
+      return;
+    }
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('PULT+ database connection / schema verification failed:', error.message);
+    console.error('Check server/.env and PostgreSQL; do not recreate the database.');
+    process.exitCode = 1;
+    await pool.end().catch(() => {});
+  }
+}
+startServer();

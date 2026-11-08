@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function render() {
     list.replaceChildren();
     const query = search.value.trim().toLocaleLowerCase();
-    const matches = orders.filter(o => [o.id, o.customer_name, o.customer_email, ...(o.items || []).map(i => i.name)].some(v => String(v ?? "").toLocaleLowerCase().includes(query)));
+    const matches = orders.filter(o => [o.id,o.customer_name,o.customer_phone,o.customer_email,o.delivery_city,o.delivery_branch,...(o.items||[]).map(i=>i.name)].some(v => String(v ?? "").toLocaleLowerCase().includes(query)));
     if (!matches.length) { list.append(node("p","Замовлень не знайдено.")); return; }
     for (const order of matches) {
       const card = node("article",undefined,"admin-request");
@@ -28,7 +28,17 @@ document.addEventListener("DOMContentLoaded", () => {
       head.append(node("strong","Замовлення №"+order.id));
       head.append(node("time",order.created_at ? new Date(order.created_at).toLocaleString("uk-UA") : "—"));
       card.append(head);
-      const fields = [["Клієнт",order.customer_name || "Користувач №"+order.user_id],["Email",order.customer_email],["Сума",order.total+" грн"]];
+      const deliveryNames={nova_poshta:"Нова пошта",ukrposhta:"Укрпошта",discuss:"Узгодити з менеджером"};
+      const fields=[
+        ["Клієнт",order.customer_name||"Користувач №"+order.user_id],
+        ["Телефон",order.customer_phone||"не вказано (старе замовлення)"],
+        ["Email",order.customer_email],
+        ["Отримання",deliveryNames[order.delivery_method]||"Не узгоджено"],
+        ["Місто",order.delivery_city],["Відділення",order.delivery_branch],
+        ["Коментар",order.customer_comment],
+        ["Оплата","Після підтвердження менеджером"],
+        ["Сума товарів (без доставки)",order.total+" грн"]
+      ];
       for(const [label,value] of fields){if(value==null)continue;const p=node("p");p.append(node("b",label+": "),document.createTextNode(String(value)));card.append(p)}
       const products=node("div",undefined,"admin-order-items");
       products.append(node("b","Товари:"));
@@ -39,14 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
       select.setAttribute("aria-label","Статус замовлення №"+order.id);
       if(!statuses[order.status]){const current=node("option",order.status);current.value=order.status;current.selected=true;current.disabled=true;select.append(current)}
       for(const [value,label] of Object.entries(statuses)){const option=node("option",label);option.value=value;option.selected=value===order.status;select.append(option)}
+      if(order.status==="cancelled"){select.disabled=true;}
       const save=node("button","Зберегти","admin-save");
+      if(order.status==="cancelled")save.disabled=true;
       save.addEventListener("click",async()=>{
+        if(select.value==="cancelled"&&!window.confirm("Скасувати замовлення №"+order.id+" і повернути зарезервовані товари на склад? Дію не можна скасувати автоматично."))return;
         save.disabled=true;
         try {
           const response=await fetch("/api/admin/orders/"+order.id+"/status",{method:"PATCH",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:select.value})});
           const result=await response.json();
           if(!response.ok)throw new Error(result.message || "Помилка збереження");
-          order.status=result.order.status;message.textContent="Статус замовлення №"+order.id+" оновлено.";message.className="admin-message-ok";render();
+          order.status=result.order.status;order.stock_restored=!!result.order.stock_restored;message.textContent=result.message||"Статус замовлення №"+order.id+" оновлено.";message.className="admin-message-ok";render();
         }catch(error){showError(error.message)}finally{save.disabled=false}
       });
       actions.append(select,save);card.append(actions);list.append(card);
@@ -67,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ordersTab.addEventListener("click",()=>{
     repairsPanel.hidden=true;ordersPanel.hidden=false;productsPanel.hidden=true;productsTab.classList.remove("active");productsTab.setAttribute("aria-pressed","false");ordersTab.classList.add("active");repairsTab.classList.remove("active");ordersTab.setAttribute("aria-pressed","true");repairsTab.setAttribute("aria-pressed","false");load();
   });
+  if (location.hash === "#orders") ordersTab.click();
   search.addEventListener("input",render);
   document.getElementById("adminOrdersRefresh").addEventListener("click",load);
 });

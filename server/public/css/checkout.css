@@ -199,3 +199,85 @@
     }
 
 }
+
+/* Checkout surface contrast: the common theme handles .checkout-card
+   but not .checkout-summary, so provide both theme variants consistently. */
+.checkout-card,.checkout-summary {
+  border:1px solid #e2e8f0;
+  color:#1e293b;
+}
+.checkout-card h2,.checkout-summary h2,
+.checkout-product h3,.summary-line,#checkoutTotal,#checkoutCount {
+  color:#1e293b;
+}
+.checkout-product p {color:#475569}
+.checkout-card input,.checkout-card textarea {
+  color:#1e293b;
+}
+.checkout-card input::placeholder,.checkout-card textarea::placeholder {
+  color:#64748b;
+}
+.checkout-button {background:#2563eb;color:#fff}
+.checkout-button:hover:not(:disabled) {background:#1d4ed8}
+.checkout-button:disabled {background:#94a3b8;color:#fff;opacity:.7;cursor:not-allowed;transform:none}
+.checkout-product .store-cart-photo-placeholder {
+  display:grid;place-items:center;width:70px;height:70px;
+  border-radius:12px;background:#eff6ff;font-size:31px;
+}
+html.dark .checkout-card,
+html.dark .checkout-summary {
+  background:#172235!important;
+  color:#e2e8f0!important;
+  border-color:#334155!important;
+  box-shadow:0 12px 35px rgba(0,0,0,.2);
+}
+html.dark .checkout-card h2,
+html.dark .checkout-summary h2,
+html.dark .checkout-product h3,
+html.dark .summary-line,
+html.dark #checkoutTotal,
+html.dark #checkoutCount {color:#f1f5f9!important}
+html.dark .checkout-product p {color:#b7c9df!important}
+html.dark .checkout-product,
+html.dark .summary-line {border-color:#40516b!important}
+html.dark .checkout-card input,
+html.dark .checkout-card textarea {
+  background:#101a2b!important;color:#f1f5f9!important;
+  border-color:#526783!important;
+}
+html.dark .checkout-product .store-cart-photo-placeholder {
+  background:#243b58;color:#d9e7fb;
+}
+html.dark .checkout-button:not(:disabled) {background:#2563eb!important;color:#fff!important}
+html.dark .checkout-button:hover:not(:disabled) {background:#1d4ed8!important}
+html.dark .checkout-button:disabled {
+  background:#475569!important;color:#d6e0ec!important;
+  opacity:.8;transform:none;
+}
+
+
+/* Final v1: explicit, accessible checkout contact and delivery form. */
+.v1-checkout-form label{display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:750;color:#263e5c}
+.v1-checkout-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.v1-checkout-form input,.v1-checkout-form textarea,.v1-checkout-form select{
+  width:100%;box-sizing:border-box;min-width:0;min-height:48px;
+  border:1px solid #cbd5e1;border-radius:13px;padding:12px 14px;
+  background:#f8fafc;color:#1e293b;font-size:15px;
+}
+.v1-checkout-form select{cursor:pointer}
+.v1-checkout-form input:focus,.v1-checkout-form select:focus,.v1-checkout-form textarea:focus{
+  outline:2px solid #60a5fa;outline-offset:1px;border-color:#2563eb;
+}
+#checkoutDeliveryDetails[hidden]{display:none!important}
+.v1-checkout-notice{background:#eff6ff;color:#245183;border-left:4px solid #3b82f6;padding:14px 16px;border-radius:9px;font-size:14px;line-height:1.65}
+.v1-checkout-status{font-size:14px;font-weight:700;min-height:20px;color:#166534}
+.v1-checkout-status:empty{display:none}
+.v1-checkout-status[data-error="true"]{color:#b91c1c}
+html.dark .v1-checkout-form label{color:#d9e9ff}
+html.dark .v1-checkout-form input,html.dark .v1-checkout-form textarea,html.dark .v1-checkout-form select{
+  background:#101a2b!important;color:#f1f5f9!important;border-color:#526783!important;
+}
+html.dark .v1-checkout-notice{background:#203651;color:#d0e6ff;border-color:#60a5fa}
+html.dark .v1-checkout-status{color:#86efac}
+html.dark .v1-checkout-status[data-error="true"]{color:#fecaca}
+@media(max-width:680px){.v1-checkout-pair{grid-template-columns:1fr}.checkout-card,.checkout-summary{padding:24px}}

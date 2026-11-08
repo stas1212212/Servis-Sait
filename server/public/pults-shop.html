@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Купити пульти | PULT+</title>
+    <title>Магазин електроніки, пультів і аксесуарів | PULT+</title>
 
     <!-- Tailwind -->
 
@@ -18,8 +18,12 @@
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/pults-shop.css">
+<link rel="stylesheet" href="/css/store-catalog.css">
     <link rel="stylesheet" href="css/cart-modal.css">
+    <link rel="stylesheet" href="css/experience.css">
 
+  <link rel="stylesheet" href="/css/location.css">
+<script src="/js/theme.js"></script>
 </head>
 
 <body class="bg-gray-50 text-gray-900">
@@ -105,39 +109,15 @@
 
                 </span>
 
-                <h1 class="text-6xl font-black leading-tight mb-8">
+                <h1 class="text-6xl font-black leading-tight mb-8" data-store-i18n="hero.title">Магазин електроніки та аксесуарів</h1>
 
-                    Купити пульт дистанційного керування
+                <p class="text-xl text-gray-600 mb-10" data-store-i18n="hero.text">Пульти, батарейки, запчастини, навушники, кабелі та інші корисні товари для вашої техніки.</p>
 
-                </h1>
-
-                <p class="text-xl text-gray-600 mb-10">
-
-                    Великий вибір оригінальних та сумісних пультів
-                    для телевізорів, кондиціонерів, воріт,
-                    колонок, приставок та іншої техніки.
-
-                </p>
-
-                <a href="#catalog"
-
-                   class="inline-block px-8 py-4 rounded-2xl bg-black text-white hover:bg-gray-800 transition">
-
-                    Перейти до каталогу
-
-                </a>
+                <a href="#catalog" class="inline-block px-8 py-4 rounded-2xl bg-black text-white hover:bg-gray-800 transition" data-store-i18n="hero.cta">Перейти до каталогу</a>
 
             </div>
 
-            <div class="text-center">
-
-                <img src="img/pult-hero.png"
-
-                     alt="Пульт"
-
-                     class="mx-auto max-h-[550px]">
-
-            </div>
+            <div class="store-hero-display" aria-hidden="true"><div class="store-hero-tile">🎮<span>Пульти</span></div><div class="store-hero-tile">🔋<span>Батарейки</span></div><div class="store-hero-tile">🎧<span>Навушники</span></div><div class="store-hero-tile">🔧<span>Запчастини</span></div></div>
 
         </div>
 
@@ -153,15 +133,11 @@
 
     <div class="max-w-7xl mx-auto px-6">
 
-        <h2 class="text-4xl font-bold text-center mb-14">
-
-            Категорії
-
-        </h2>
+        <h2 class="text-4xl font-bold text-center mb-14" data-store-i18n="categories.title">Категорії товарів</h2>
 
         <div
     id="categories"
-    class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-8">
+    class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-5">
 
 </div>
 
@@ -181,11 +157,11 @@
 
             <input
 
-                type="text"
+                type="search" id="catalogQuery" data-store-aria="search.button" data-store-placeholder="search.placeholder" aria-label="Пошук товарів"
 
-                placeholder="Пошук за моделлю пульта або телевізора...">
+                placeholder="Пошук за назвою, брендом, моделлю...">
 
-            <button>
+            <button type="button" id="catalogSearchButton" data-store-aria="search.button" aria-label="Шукати товари">
 
                 🔍
 
@@ -193,8 +169,13 @@
 
         </div>
 
+    <div class="exp-catalog-tools" role="group" aria-label="Фільтри товарів">
+      <label><span data-store-i18n="filters.category">Тип товару</span><select id="catalogCategory"><option value="">Усі категорії</option></select></label>
+      <label><span data-store-i18n="filters.brand">Бренд</span><select id="catalogBrand"><option value="">Усі бренди</option></select></label>
+      <label><span data-store-i18n="filters.sort">Сортування</span><select id="catalogSort"><option value="name" data-store-i18n="filters.name">За назвою</option><option value="price_asc" data-store-i18n="filters.cheap">Ціна: зростання</option><option value="price_desc" data-store-i18n="filters.expensive">Ціна: спадання</option><option value="stock" data-store-i18n="filters.stock">За наявністю</option></select></label>
+      <label class="exp-check"><input type="checkbox" id="catalogStock"> <span data-store-i18n="filters.onlyStock">Лише в наявності</span></label>
     </div>
-
+  </div>
 </section>
 
 <!-- ========================= -->
@@ -207,11 +188,7 @@
 
         <div class="flex items-center justify-between mb-12">
 
-            <h2 class="text-4xl font-bold">
-
-                Популярні пульти
-
-            </h2>
+            <h2 class="text-4xl font-bold" data-store-i18n="products.title">Каталог товарів</h2>
 
             <span
                 id="productCount"
@@ -222,9 +199,10 @@
 
         </div>
 
+        <p id="catalogStatus" role="status" aria-live="polite" class="store-catalog-status"></p>
         <div
              id="productList"
-             class="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
+             class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
         </div>
 
@@ -240,11 +218,7 @@
 
     <div class="max-w-7xl mx-auto px-6">
 
-        <h2 class="text-4xl font-bold text-center mb-14">
-
-            Чому купують у нас?
-
-        </h2>
+        <h2 class="text-4xl font-bold text-center mb-14" data-store-i18n="advantages.title">Чому купують у нас?</h2>
 
         <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
 
@@ -252,9 +226,9 @@
 
                 🚚
 
-                <h3>Швидка доставка</h3>
+                <h3 data-store-i18n="advantages.shipping">Доставка</h3>
 
-                <p>Відправляємо в день замовлення.</p>
+                <p data-store-i18n="advantages.shippingText">Спосіб та терміни узгоджуються перед замовленням.</p>
 
             </div>
 
@@ -262,9 +236,9 @@
 
                 ⭐
 
-                <h3>Гарантія</h3>
+                <h3 data-store-i18n="advantages.warranty">Гарантія</h3>
 
-                <p>На всі товари.</p>
+                <p data-store-i18n="advantages.warrantyText">Умови уточнюйте перед придбанням.</p>
 
             </div>
 
@@ -272,9 +246,9 @@
 
                 💳
 
-                <h3>Зручна оплата</h3>
+                <h3 data-store-i18n="advantages.payment">Оплата</h3>
 
-                <p>Онлайн або післяплата.</p>
+                <p data-store-i18n="advantages.paymentText">Доступні способи погоджуються з менеджером.</p>
 
             </div>
 
@@ -282,9 +256,9 @@
 
                 🎮
 
-                <h3>Якісні пульти</h3>
+                <h3 data-store-i18n="advantages.choice">Асортимент</h3>
 
-                <p>Оригінал та перевірені аналоги.</p>
+                <p data-store-i18n="advantages.choiceText">Пульти, аксесуари, запчастини та інші товари.</p>
 
             </div>
 
@@ -304,29 +278,55 @@
 
         <div class="cta-section">
 
-            <h2>
+            <h2 data-store-i18n="cta.title">Не знайшли потрібний товар?</h2>
 
-                Не знайшли потрібний пульт?
+            <p data-store-i18n="cta.text">Напишіть назву або модель техніки — допоможемо підібрати необхідне.</p>
 
-            </h2>
-
-            <p>
-
-                Напишіть модель вашої техніки —
-                ми швидко підберемо відповідний пульт.
-
-            </p>
-
-            <a href="contacts.html">
-
-                Написати нам
-
-            </a>
+            <a href="contacts.html" data-store-i18n="cta.link">Зв'язатися з нами</a>
 
         </div>
 
     </div>
 
+</section>
+
+<!-- PULT+ LOCATION: address comes from Admin → Contacts, not a hard-coded pin -->
+<section class="pult-location-section" data-location-widget aria-labelledby="pult-location-heading">
+  <div class="pult-location-shell">
+    <div class="pult-location-eyebrow">PULT+ SERVICE CENTER · КОНТАКТИ</div>
+    <h2 class="pult-location-heading" id="pult-location-heading">Як нас знайти</h2>
+    <p class="pult-location-lead">Дізнайтеся, де розташований сервісний центр, та побудуйте зручний маршрут. Якщо вам зручніше, можете оформити заявку на ремонт онлайн.</p>
+    <div class="pult-location-grid">
+      <div class="pult-location-details">
+        <h3>Наш сервісний центр</h3>
+        <div class="pult-location-detail">
+          <span class="pult-location-icon" aria-hidden="true">⌖</span>
+          <div><span class="pult-location-label">Адреса</span><span class="pult-location-value" data-location-address>Адреса уточнюється</span></div>
+        </div>
+        <div class="pult-location-detail">
+          <span class="pult-location-icon" aria-hidden="true">◷</span>
+          <div><span class="pult-location-label">Години роботи</span><span class="pult-location-value" data-location-hours>Графік роботи уточнюється</span></div>
+        </div>
+        <div class="pult-location-detail">
+          <span class="pult-location-icon" aria-hidden="true">✆</span>
+          <div><span class="pult-location-label">Телефон</span><span class="pult-location-value" data-location-phone>Номер телефону уточнюється</span></div>
+        </div>
+        <div class="pult-location-actions">
+          <a class="pult-location-directions" data-location-directions href="#" hidden>↗ Прокласти маршрут</a>
+          <a class="pult-location-secondary" href="/contacts.html">Усі контакти</a>
+        </div>
+      </div>
+      <div class="pult-location-map-panel">
+        <div class="pult-location-map" data-location-map>
+          <div class="pult-location-empty">
+            <span class="pult-location-empty-icon" aria-hidden="true">⌖</span>
+            <p>Карта з’явиться після уточнення адреси сервісного центру.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="pult-location-privacy">Карту надає Google Maps. Під час її завантаження браузер може передавати дані сервісу Google.</p>
+  </div>
 </section>
 
 </main>
@@ -341,15 +341,17 @@
 
 <script src="js/dropdown.js"></script>
 <script src="js/burger.js"></script>
-<script src="js/theme.js"></script>
+
 
 <script src="js/cart-modal.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/product.js"></script>
+<script src="/js/catalog-i18n.js"></script>
 <script src="js/catalog.js"></script>
 
 <script src="js/main.js"></script>
 
+<script src="/js/location.js"></script>
 </body>
 
 </html>

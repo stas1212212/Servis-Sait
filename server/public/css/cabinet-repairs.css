@@ -1,1 +1,130 @@
-.repair-history{margin-top:24px}.repair-history-item{padding:20px;border:1px solid #e2e8f0;border-radius:16px;margin-top:14px;background:#fff}.repair-history-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}.repair-history-top span{background:#eff6ff;color:#1d4ed8;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:700}.repair-history-item p{margin:7px 0;overflow-wrap:anywhere}.repair-history-item small{color:#64748b}.repair-history-empty{padding:22px;color:#64748b}
+/* PULT+ repair requests in the personal cabinet.
+   Keep the card surface and its text on the SAME theme palette. */
+.repair-history {
+  margin-top: 24px;
+}
+
+.repair-history-item {
+  margin-top: 14px;
+  padding: 20px;
+  border: 1px solid #dbe4ef;
+  border-radius: 16px;
+  background: #f8fafc;
+  color: #1e293b;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+}
+
+.repair-history-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.repair-history-top strong {
+  color: #0f172a;
+  font-weight: 750;
+}
+
+.repair-history-top span {
+  display: inline-flex;
+  align-items: center;
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.repair-history-item p {
+  margin: 7px 0;
+  color: #334155;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.repair-history-item p b,
+.repair-history-item p strong {
+  color: #0f172a;
+}
+
+.repair-history-item a {
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.repair-history-item a:hover {
+  color: #1e40af;
+}
+
+.repair-history-item a:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.repair-history-item small,
+.repair-history-empty {
+  color: #64748b;
+}
+
+.repair-history-empty {
+  padding: 22px;
+}
+
+/* The global dark theme previously recolored text but missed this nested
+   card background. Explicitly style BOTH the card and its descendants. */
+html.dark .repair-history-item {
+  background: #243248 !important;
+  color: #e2e8f0 !important;
+  border-color: #40526b !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+}
+
+html.dark .repair-history-item .repair-history-top strong,
+html.dark .repair-history-item p b,
+html.dark .repair-history-item p strong {
+  color: #f1f5f9 !important;
+}
+
+html.dark .repair-history-item p {
+  color: #d5e0f0 !important;
+}
+
+html.dark .repair-history-item .repair-history-top span {
+  background: #1e436e !important;
+  color: #bfdbfe !important;
+  border: 1px solid #416c9d;
+}
+
+html.dark .repair-history-item a {
+  color: #93c5fd !important;
+}
+
+html.dark .repair-history-item a:hover {
+  color: #dbeafe !important;
+}
+
+html.dark .repair-history-item a:focus-visible {
+  outline-color: #93c5fd;
+}
+
+html.dark .repair-history-item small,
+html.dark .repair-history-empty {
+  color: #afc0d7 !important;
+}
+
+@media (max-width: 600px) {
+  .repair-history-item {
+    padding: 16px;
+  }
+  .repair-history-top {
+    align-items: flex-start;
+  }
+}

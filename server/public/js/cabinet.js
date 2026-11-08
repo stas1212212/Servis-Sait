@@ -34,6 +34,23 @@ headers: {
 
     const user = data.user;
 
+    // Render the link ONLY after the authenticated server profile confirms admin role.
+    // An absent/non-admin role does not create any link in the DOM.
+    const adminSlot = document.getElementById("cabinetAdminLink");
+    if (adminSlot) {
+        adminSlot.replaceChildren();
+        if (user.role === "admin") {
+            const adminLink = document.createElement("a");
+            adminLink.href = "/admin.html";
+            adminLink.className = "cabinet-admin-shortcut";
+            adminLink.textContent = "🛡 Адмін-панель";
+            adminLink.dataset.i18n = "cabinet.adminLink";
+            adminLink.setAttribute("aria-label", "Відкрити панель адміністратора PULT+");
+            adminSlot.append(adminLink);
+            if (typeof applySiteLanguage === "function") applySiteLanguage();
+        }
+    }
+
     /*
      * Важно:
      * cabinet.html уже содержит слово "Вітаємо,"
@@ -202,6 +219,11 @@ function renderOrders(orders) {
             const formattedTotal = Number.isFinite(total)
                 ? `${formatMoney(total)} ₴`
                 : "—";
+            const carrierName={nova_poshta:"Нова пошта",ukrposhta:"Укрпошта",discuss:"Уточнення в менеджера"}[order.delivery_method]||"";
+            const place=[order.delivery_city,order.delivery_branch].filter(Boolean).join(", ");
+            const deliveryHtml=carrierName
+              ? '<span>Доставка: '+escapeHtml(carrierName)+(place?' · '+escapeHtml(place):'')+'</span>'
+              : '';
             const items = Array.isArray(order.items) ? order.items : [];
             const itemsHtml = items.length > 0
                 ? items.map(renderOrderItem).join("")
@@ -220,6 +242,7 @@ function renderOrders(orders) {
                             <strong>Замовлення #${orderId}</strong>
                             <span>Статус: ${status}</span>
                             <span>Дата: ${escapeHtml(date)}</span>
+                            ${deliveryHtml}
                         </div>
                         <strong>${formattedTotal}</strong>
                     </div>
@@ -228,11 +251,46 @@ function renderOrders(orders) {
                         <h4>Товари</h4>
                         ${itemsHtml}
                     </div>
+                    <div class="cabinet-order-actions">
+                        <button type="button" class="cabinet-order-hide" data-hide-order="${orderId}" aria-label="Прибрати замовлення №${orderId} з історії">
+                            Прибрати з історії
+                        </button>
+                    </div>
                 </article>
             `;
         })
         .join("");
 }
+
+// Event delegation: the order cards are rendered anew after each update.
+document.addEventListener("click", async (event) => {
+    const button = event.target.closest?.("[data-hide-order]");
+    if (!button) return;
+    const orderId = Number(button.dataset.hideOrder);
+    if (!Number.isSafeInteger(orderId) || orderId < 1) return;
+    if (!window.confirm(
+        "Прибрати замовлення №" + orderId + " з історії кабінету?\n\n" +
+        "ЦЕ НЕ СКАСОВУЄ замовлення та не повертає товари на склад. " +
+        "Інформація залишиться у адміністратора."
+    )) return;
+    button.disabled = true;
+    const feedback = document.getElementById("orderActionMessage");
+    if (feedback) feedback.textContent = "";
+    try {
+        const response = await fetch("/api/orders/" + orderId, {
+            method: "DELETE", credentials: "same-origin",
+            headers: {"Accept": "application/json"}
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message || "Не вдалося прибрати замовлення");
+        await loadOrders();
+        if (feedback) {feedback.dataset.error = "false";feedback.textContent = result.message;}
+    } catch (error) {
+        if (feedback) {feedback.dataset.error = "true";feedback.textContent = error.message;}
+        else alert(error.message);
+        button.disabled = false;
+    }
+});
 
 /* =========================================================
 ORDER ITEM
@@ -725,6 +783,8 @@ function formatOrderStatus(status) {
         pending: "Очікує обробки",
         processing: "В обробці",
         shipping: "В дорозі",
+        shipped: "Відправлено",
+        completed: "Завершено",
         delivered: "Доставлено",
         canceled: "Скасовано",
         cancelled: "Скасовано"

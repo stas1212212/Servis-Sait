@@ -3,8 +3,7 @@
 // =========================
 
 document.addEventListener("DOMContentLoaded", async () => {
-    document.documentElement.classList.toggle("dark", localStorage.getItem("theme") === "dark");
-    document.body.classList.toggle("dark", localStorage.getItem("theme") === "dark");
+    if (window.PultTheme) window.PultTheme.apply();
 
     // Pages such as cabinet.html do not load every shared script themselves.
     for (const [check, src] of [["initLanguageDropdown","/js/dropdown.js"],["initBurgerMenu","/js/burger.js"],["initTheme","/js/theme.js"]]) {
@@ -52,6 +51,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         script.onerror = resolve;
         document.head.append(script);
     });
+    try {
+        const response = await fetch("/api/experience/settings", {credentials:"same-origin"});
+        if (response.ok) {
+            const data = await response.json();
+            document.querySelectorAll("[data-site-setting]").forEach(node => {
+                const value = data.settings?.[node.dataset.siteSetting];
+                node.textContent = value || (typeof PULT_I18N !== "undefined" ? PULT_I18N[document.documentElement.lang]?.["site.unknown"] : null) || "Уточнюється";
+            });
+        }
+    } catch (error) { console.warn("Site contacts are unavailable", error); }
+
     initFormHandler();
 
 });

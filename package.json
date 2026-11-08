@@ -7,5 +7,11 @@
   },
   "allowScripts": {
     "bcrypt@6.0.0": true
+  },
+  "scripts": {
+    "start": "node server/app.js",
+    "test": "node --test tests/*.test.js",
+    "preflight": "node scripts/release-preflight.js",
+    "check:js": "node scripts/check-js.js"
   }
 }

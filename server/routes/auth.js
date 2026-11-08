@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const pool = require("../db");
+const {sameOrigin,consume,clear,regenerate}=require("../auth-security");
 
 const {
     getUserById,
@@ -14,9 +15,15 @@ const router = express.Router();
 // POST /api/auth/register
 // =========================
 
-router.post("/register", async (req, res) => {
+router.post("/register",sameOrigin, async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        if(typeof name!=="string"||typeof email!=="string"||typeof password!=="string"||
+           name.trim().length<2||name.trim().length>100||email.length>254||
+           !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
+          return res.status(400).json({message:"Перевірте ім’я, email та пароль"});
+        const cleanName=name.trim(),cleanEmail=email.trim().toLowerCase();
+        if(!await consume("register-ip:"+req.ip,8,60))return res.status(429).json({message:"Забагато спроб реєстрації. Спробуйте пізніше"});
 
 
         if (!name || !email || !password) {
@@ -26,16 +33,16 @@ router.post("/register", async (req, res) => {
         }
 
 
-        if (password.length < 6) {
+        if (password.length < 10 || password.length > 72) {
             return res.status(400).json({
-                message: "Пароль повинен містити щонайменше 6 символів"
+                message: "Пароль повинен містити від 10 до 72 символів"
             });
         }
 
 
         const existingUser = await pool.query(
-            "SELECT id FROM users WHERE email = $1",
-            [email]
+            "SELECT id FROM users WHERE lower(email) = $1",
+            [cleanEmail]
         );
 
         if (existingUser.rows.length > 0) {
@@ -45,24 +52,20 @@ router.post("/register", async (req, res) => {
         }
 
     
-        const passwordHash = await bcrypt.hash(password, 10);
+        const passwordHash = await bcrypt.hash(password, 12);
 
 
         const result = await pool.query(
             `INSERT INTO users (name, email, password_hash)
              VALUES ($1, $2, $3)
-             RETURNING id, name, email, created_at`,
-            [name, email, passwordHash]
+             RETURNING id, name, email, created_at, auth_version`,
+            [cleanName, cleanEmail, passwordHash]
         );
 
         const user = result.rows[0];
 
         // Сразу создаём авторизованную сессию
-        req.session.user = {
-            id: user.id,
-            name: user.name,
-            email: user.email
-        };
+        await regenerate(req,user);
 
         res.status(201).json({
             message: "Реєстрація успішна",
@@ -85,21 +88,26 @@ router.post("/register", async (req, res) => {
 // POST /api/auth/login
 // =========================
 
-router.post("/login", async (req, res) => {
+router.post("/login",sameOrigin, async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        if (!email || !password) {
+        if(typeof email!=="string"||typeof password!=="string"||email.length>254||password.length>1024)
+          return res.status(400).json({message:"Некоректні дані входу"});
+        const cleanEmail=email.trim().toLowerCase();
+        if (!cleanEmail || !password) {
             return res.status(400).json({
                 message: "Введіть email та пароль"
             });
         }
 
+        if(!await consume("login-ip:"+req.ip,25,15)||!await consume("login-account:"+cleanEmail,10,15))
+          return res.status(429).json({message:"Забагато спроб входу. Спробуйте пізніше"});
         const result = await pool.query(
-            `SELECT id, name, email, password_hash
+            `SELECT id, name, email, password_hash, auth_version
              FROM users
-             WHERE email = $1`,
-            [email]
+             WHERE lower(email) = $1`,
+            [cleanEmail]
         );
 
         if (result.rows.length === 0) {
@@ -123,11 +131,8 @@ router.post("/login", async (req, res) => {
 
         // ВАЖНО:
         // сохраняем пользователя в серверной сессии
-        req.session.user = {
-            id: user.id,
-            name: user.name,
-            email: user.email
-        };
+        await regenerate(req,user);
+        await clear("login-account:"+cleanEmail);
 
         res.json({
             message: "Вхід успішний",
@@ -171,7 +176,8 @@ router.get("/me", async (req, res) => {
         req.session.user = {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            auth_version: user.auth_version
         };
 
         res.json({
@@ -193,7 +199,7 @@ router.get("/me", async (req, res) => {
 // PUT /api/auth/profile
 // =========================
 
-router.put("/profile", async (req, res) => {
+router.put("/profile",sameOrigin, async (req, res) => {
     try {
         if (!req.session.user) {
             return res.status(401).json({
@@ -255,7 +261,8 @@ router.put("/profile", async (req, res) => {
         req.session.user = {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            auth_version: user.auth_version
         };
 
         res.json({
@@ -278,7 +285,7 @@ router.put("/profile", async (req, res) => {
 // POST /api/auth/logout
 // =========================
 
-router.post("/logout", (req, res) => {
+router.post("/logout",sameOrigin, (req, res) => {
     req.session.destroy((error) => {
 
         if (error) {
@@ -289,7 +296,7 @@ router.post("/logout", (req, res) => {
             });
         }
 
-        res.clearCookie("connect.sid");
+        res.clearCookie("pult.sid");
 
         res.json({
             message: "Ви вийшли з акаунта"

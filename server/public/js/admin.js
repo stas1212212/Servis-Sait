@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       head.append(el("strong", "Заявка №" + item.id));
       head.append(el("time", item.created_at ? new Date(item.created_at).toLocaleString("uk-UA") : "—"));
       card.append(head);
-      for (const [label,value] of [["Клієнт",item.name],["Телефон",item.phone],["Email",item.email],["Пристрій",[item.device_type,item.brand,item.model].filter(Boolean).join(" · ")],["Несправність",item.issue],["Історія",item.issue_cause],["Тип ремонту",item.repair_type]]) {
+      for (const [label,value] of [["Код відстеження",item.tracking_code],["Клієнт",item.name],["Телефон",item.phone],["Email",item.email],["Пристрій",[item.device_type,item.brand,item.model].filter(Boolean).join(" · ")],["Несправність",item.issue],["Історія",item.issue_cause],["Тип ремонту",item.repair_type]]) {
         if (!value) continue;
         const p = el("p"); const b = el("b",label + ": "); p.append(b,document.createTextNode(String(value)));card.append(p);
       }

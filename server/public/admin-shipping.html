@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="uk">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Логістика Нової пошти та Укрпошти | PULT+</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/experience.css"><link rel="stylesheet" href="/css/shipping.css">
+<script src="/js/theme.js"></script>
+</head><body><div id="header"></div>
+<main class="exp-main"><div class="exp-container">
+<section class="exp-hero"><p class="ship-eyebrow" data-shipping-i18n="admin.eyebrow">PULT+ · АДМІНІСТРАТОР</p><h1 data-shipping-i18n="admin.title">Логістика Нової пошти</h1>
+<p data-shipping-i18n="admin.subtitle">Ручний облік ТТН, приймання техніки та зворотного відправлення.</p></section>
+<p id="shippingAdminMessage" role="status" aria-live="polite" data-shipping-i18n="admin.loading">Перевіряємо доступ…</p>
+<div id="shippingAdminWorkspace" hidden>
+
+<section class="ship-card" id="carrierLocationsPanel">
+  <h2 data-shipping-i18n="carrier.adminTitle">Відділення для приймання техніки</h2>
+  <p class="exp-muted" data-shipping-i18n="carrier.adminHelp">Налаштуйте точну адресу та координати відділення кожного перевізника. ПІБ і телефон одержувача бачить лише адміністратор, а клієнт — після підтвердження заявки.</p>
+  <form id="carrierLocationForm" class="ship-admin-carrier-form">
+    <label class="ship-field"><span data-shipping-i18n="carrier.which">Перевізник</span>
+      <select name="carrier" id="carrierAdminSelect">
+        <option value="nova_poshta">Нова пошта</option>
+        <option value="ukrposhta">Укрпошта</option>
+      </select></label>
+    <div class="ship-columns">
+      <label class="ship-field"><span data-shipping-i18n="carrier.person">ПІБ фізичної особи-одержувача</span><input name="recipient_name" maxlength="120" autocomplete="off"></label>
+      <label class="ship-field"><span data-shipping-i18n="carrier.phone">Номер телефону одержувача</span><input name="recipient_phone" maxlength="30" autocomplete="off"></label>
+      <label class="ship-field"><span data-shipping-i18n="carrier.city">Місто</span><input name="city" maxlength="120" placeholder="Яготин"></label>
+      <label class="ship-field"><span data-shipping-i18n="carrier.branch">Номер / назва відділення</span><input name="warehouse" maxlength="180" placeholder="Відділення №… / індекс"></label>
+    </div>
+    <label class="ship-field"><span data-shipping-i18n="carrier.address">Повна адреса відділення: вулиця, будинок, місто</span><input name="address" maxlength="240" placeholder="Вулиця, будинок, м. Яготин, Київська область"></label>
+    <div class="ship-columns">
+      <label class="ship-field"><span data-shipping-i18n="carrier.latitude">Широта (Google Maps)</span><input type="number" name="latitude" step="any" min="-90" max="90" placeholder="50.xxxxxx"></label>
+      <label class="ship-field"><span data-shipping-i18n="carrier.longitude">Довгота (Google Maps)</span><input type="number" name="longitude" step="any" min="-180" max="180" placeholder="31.xxxxxx"></label>
+    </div>
+    <p class="exp-muted" data-shipping-i18n="carrier.coordsHelp">Щоб карта показувала точне відділення, відкрийте його в Google Maps, скопіюйте координати позначки та перевірте, що вони відповідають саме цьому відділенню. Не використовуйте загальну позначку міста.</p>
+    <div class="submitted-actions"><button type="submit" class="ship-button" data-shipping-i18n="carrier.save">Зберегти відділення</button></div>
+    <p id="carrierAdminFeedback" class="ship-result" role="status"></p>
+  </form>
+</section>
+
+<section class="ship-card" id="shippingLegacyRecipient" hidden>
+  <h2 data-shipping-i18n="admin.recipientTitle">Одержувач посилок — фізична особа</h2>
+  <p class="exp-muted" data-shipping-i18n="admin.recipientHelp">Заповніть реквізити одержувача.</p>
+  <form id="shippingRecipientForm"><div class="ship-columns">
+    <label class="ship-field"><span data-shipping-i18n="admin.name">ПІБ одержувача</span><input name="full_name" maxlength="120" required autocomplete="off"></label>
+    <label class="ship-field"><span data-shipping-i18n="admin.phone">Телефон одержувача</span><input name="phone" type="tel" maxlength="30" required autocomplete="off"></label>
+    <label class="ship-field"><span data-shipping-i18n="admin.city">Місто</span><input name="city" maxlength="120" required autocomplete="off"></label>
+    <label class="ship-field"><span data-shipping-i18n="admin.branch">Відділення Нової пошти (№ або адреса)</span><input name="warehouse" maxlength="180" required autocomplete="off"></label>
+  </div><button class="ship-button" type="submit" data-shipping-i18n="admin.saveRecipient">Зберегти реквізити</button><p id="shippingRecipientStatus" role="status"></p></form>
+</section>
+<section style="margin-top:26px">
+  <h2 style="font-size:24px;font-weight:800;margin-bottom:15px" data-shipping-i18n="admin.requests">Заявки та відправлення</h2>
+  <label class="ship-field" style="max-width:600px"><span data-shipping-i18n="admin.search">Пошук за номером заявки, клієнтом чи ТТН</span><input id="shippingAdminSearch" type="search" data-shipping-placeholder="admin.searchPlaceholder" placeholder="Знайти заявку…" autocomplete="off"></label>
+  <div id="shippingAdminList" class="ship-list"></div>
+</section>
+<p style="margin-top:25px"><a class="ship-button" style="display:inline-block;text-decoration:none" href="/admin.html" data-shipping-i18n="admin.back">← До заявок</a></p>
+</div></div></main><div id="footer"></div>
+<script src="/js/dropdown.js"></script><script src="/js/burger.js"></script><script src="/js/cart.js"></script><script src="/js/main.js"></script><script src="/js/shipping-i18n.js"></script><script src="/js/shipping-admin.js?v=20261108-admin-fix"></script><script src="/js/shipping-carrier-admin.js?v=20261108-admin-fix"></script>
+</body></html>

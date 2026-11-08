@@ -1,1 +1,94 @@
-document.addEventListener("DOMContentLoaded",()=>{const form=document.getElementById("serviceRepairForm");if(!form)return;const buttons=[...document.querySelectorAll(".service-brand")],image=document.getElementById("serviceImage"),title=document.getElementById("serviceBrandTitle"),brandInput=document.getElementById("selectedBrand"),feedback=document.getElementById("serviceFeedback");buttons.forEach(button=>button.addEventListener("click",()=>{buttons.forEach(b=>{b.classList.toggle("active",b===button);b.setAttribute("aria-pressed",String(b===button))});brandInput.value=button.dataset.brand;title.textContent=button.dataset.brand;image.src=button.dataset.image}));form.addEventListener("submit",async event=>{event.preventDefault();const submit=form.querySelector('button[type="submit"]'),original=submit.textContent,data=new FormData(form);submit.disabled=true;submit.textContent="Відправлення...";feedback.textContent="";const payload={name:data.get("name"),phone:data.get("phone"),email:data.get("email"),device_type:form.dataset.deviceType,brand:data.get("brand"),model:data.get("model"),issue:data.get("problem"),issue_cause:data.get("history"),repair_type:data.get("repair_type")};try{const response=await fetch("/api/repairs",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});const result=await response.json();if(!response.ok)throw new Error(result.error||"Не вдалося відправити заявку");feedback.dataset.error="false";feedback.textContent="Заявку успішно надіслано!";form.reset();brandInput.value=buttons.find(b=>b.classList.contains("active"))?.dataset.brand||""}catch(error){feedback.dataset.error="true";feedback.textContent=error.message||"Помилка відправлення заявки"}finally{submit.disabled=false;submit.textContent=original}})});
+"use strict";
+document.addEventListener("DOMContentLoaded", () => {
+  const t=key=>window.PultShippingI18n?.t(key)||key;
+  const form=document.getElementById("serviceRepairForm");
+  if(!form)return;
+  const buttons=Array.from(document.querySelectorAll(".service-brand"));
+  const image=document.getElementById("serviceImage");
+  const title=document.getElementById("serviceBrandTitle");
+  const brandInput=document.getElementById("selectedBrand");
+  const feedback=document.getElementById("serviceFeedback");
+  for(const button of buttons)button.addEventListener("click",()=>{
+    for(const other of buttons){other.classList.toggle("active",other===button);other.setAttribute("aria-pressed",String(other===button));}
+    if(brandInput)brandInput.value=button.dataset.brand||"";
+    if(title)title.textContent=button.dataset.brand||"";
+    if(image&&button.dataset.image)image.src=button.dataset.image;
+  });
+
+  const section=document.createElement("fieldset");
+  section.className="service-shipping";
+  section.hidden=true;
+  section.innerHTML=[
+    '<legend data-shipping-i18n="form.legend">Доставка Новою поштою</legend>',
+    '<label class="service-shipping-option"><input type="checkbox" name="shipping_enabled" id="shippingEnabled"> <span data-shipping-i18n="form.enable">Надіслати пристрій у PULT+ через відділення Нової пошти</span></label>',
+    '<div class="service-shipping-fields" id="shippingDetails" hidden>',
+    '<p data-shipping-i18n="form.warning">До підтвердження реквізитів не відправляйте пристрій.</p>',
+    '<label><span data-shipping-i18n="form.returnCity">Місто для зворотної доставки</span><input name="return_city" maxlength="120" autocomplete="address-level2" data-shipping-placeholder="form.returnCityPlaceholder" placeholder="Наприклад, Київ"></label>',
+    '<label><span data-shipping-i18n="form.returnBranch">Відділення Нової пошти для повернення</span><input name="return_warehouse" maxlength="180" data-shipping-placeholder="form.returnBranchPlaceholder" placeholder="Номер або адреса відділення"></label>',
+    '<p class="service-shipping-note" data-shipping-i18n="form.note">Після відправлення введіть ТТН у кабінеті.</p>',
+    '</div>'
+  ].join("");
+  const before=feedback||form.querySelector('button[type="submit"]');
+  if(before)form.insertBefore(section,before);
+  window.PultShippingI18n?.apply();
+  const shippingCheckbox=section.querySelector("#shippingEnabled");
+  const shippingDetails=section.querySelector("#shippingDetails");
+  const returnCity=section.querySelector('[name="return_city"]');
+  const returnWarehouse=section.querySelector('[name="return_warehouse"]');
+  function showShipping(){
+    shippingDetails.hidden=!shippingCheckbox.checked;
+    returnCity.required=shippingCheckbox.checked;
+    returnWarehouse.required=shippingCheckbox.checked;
+  }
+  shippingCheckbox.addEventListener("change",showShipping);
+  showShipping();
+  fetch("/api/shipping/availability",{credentials:"same-origin"})
+    .then(r=>r.ok?r.json():{ready:false})
+    .then(data=>{
+      section.hidden=!data.ready;
+      if(!data.ready){shippingCheckbox.checked=false;showShipping();}
+    })
+    .catch(()=>{section.hidden=true;shippingCheckbox.checked=false;showShipping();});
+
+  form.addEventListener("submit",async event=>{
+    event.preventDefault();
+    const submit=form.querySelector('button[type="submit"]'),original=submit.textContent,data=new FormData(form);
+    const payload={
+      name:data.get("name"),phone:data.get("phone"),email:data.get("email"),
+      device_type:form.dataset.deviceType,brand:data.get("brand"),model:data.get("model"),
+      issue:data.get("problem"),issue_cause:data.get("history"),repair_type:data.get("repair_type")
+    };
+    if(!section.hidden&&shippingCheckbox.checked)payload.shipping={
+      return_city:String(data.get("return_city")||"").trim(),
+      return_warehouse:String(data.get("return_warehouse")||"").trim()
+    };
+    submit.disabled=true;submit.textContent=t("form.submitting");feedback.textContent="";
+    try{
+      const response=await fetch("/api/repairs",{
+        method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(payload)
+      });
+      const result=await response.json();
+      if(!response.ok)throw new Error(result.message||result.error||t("form.error"));
+      // Persist only minimal confirmation metadata in this browser tab.
+      // Hash-based fallback works if sessionStorage is disabled (no phone/email in URL).
+      const requestId=Number(result.request?.id);
+      const code=String(result.request?.tracking_code||"");
+      const hasCode=/^RP-[A-F0-9]{24,32}$/.test(code);
+      const receipt={
+        id:Number.isSafeInteger(requestId)&&requestId>0?requestId:null,
+        code:hasCode?code:"",
+        shipping:!!payload.shipping,
+        token:/^[a-f0-9]{64}$/.test(result.delivery_token||"")?result.delivery_token:null
+      };
+      try{sessionStorage.setItem("pult:last-repair",JSON.stringify(receipt));}
+      catch(error){/* The confirmation page can also read the location hash. */}
+      const parameters=new URLSearchParams();
+      if(receipt.id)parameters.set("id",String(receipt.id));
+      if(hasCode)parameters.set("code",code);
+      parameters.set("shipping",receipt.shipping?"1":"0");
+      window.location.assign("/repair-submitted.html#"+parameters.toString());
+    }catch(error){feedback.dataset.error="true";feedback.textContent=error.message||t("form.error");}
+    finally{submit.disabled=false;submit.textContent=original;}
+  });
+});

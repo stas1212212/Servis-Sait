@@ -55,10 +55,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Для большой кнопки в бургер-меню
             if (link.textContent.includes("Особистий кабінет")) {
-                link.innerHTML = `👤 ${name}`;
+                link.textContent = "👤 " + name;
             } else {
                 // Маленькая кнопка в основной шапке — показываем имя рядом с иконкой (не ломая верстку)
-                link.innerHTML = `👤 <span class="ml-2 hidden sm:inline">${name}</span>`;
+                const caption = document.createElement("span");
+                caption.className = "ml-2 hidden sm:inline";
+                caption.textContent = name;
+                link.replaceChildren(document.createTextNode("👤"), caption);
             }
 
             link.title = name;

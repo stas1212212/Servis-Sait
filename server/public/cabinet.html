@@ -11,7 +11,9 @@
 
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/cabinet.css">
+<link rel="stylesheet" href="/css/cabinet-repairs.css?v=20261104">
 
+  <script src="/js/theme.js"></script>
 </head>
 
 <body>
@@ -49,7 +51,7 @@
         </section>
 
 
-        <nav class="cabinet-quick-links" aria-label="Швидка навігація"><a href="#ordersTitle">📦 Мої замовлення</a><a href="#repairsTitle">🔧 Мої ремонти</a><a href="/pults-shop.html">🛍 Магазин пультів</a><a href="#settingsTitle">⚙ Налаштування</a></nav>
+        <nav class="cabinet-quick-links" aria-label="Швидка навігація"><a href="#ordersTitle">📦 Мої замовлення</a><a href="#repairsTitle">🔧 Мої ремонти</a><a href="/shipping.html">🚚 Доставка ремонту</a><a href="/pults-shop.html">🛍 Магазин пультів</a><a href="#settingsTitle">⚙ Налаштування</a><span id="cabinetAdminLink" class="cabinet-admin-link-slot"></span></nav>
 
         <!-- =================================================
              LOADING
@@ -115,7 +117,7 @@
 
                     <div>
                         <span class="cabinet-stat-label">
-                            Витрачено
+                            Сума в історії
                         </span>
 
                         <strong id="ordersTotal">
@@ -292,6 +294,7 @@
                     список заказов.
                 -->
 
+                <p id="orderActionMessage" class="cabinet-order-feedback" role="status" aria-live="polite"></p>
                 <div id="ordersContent">
 
                     <div class="orders-empty">
@@ -498,12 +501,11 @@
 <!-- =================================================
      SCRIPTS
      ================================================= -->
-<script src="/js/header.js"></script>
 <script src="/js/main.js"></script>
 
 <script src="/js/cabinet.js"></script>
 <script src="/js/cabinet-repairs.js"></script>
-<link rel="stylesheet" href="/css/cabinet-repairs.css">
+
 
 </body>
 

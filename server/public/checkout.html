@@ -13,9 +13,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/checkout.css">
-    <link rel="stylesheet" href="css/cart-modal.css">
+    <link rel="stylesheet" href="css/checkout.css?v=20261108-final">
+    <link rel="stylesheet" href="css/cart-modal.css?v=20261108">
 
+  <script src="/js/theme.js"></script>
 </head>
 
 <body class="bg-gray-50 text-gray-900">
@@ -58,34 +59,40 @@
 
                     </h2>
 
-                    <form id="checkoutForm">
-
-                        <div class="grid md:grid-cols-2 gap-6">
-
-                            <input
-                                type="text"
-                                placeholder="Ім'я"
-                                required>
-
-                            <input
-                                type="tel"
-                                placeholder="Телефон"
-                                required>
-
+                    <form id="checkoutForm" class="v1-checkout-form">
+                        <div class="v1-checkout-pair">
+                          <label>Ваше ім'я
+                            <input type="text" name="customer_name" required autocomplete="name" minlength="2" maxlength="120" placeholder="Ім'я та прізвище">
+                          </label>
+                          <label>Контактний телефон
+                            <input type="tel" name="customer_phone" required autocomplete="tel" maxlength="30" placeholder="+380...">
+                          </label>
                         </div>
-
-                        <input
-                            type="email"
-                            placeholder="Email">
-
-                        <input
-                            type="text"
-                            placeholder="Місто">
-
-                        <textarea
-                            placeholder="Коментар до замовлення"
-                            rows="5"></textarea>
-
+                        <label>Email для зв'язку (необов'язково)
+                          <input type="email" name="customer_email" maxlength="254" autocomplete="email" placeholder="example@email.com">
+                        </label>
+                        <label>Як ви хочете отримати товар?
+                          <select id="checkoutDeliveryMethod" name="delivery_method" required>
+                            <option value="nova_poshta">Нова пошта</option>
+                            <option value="ukrposhta">Укрпошта</option>
+                            <option value="discuss">Узгодити доставку з менеджером</option>
+                          </select>
+                        </label>
+                        <div id="checkoutDeliveryDetails">
+                          <div class="v1-checkout-pair">
+                            <label>Місто
+                              <input type="text" name="delivery_city" maxlength="120" autocomplete="address-level2" required placeholder="Місто отримання">
+                            </label>
+                            <label>Відділення / поштовий індекс
+                              <input type="text" name="delivery_branch" maxlength="180" required placeholder="№ відділення або індекс">
+                            </label>
+                          </div>
+                        </div>
+                        <label>Коментар до замовлення (необов'язково)
+                          <textarea name="customer_comment" maxlength="1000" placeholder="Уточнення щодо товару, доставки або зв'язку" rows="4"></textarea>
+                        </label>
+                        <p class="v1-checkout-notice">Після замовлення менеджер PULT+ підтвердить наявність товару, вартість доставки, спосіб оплати та подальші кроки. Карткову оплату цей сайт поки не приймає. <a href="/privacy.html" target="_blank" rel="noopener noreferrer">Як ми обробляємо персональні дані</a>.</p>
+                        <p id="checkoutStatus" role="status" aria-live="polite" class="v1-checkout-status"></p>
                     </form>
 
                 </div>
@@ -143,7 +150,7 @@
 
                     <button
                         form="checkoutForm"
-                        class="checkout-button">
+                        class="checkout-button" type="submit">
 
                         Підтвердити замовлення
 
@@ -167,7 +174,7 @@
 
 <script src="js/dropdown.js"></script>
 <script src="js/burger.js"></script>
-<script src="js/theme.js"></script>
+
 <script src="js/cart.js"></script>
 <script src="js/checkout.js"></script>
 <script src="js/main.js"></script>
