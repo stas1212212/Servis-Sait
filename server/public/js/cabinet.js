@@ -219,6 +219,11 @@ function renderOrders(orders) {
             const formattedTotal = Number.isFinite(total)
                 ? `${formatMoney(total)} ₴`
                 : "—";
+            const carrierName={nova_poshta:"Нова пошта",ukrposhta:"Укрпошта",discuss:"Уточнення в менеджера"}[order.delivery_method]||"";
+            const place=[order.delivery_city,order.delivery_branch].filter(Boolean).join(", ");
+            const deliveryHtml=carrierName
+              ? '<span>Доставка: '+escapeHtml(carrierName)+(place?' · '+escapeHtml(place):'')+'</span>'
+              : '';
             const items = Array.isArray(order.items) ? order.items : [];
             const itemsHtml = items.length > 0
                 ? items.map(renderOrderItem).join("")
@@ -237,6 +242,7 @@ function renderOrders(orders) {
                             <strong>Замовлення #${orderId}</strong>
                             <span>Статус: ${status}</span>
                             <span>Дата: ${escapeHtml(date)}</span>
+                            ${deliveryHtml}
                         </div>
                         <strong>${formattedTotal}</strong>
                     </div>
@@ -777,6 +783,8 @@ function formatOrderStatus(status) {
         pending: "Очікує обробки",
         processing: "В обробці",
         shipping: "В дорозі",
+        shipped: "Відправлено",
+        completed: "Завершено",
         delivered: "Доставлено",
         canceled: "Скасовано",
         cancelled: "Скасовано"
