@@ -448,8 +448,10 @@ async function logout() {
             method: "POST",
             credentials: "same-origin",
             headers: {
-                Accept: "application/json"
-            }
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: "{}"
         });
 
         if (!response.ok) {

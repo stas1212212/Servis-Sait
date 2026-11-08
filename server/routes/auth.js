@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const pool = require("../db");
-const {sameOrigin,consume,clear,regenerate}=require("../auth-security");
+const {sameOrigin,sameOriginRequest,consume,clear,regenerate}=require("../auth-security");
 
 const {
     getUserById,
@@ -285,7 +285,7 @@ router.put("/profile",sameOrigin, async (req, res) => {
 // POST /api/auth/logout
 // =========================
 
-router.post("/logout",sameOrigin, (req, res) => {
+router.post("/logout",sameOriginRequest, (req, res) => {
     req.session.destroy((error) => {
 
         if (error) {

@@ -5,12 +5,20 @@ const pool=require("./db");
 const KEY=process.env.SESSION_SECRET||"PULT_PLUS_DEV_SECRET_CHANGE_LATER";
 let checkedAttempts=0;
 function hashKey(value){return crypto.createHmac("sha256",KEY).update(value).digest("hex");}
-function sameOrigin(req,res,next){
+// Logout deliberately does not require a JSON request body. It still
+// rejects cross-origin attempts, and JSON checks remain mandatory for
+// endpoints that actually accept a request payload.
+function sameOriginRequest(req,res,next){
   const origin=req.get("origin"),source=req.get("sec-fetch-site");
   if((origin&&origin!==req.protocol+"://"+req.get("host"))||(source&&source!=="same-origin"&&source!=="none"))
     return res.status(403).json({message:"Недозволене джерело запиту"});
-  if(!req.is("application/json"))return res.status(415).json({message:"Очікується JSON"});
   next();
+}
+function sameOrigin(req,res,next){
+  return sameOriginRequest(req,res,()=>{
+    if(!req.is("application/json"))return res.status(415).json({message:"Очікується JSON"});
+    next();
+  });
 }
 async function consume(key,max,minutes){
   const digest=hashKey(key);
@@ -34,4 +42,4 @@ async function regenerate(req,user){
   await new Promise((resolve,reject)=>req.session.regenerate(error=>error?reject(error):resolve()));
   req.session.user={id:user.id,name:user.name,email:user.email,auth_version:user.auth_version};
 }
-module.exports={sameOrigin,consume,clear,regenerate};
+module.exports={sameOrigin,sameOriginRequest,consume,clear,regenerate};
