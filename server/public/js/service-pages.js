@@ -41,6 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
   ].join("");
   const before=feedback||form.querySelector('button[type="submit"]');
   if(before)form.insertBefore(section,before);
+  const challengeSlot=document.createElement("div");
+  challengeSlot.className="pult-security-slot";
+  form.insertBefore(challengeSlot,before);
+  let challengeError=null;
+  const challengePromise=window.PultTurnstile.mount(challengeSlot,"repair")
+    .catch(error=>{challengeError=error;challengeSlot.textContent=error.message;return null;});
   window.PultShippingI18n?.apply();
   const shippingCheckbox=section.querySelector("#shippingEnabled");
   const shippingDetails=section.querySelector("#shippingDetails");
@@ -97,6 +103,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     submit.disabled=true;submit.textContent=t("form.submitting");feedback.textContent="";
     try{
+      const challenge=await challengePromise;
+      if(!challenge)throw challengeError||new Error("Перевірка безпеки недоступна.");
+      if(challenge.enabled){
+        const token=challenge.token();
+        if(!token)throw new Error("Завершіть перевірку Cloudflare перед надсиланням заявки.");
+        payload.turnstile_token=token;
+      }
       const response=await fetch("/api/repairs",{
         method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},
         body:JSON.stringify(payload)
@@ -123,7 +136,10 @@ document.addEventListener("DOMContentLoaded", () => {
       parameters.set("shipping",receipt.shipping?"1":"0");
       if(receipt.carrier)parameters.set("carrier",receipt.carrier);
       window.location.assign("/repair-submitted.html#"+parameters.toString());
-    }catch(error){feedback.dataset.error="true";feedback.textContent=error.message||t("form.error");}
+    }catch(error){
+      feedback.dataset.error="true";feedback.textContent=error.message||t("form.error");
+      challengePromise.then(widget=>{if(widget?.enabled)widget.reset();}).catch(()=>{});
+    }
     finally{submit.disabled=false;submit.textContent=original;}
   });
 });
