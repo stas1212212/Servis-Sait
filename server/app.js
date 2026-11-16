@@ -6,6 +6,8 @@ if (fs.existsSync(localEnv) && typeof process.loadEnvFile === 'function') proces
 const session = require('express-session');
 const pool = require('./db');
 const PostgresSessionStore = require('./session-store');
+const {getConfig,publicConfig,writeLimiter,turnstileGuard}=require("./middleware/traffic-protection");
+getConfig(); // Refuse an unprotected production boot or incomplete key pair.
 const app = express();
 if (process.env.NODE_ENV === 'production' && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length<32 || /replace_with|CHANGE_LATER|PULT_PLUS_DEV/i.test(process.env.SESSION_SECRET))) throw new Error('Set a strong non-placeholder SESSION_SECRET before production startup');
 if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
@@ -52,6 +54,18 @@ app.use(session({
 }));
 
 app.use('/api', require('./middleware/sessionVersion'));
+// Only the public sitekey is exposed. The Turnstile secret never leaves Node.
+app.get("/api/security/turnstile",(req,res)=>{
+  res.set("Cache-Control","no-store");
+  res.json(publicConfig());
+});
+// PostgreSQL-backed shared-IP throttles run *before* expensive writes and
+// before contacting Turnstile. Existing login throttles remain in auth.js.
+app.use("/api/repairs",writeLimiter("repair",6,10),turnstileGuard("repair"));
+app.use("/api/auth/register",writeLimiter("register",8,60),turnstileGuard("register"));
+app.use("/api/experience/password/forgot",writeLimiter("forgot",8,20),turnstileGuard("forgot"));
+app.use("/api/orders",writeLimiter("checkout",12,10));
+
 // Even if someone manually types a known admin URL, the HTML page itself
 // must be protected; privileged API routes also check the DB role separately.
 const requireAdminPage = require('./middleware/requireAdmin');

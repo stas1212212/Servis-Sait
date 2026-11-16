@@ -12,18 +12,34 @@ document.addEventListener("DOMContentLoaded", () => {
     return data;
   }
   const forgot=$("forgotForm");
+  let forgotChallengePromise=Promise.resolve({enabled:false,token:()=>"",reset:()=>{}}),forgotChallengeError=null;
+  if(forgot){
+    const host=document.createElement("div");
+    host.className="pult-security-slot";
+    forgot.insertBefore(host,forgot.querySelector('button[type="submit"]'));
+    forgotChallengePromise=window.PultTurnstile.mount(host,"forgot").catch(error=>{
+      forgotChallengeError=error;host.textContent=error.message;return null;
+    });
+  }
   if(forgot)forgot.addEventListener("submit",async event=>{
     event.preventDefault();
     const button=forgot.querySelector('button[type="submit"]');
     button.disabled=true;
     try{
+      const challenge=await forgotChallengePromise;
+      if(!challenge)throw forgotChallengeError||new Error("Перевірка безпеки недоступна.");
+      const turnstile_token=challenge.enabled?challenge.token():"";
+      if(challenge.enabled&&!turnstile_token)throw new Error("Завершіть перевірку Cloudflare перед відправленням листа.");
       const data=await json("/api/experience/password/forgot",{
         method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({email:forgot.elements.email.value.trim()})
+        body:JSON.stringify({email:forgot.elements.email.value.trim(),...(turnstile_token?{turnstile_token}:{})})
       });
       announce($("forgotResult"),data.message,true);
     }catch(e){announce($("forgotResult"),e.message,false);}
-    finally{button.disabled=false;}
+    finally{
+      button.disabled=false;
+      forgotChallengePromise.then(widget=>{if(widget?.enabled)widget.reset();}).catch(()=>{});
+    }
   });
 
   const reset=$("resetForm");

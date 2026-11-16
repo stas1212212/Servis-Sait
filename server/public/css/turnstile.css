@@ -1,0 +1,9 @@
+/* Shared PULT+ anti-spam challenge, loaded only on write forms. */
+.pult-security-slot{margin:12px 0;min-height:0;max-width:100%;font-size:13px;line-height:1.6;color:#475569}
+.pult-turnstile{display:grid;gap:8px;padding:12px;border:1px solid #bfd3f0;border-radius:13px;background:#edf5ff}
+.pult-turnstile-heading{font-size:13px;font-weight:750;color:#254c82;margin:0}
+.pult-turnstile-widget{max-width:100%;min-height:50px;overflow:visible}
+html.dark .pult-security-slot{color:#c3d4f1}
+html.dark .pult-turnstile{background:#132847;border-color:#375986}
+html.dark .pult-turnstile-heading{color:#cee2ff}
+@media(max-width:400px){.pult-turnstile{padding:8px}.pult-turnstile-widget{max-width:100%}}
