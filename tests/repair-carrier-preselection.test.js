@@ -10,7 +10,7 @@ test("all six repair forms use one updated two-carrier UI and shipping styleshee
   for(const page of ["Laptop.html","Phone.html","tv.html","tablet.html","speakers.html","pults-repair.html"]){
     const html=read(page);
     assert.ok(html.includes("serviceRepairForm"),page);
-    assert.ok(html.includes("service-pages.js?v=20261108-carriers"),page);
+    assert.ok(html.includes("service-pages.js?v=security-v1"),page);
     assert.ok(html.includes("service-pages.css?v=20261108-carriers"),page);
     assert.ok(html.includes("shipping-i18n.js?v=20261108-carriers"),page);
   }
