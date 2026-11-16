@@ -45,7 +45,15 @@ async function main(){
   const secret=String(process.env.TURNSTILE_SECRET_KEY||"").trim();
   if(!sitekey||!secret)
     log(process.env.NODE_ENV==="production"?"BLOCK":"CHECK","Cloudflare Turnstile sitekey/secret are not both configured. Dev mode can run without them; public launch cannot.");
-  else if(process.env.NODE_ENV==="production"&&(/^\\d+x00000000000000000000/.test(sitekey)||/^\\d+x0000000000000000000000000000000AA$/.test(secret)))
+  else if(process.env.NODE_ENV==="production"&&([
+    "1x00000000000000000000AA","2x00000000000000000000AB",
+    "1x00000000000000000000BB","2x00000000000000000000BB",
+    "3x00000000000000000000FF"
+  ].includes(sitekey)||[
+    "1x0000000000000000000000000000000AA",
+    "2x0000000000000000000000000000000AA",
+    "3x0000000000000000000000000000000AA"
+  ].includes(secret)))
     log("BLOCK","Replace official Turnstile test credentials with real site/secret keys before launch.");
   else log("OK","Cloudflare Turnstile keys are configured (verify domain and real challenge manually).");
   const cols=await pool.query("SELECT table_name,column_name FROM information_schema.columns WHERE table_schema=current_schema()");
