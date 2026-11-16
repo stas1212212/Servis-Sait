@@ -25,11 +25,15 @@ function withEnv(values,callback){
   for(const key of keys)saved[key]=process.env[key];
   for(const key of keys)delete process.env[key];
   Object.assign(process.env,values);
-  try{return callback();}
-  finally{for(const key of keys){
+  const restore=()=>{for(const key of keys){
     if(saved[key]===undefined)delete process.env[key];
     else process.env[key]=saved[key];
-  }}
+  }};
+  let outcome;
+  try{outcome=callback();}
+  catch(error){restore();throw error;}
+  if(outcome&&typeof outcome.then==="function")return outcome.finally(restore);
+  restore();return outcome;
 }
 const PASS_SITE="1x00000000000000000000AA";
 const PASS_SECRET="1x0000000000000000000000000000000AA";
